@@ -15,7 +15,7 @@ const config = {
 			strict: true
 		}),
 		paths: {
-			base: isProduction ? '/growclip' : ''
+			base: isProduction ? '/growclip-site' : ''
 		},
 		prerender: {
 			entries: ['*']

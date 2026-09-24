@@ -5,7 +5,7 @@ import {
 	type ProductContent
 } from './product-base';
 
-const assetPrefix = import.meta.env.PROD ? '/growclip' : '';
+const assetPrefix = import.meta.env.PROD ? '/growclip-site' : '';
 
 export const contactHref =
 	'mailto:matuszewski.wroclaw@gmail.com?subject=GrowClip%20growbox%20setup';

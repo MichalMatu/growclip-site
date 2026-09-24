@@ -4,7 +4,7 @@ Public marketing/demo site for **GrowClip**, a private ESP32-S3 local automation
 
 The firmware, device authentication, API implementation and full Nodeflow runtime remain private. This repository contains the standalone public-facing site, marketing-only LiteGraph demo and public mockups.
 
-**Live site:** https://michalmatu.github.io/growclip/
+**Live site:** https://michalmatu.github.io/growclip-site/
 
 ## Stack
 
@@ -35,7 +35,7 @@ Additional browser checks are available through the Playwright scripts in `packa
 
 ## GitHub Pages
 
-Production builds use the `/growclip` base path. `.github/workflows/pages.yml` builds the static SvelteKit output and deploys the `build/` directory to GitHub Pages.
+Production builds use the `/growclip-site` base path. `.github/workflows/pages.yml` builds the static SvelteKit output and deploys the `build/` directory to GitHub Pages.
 
 ## Content
 
