@@ -2,6 +2,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import RefreshIcon from '~icons/tabler/refresh';
+	import MaximizeIcon from '~icons/tabler/maximize';
+	import MinimizeIcon from '~icons/tabler/minimize';
 
 	import { LiteGraphDemoController, type DemoExampleId } from '$lib/features/litegraph/demoRuntime';
 	import { loadLiteGraphClassic } from '$lib/features/litegraph/litegraphLoader';
@@ -10,10 +12,18 @@
 	interface Props {
 		examples: DemoFlowExample[];
 		resetLabel: string;
+		fullscreenLabel: string;
+		exitFullscreenLabel: string;
+		fullscreenUnavailable: string;
 	}
 
-	let { examples, resetLabel }: Props = $props();
+	let { examples, resetLabel, fullscreenLabel, exitFullscreenLabel, fullscreenUnavailable }: Props =
+		$props();
 
+	let panelElement: HTMLElement | null = null;
+	let fullscreen = $state(false);
+	let expanded = $state(false);
+	let fullscreenError = $state(false);
 	let canvasElement: HTMLCanvasElement | null = null;
 	let activeExample = $state<DemoExampleId>('climate');
 	let ready = $state(false);
@@ -85,8 +95,62 @@
 		}
 	}
 
+	function setExpanded(value: boolean) {
+		expanded = value;
+		fullscreen = value;
+		document.documentElement.classList.toggle('demo-viewport-expanded', value);
+		requestAnimationFrame(() => controller?.resize());
+	}
+
+	async function toggleFullscreen() {
+		fullscreenError = false;
+		if (expanded) {
+			setExpanded(false);
+			return;
+		}
+		if (panelElement && document.fullscreenElement === panelElement) {
+			try {
+				await document.exitFullscreen();
+			} catch {
+				fullscreenError = true;
+			}
+			return;
+		}
+		if (!panelElement) return;
+		if (panelElement.requestFullscreen) {
+			try {
+				await panelElement.requestFullscreen();
+				if (document.fullscreenElement === panelElement) {
+					fullscreen = true;
+					return;
+				}
+			} catch {
+				// Some browsers and embedded contexts deny native fullscreen.
+			}
+		}
+		setExpanded(true);
+	}
+
 	onMount(() => {
 		void initializeDemo();
+		const syncFullscreen = () => {
+			fullscreen =
+				expanded || (panelElement !== null && document.fullscreenElement === panelElement);
+			controller?.resize();
+		};
+		document.addEventListener('fullscreenchange', syncFullscreen);
+		const escapeExpanded = (event: { key: string; preventDefault: () => void }) => {
+			if (event.key === 'Escape' && expanded) {
+				event.preventDefault();
+				setExpanded(false);
+			}
+		};
+		document.addEventListener('keydown', escapeExpanded);
+		const themeObserver = new window.MutationObserver(() => controller?.applyTheme());
+		themeObserver.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['data-theme', 'data-theme-mode']
+		});
 
 		if (canvasElement && typeof ResizeObserver !== 'undefined') {
 			resizeObserver = new ResizeObserver(() => {
@@ -97,6 +161,10 @@
 
 		return () => {
 			disposed = true;
+			themeObserver.disconnect();
+			document.removeEventListener('fullscreenchange', syncFullscreen);
+			document.removeEventListener('keydown', escapeExpanded);
+			document.documentElement.classList.remove('demo-viewport-expanded');
 			resizeObserver?.disconnect();
 			controller?.destroy();
 			controller = null;
@@ -104,20 +172,41 @@
 	});
 </script>
 
-<article class="asset-frame device-panel">
+<article
+	bind:this={panelElement}
+	class="asset-frame device-panel"
+	class:viewport-expanded={expanded}
+>
 	<div class="device-panel-header flex items-center justify-between gap-3 border-b px-4 py-3">
-		<p class="text-sm font-semibold text-neutral-50">Nodeflow / LiteGraph</p>
-		<button
-			type="button"
-			class="device-panel-button inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-xs font-semibold"
-			onclick={resetDemo}
-			disabled={!ready && !error}
-		>
-			<RefreshIcon aria-hidden="true" />
-			{resetLabel}
-		</button>
+		<p class="text-sm font-semibold demo-title">Nodeflow / LiteGraph</p>
+		<div class="flex flex-wrap justify-end gap-2">
+			<button
+				type="button"
+				class="device-panel-button inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-xs font-semibold"
+				onclick={resetDemo}
+				disabled={!ready && !error}
+			>
+				<RefreshIcon aria-hidden="true" />
+				{resetLabel}
+			</button>
+			<button
+				type="button"
+				class="device-fullscreen-button inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-xs font-semibold"
+				aria-label={fullscreen ? exitFullscreenLabel : fullscreenLabel}
+				aria-pressed={fullscreen}
+				onclick={toggleFullscreen}
+			>
+				{#if fullscreen}<MinimizeIcon aria-hidden="true" />{:else}<MaximizeIcon
+						aria-hidden="true"
+					/>{/if}
+				<span class="hidden sm:inline">{fullscreen ? exitFullscreenLabel : fullscreenLabel}</span>
+			</button>
+		</div>
 	</div>
 
+	{#if fullscreenError}<p class="px-4 py-2 text-xs demo-description" role="status">
+			{fullscreenUnavailable}
+		</p>{/if}
 	<div class="device-panel-controls border-b px-3 py-3">
 		<div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
 			{#each examples as example (example.id)}
@@ -134,7 +223,7 @@
 				</button>
 			{/each}
 		</div>
-		<p class="mt-2 text-xs leading-5 text-neutral-300">
+		<p class="mt-2 text-xs leading-5 demo-description">
 			{activeExampleBody}
 		</p>
 	</div>
@@ -147,7 +236,7 @@
 			</div>
 		{:else if !ready}
 			<div
-				class="device-canvas absolute inset-0 grid place-items-center text-sm font-semibold text-neutral-300"
+				class="device-canvas absolute inset-0 grid place-items-center text-sm font-semibold demo-description"
 			>
 				LiteGraph loading
 			</div>

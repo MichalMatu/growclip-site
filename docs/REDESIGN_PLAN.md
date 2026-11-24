@@ -15,3 +15,7 @@ Scope: public growclip-site only. Product UI is visual reference, not a modifica
 - [x] S6C.1 — owner-approved demo-first visual refinement: unchanged hero, compact selected-node library immediately under the four browser examples, remove repeated demo labels. Product library preview is informational (not a claim that every listed node is implemented in the browser demo). Further capability grouping and technical hierarchy require owner review. Product reference 64dc7713b0b360d5d56e04b36533a33285e4b688.
 
 S6C.1 automated acceptance passed (15 Vitest, 34 Playwright including all 8 release matrix configurations); owner visual review remains pending. No production deployment.
+
+- [x] S6C.2 — owner-approved demo-only style parity: canonical GrowClip canvas theme and card proportions, flat title bars, semantic port colors, less intrusive IPO groups and native fullscreen toggle. Product visual source: 64dc7713b0b360d5d56e04b36533a33285e4b688. No device runtime copied. No other sections changed. Visual owner review and publication separate.
+
+S6C.2: automated acceptance of visual adapter and fullscreen controls, including denied-native viewport fallback with Escape; 15 Vitest and 36 Playwright. Owner visual review pending; no production deployment. Rollback source 0897aabba6e91ea53851cadf0c8c3ff692d2e7df.

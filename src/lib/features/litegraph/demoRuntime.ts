@@ -1,4 +1,5 @@
 import { compareDemoValues, demoTimeAllowed, demoOutputActive } from './demoLogic';
+import { NODEFLOW_COLORS, applyNodeflowCanvasTheme } from './nodeflowTheme';
 
 type Vec2 = [number, number];
 
@@ -73,6 +74,9 @@ type LiteGraphCanvas = {
 	render_shadows?: boolean;
 	resize: () => void;
 	round_radius?: number;
+	background_image?: string | null;
+	render_canvas_border?: boolean;
+	connections_border?: boolean;
 	setDirty: (foreground: boolean, background: boolean) => void;
 	show_info?: boolean;
 	use_gradients?: boolean;
@@ -130,14 +134,6 @@ type LiteGraphWheelEvent = WheelEvent & {
 };
 
 const DEFAULT_EXAMPLE: DemoExampleId = 'climate';
-
-const NODEFLOW_COLORS = {
-	ERROR: '#e74c3c',
-	NEUTRAL: '#95a5a6',
-	SUCCESS: '#2ecc71',
-	TEXT: '#e8eaed',
-	WARNING: '#f39c12'
-} as const;
 
 const NODEFLOW_FONTS = {
 	MAIN: '12px monospace',
@@ -228,7 +224,7 @@ const ACTION_CARD_BUTTON_WIDTH = 55;
 const ACTION_CARD_BUTTON_GAP = 10;
 const ACTION_CARD_BUTTON_BOTTOM = 16;
 const LITEGRAPH_TITLE_HEIGHT = 30;
-const DEMO_GROUP_HEADER_SPACE = 48;
+const DEMO_GROUP_HEADER_SPACE = 76;
 
 const NODEFLOW_STYLE = {
 	COLORS: NODEFLOW_COLORS,
@@ -238,7 +234,19 @@ const NODEFLOW_STYLE = {
 			return [...KNOB_SIZE] as Vec2;
 		}
 		if (type === 'Sensor/Time Source (DS3231)') {
-			return [220, 110];
+			return [280, 140];
+		}
+		if (type === 'Sensor/BLE Thermometer') {
+			return [340, 140];
+		}
+		if (type === 'Sensor/MQTT Input') {
+			return [280, 168];
+		}
+		if (type === 'Processing/Hysteresis') {
+			return [280, 200];
+		}
+		if (type === 'Processing/Time Filter') {
+			return [260, 96];
 		}
 		if (type === 'Devices/MQTT Publish') {
 			return [...MQTT_PUBLISH_SIZE] as Vec2;
@@ -275,7 +283,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			timeSource: {
 				type: 'Sensor/Time Source (DS3231)',
-				pos: [184, 452],
+				pos: [24, 452],
 				properties: { source: 'DS3231/NTP', time: '14:32:08' }
 			},
 			hysteresis: {
@@ -285,12 +293,12 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			time: {
 				type: 'Processing/Time Filter',
-				pos: [438, 340],
+				pos: [438, 380],
 				properties: { from: '08:00', result: true, to: '22:00' }
 			},
 			fan: {
 				type: 'Devices/Shelly Plug',
-				pos: [800, 78],
+				pos: [840, 78],
 				title: 'Shelly Fan',
 				properties: {
 					client_id: 'shelly-fan',
@@ -302,7 +310,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			alert: {
 				type: 'Devices/Telegram Notification',
-				pos: [800, 326],
+				pos: [840, 326],
 				title: 'Telegram Alert',
 				properties: {
 					edge: 'both',
@@ -344,7 +352,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			timeSource: {
 				type: 'Sensor/Time Source (DS3231)',
-				pos: [184, 466],
+				pos: [24, 466],
 				properties: { source: 'DS3231/NTP', time: '23:41:12' }
 			},
 			compare: {
@@ -359,13 +367,13 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			socket: {
 				type: 'Devices/433MHz Socket',
-				pos: [800, 78],
+				pos: [840, 78],
 				title: 'RF433 Mister',
 				properties: { codeOff: '8129', codeOn: '8132', label: 'RF433 Mister' }
 			},
 			alert: {
 				type: 'Devices/Telegram Notification',
-				pos: [800, 326],
+				pos: [840, 326],
 				title: 'Humidity Note',
 				properties: { edge: 'both', label: 'Humidity Note', message: 'Night RH below target' }
 			}
@@ -402,7 +410,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			timeSource: {
 				type: 'Sensor/Time Source (DS3231)',
-				pos: [184, 438],
+				pos: [24, 492],
 				properties: { source: 'System/RTC', time: '09:05:44' }
 			},
 			compare: {
@@ -417,7 +425,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			pump: {
 				type: 'Devices/Shelly Plug',
-				pos: [800, 64],
+				pos: [840, 64],
 				title: 'Shelly Pump',
 				properties: {
 					client_id: 'shelly-pump',
@@ -429,7 +437,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			publish: {
 				type: 'Devices/MQTT Publish',
-				pos: [800, 324],
+				pos: [840, 324],
 				properties: {
 					mqtt_id: 'pump_state',
 					label: 'local state'
@@ -461,7 +469,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			timeSource: {
 				type: 'Sensor/Time Source (DS3231)',
-				pos: [160, 512],
+				pos: [24, 512],
 				properties: { source: 'DS3231/NTP', time: '18:18:22' }
 			},
 			co2Compare: {
@@ -483,7 +491,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			time: {
 				type: 'Processing/Time Filter',
-				pos: [438, 512],
+				pos: [438, 532],
 				properties: { from: '00:00', result: true, to: '23:59' }
 			},
 			offlineAlert: {
@@ -1014,12 +1022,16 @@ function applyCanvasStyle(canvas: LiteGraphCanvas, liteGraph: LiteGraphNamespace
 	canvas.links_render_mode = liteGraph.SPLINE_LINK ?? 2;
 	canvas.connections_width = 4;
 	canvas.round_radius = 12;
-	canvas.use_gradients = true;
+	canvas.use_gradients = false;
+	canvas.background_image = null;
+	canvas.render_canvas_border = false;
+	canvas.connections_border = true;
+	applyNodeflowCanvasTheme(canvas);
 	canvas.render_shadows = true;
 	canvas.render_connection_arrows = false;
 	canvas.show_info = false;
 	if (canvas.ds) {
-		canvas.ds.min_scale = 0.3;
+		canvas.ds.min_scale = 0.2;
 		canvas.ds.max_scale = 1.6;
 	}
 }
@@ -1069,9 +1081,9 @@ function fitExampleToCanvas(
 	const width = Math.max(320, target.clientWidth || target.width);
 	const height = Math.max(320, target.clientHeight || target.height);
 	const margin = width < 520 ? 16 : 28;
-	const maxScale = width < 520 ? 0.58 : 0.84;
+	const maxScale = width < 520 ? 0.58 : 1.15;
 	const fitScale = Math.min((width - margin * 2) / graphWidth, (height - margin * 2) / graphHeight);
-	const scale = Math.min(maxScale, Math.max(width < 520 ? 0.28 : 0.58, fitScale));
+	const scale = Math.min(maxScale, Math.max(0.2, fitScale));
 	const horizontalMargin = Math.max(margin / scale, (width / scale - graphWidth) / 2);
 	canvas.ds.scale = scale;
 	canvas.ds.offset = [horizontalMargin - minX, margin / scale - minY];
@@ -1610,6 +1622,10 @@ export class LiteGraphDemoController {
 		this.nodes = [];
 	}
 
+	applyTheme() {
+		if (this.canvas) applyNodeflowCanvasTheme(this.canvas);
+	}
+
 	resize() {
 		if (!this.canvas) {
 			return;
@@ -1699,21 +1715,21 @@ export class LiteGraphDemoController {
 				note: 'Sensors, constants\nand time source',
 				pos: [8, groupY],
 				size: [384, groupHeight],
-				color: '#2563eb'
+				color: '#6483b0'
 			},
 			{
 				title: 'Processing',
 				note: 'Compare, hysteresis\nand time gates',
 				pos: [410, groupY],
-				size: [330, groupHeight],
-				color: '#047857'
+				size: [380, groupHeight],
+				color: '#528b75'
 			},
 			{
 				title: 'Output',
 				note: 'Actuator or\nnotification',
-				pos: [770, groupY],
-				size: [Math.max(330, maxNodeX - 770 + 34), groupHeight],
-				color: '#b45309'
+				pos: [810, groupY],
+				size: [Math.max(330, maxNodeX - 810 + 34), groupHeight],
+				color: '#a58b60'
 			}
 		];
 
@@ -1723,8 +1739,8 @@ export class LiteGraphDemoController {
 			group.pos = spec.pos;
 			group.size = spec.size;
 			group.color = spec.color;
-			group.font_size = 22;
-			group.note = spec.note;
+			group.font_size = 19;
+			group.note = '';
 			group.note_font_size = 12;
 			this.graph?.add(group);
 			return group;

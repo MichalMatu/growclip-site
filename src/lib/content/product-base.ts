@@ -68,6 +68,9 @@ export type ProductContent = {
 		copy: string;
 		loading: string;
 		reset: string;
+		fullscreen: string;
+		exitFullscreen: string;
+		fullscreenUnavailable: string;
 		examples: DemoFlowExample[];
 		libraryTitle: string;
 		libraryGroups: { label: string; nodes: string[] }[];
@@ -161,6 +164,9 @@ export const productContent: Record<Locale, ProductContent> = {
 			copy: 'Cztery symulacje w przeglądarce. Bez połączenia ze sprzętem; nie katalog gotowych konfiguracji.',
 			loading: 'Demo ładuje edytor dopiero przy tej sekcji',
 			reset: 'Reset demo',
+			fullscreen: 'Pełny ekran',
+			exitFullscreen: 'Zamknij pełny ekran',
+			fullscreenUnavailable: 'Przeglądarka nie pozwala włączyć pełnego ekranu.',
 			libraryTitle: 'Biblioteka nodów — wybrane elementy',
 			libraryGroups: [
 				{
@@ -367,6 +373,9 @@ export const productContent: Record<Locale, ProductContent> = {
 			copy: 'Four browser simulations. No device connection; not a catalogue of ready-to-use presets.',
 			loading: 'The editor loads only when this section is reached',
 			reset: 'Reset demo',
+			fullscreen: 'Fullscreen',
+			exitFullscreen: 'Exit fullscreen',
+			fullscreenUnavailable: 'Fullscreen is unavailable in this browser.',
 			libraryTitle: 'Node library — selected nodes',
 			libraryGroups: [
 				{

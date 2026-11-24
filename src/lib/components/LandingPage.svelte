@@ -300,12 +300,15 @@
 						<LiteGraphDemoComponent
 							examples={content.demo.examples}
 							resetLabel={content.demo.reset}
+							fullscreenLabel={content.demo.fullscreen}
+							exitFullscreenLabel={content.demo.exitFullscreen}
+							fullscreenUnavailable={content.demo.fullscreenUnavailable}
 						/>
 					{:else}
 						<article class="asset-frame device-panel demo-loader" aria-busy={!demoLoadError}>
 							<div class="device-panel-header border-b px-4 py-3">
-								<p class="text-sm font-semibold text-neutral-50">Nodeflow LiteGraph demo</p>
-								<p class="mt-1 text-xs text-neutral-400">
+								<p class="text-sm font-semibold demo-title">Nodeflow LiteGraph demo</p>
+								<p class="mt-1 text-xs demo-description">
 									{demoLoadError || content.demo.loading}
 								</p>
 							</div>

@@ -1,0 +1,29 @@
+/* Canvas appearance from GrowClip 64dc7713b0b360d5d56e04b36533a33285e4b688. */
+:root {
+	--nf-canvas-background: color-mix(in oklab, var(--color-base-100) 94%, var(--color-base-content));
+	--nf-canvas-node-title: var(--ui-content-primary);
+	--nf-canvas-node-title-selected: var(--ui-content-primary);
+	--nf-canvas-node-text: var(--ui-content-primary);
+	--nf-canvas-node: color-mix(in oklab, var(--color-base-200) 76%, var(--color-base-content));
+	--nf-canvas-node-body: color-mix(in oklab, var(--color-base-100) 76%, var(--color-base-content));
+	--nf-canvas-node-box: var(--ui-border-strong);
+	--nf-canvas-node-outline: var(--ui-content-primary);
+	--nf-canvas-widget-bg: color-mix(in oklab, var(--color-base-200) 70%, transparent);
+	--nf-canvas-widget-outline: var(--ui-border-strong);
+	--nf-canvas-widget-text: var(--ui-content-primary);
+	--nf-canvas-widget-secondary-text: var(--ui-content-muted);
+	--nf-canvas-link: color-mix(in oklab, var(--ui-accent) 70%, var(--ui-content-muted));
+	--nf-canvas-event-link: color-mix(in oklab, var(--ui-warning) 78%, var(--ui-accent));
+	--nf-canvas-connecting-link: color-mix(in oklab, var(--ui-success) 72%, var(--ui-accent));
+	--nf-canvas-slot-off: var(--ui-content-muted);
+	--nf-canvas-slot-on: var(--ui-success);
+	--nf-canvas-success: var(--ui-success);
+	--nf-canvas-error: var(--ui-danger);
+	--nf-canvas-warning: var(--ui-warning);
+	--nf-canvas-neutral: var(--ui-content-muted);
+	--nf-canvas-mode-always: var(--ui-content-muted);
+	--nf-canvas-mode-event: color-mix(in oklab, var(--ui-danger) 34%, var(--color-base-300));
+	--nf-canvas-mode-never: color-mix(in oklab, var(--color-base-content) 16%, var(--color-base-300));
+	--nf-canvas-mode-trigger: color-mix(in oklab, var(--ui-accent) 30%, var(--color-base-300));
+	--nf-canvas-mode-request: color-mix(in oklab, var(--ui-warning) 34%, var(--color-base-300));
+}

@@ -8,6 +8,7 @@
 
 /* Shared product design tokens are pinned in DESIGN_SYSTEM.md. */
 @import './lib/styles/growclip-tokens.css';
+@import './lib/styles/nodeflow-theme.css';
 
 :root {
 	--page-bg: var(--ui-surface-page);
@@ -39,14 +40,14 @@
 	--control-active-bg: var(--site-action-bg);
 	--control-active-fg: var(--color-primary-content);
 	--hero-parallax: 0px;
-	/* The isolated LiteGraph canvas has its own dark rendering contract. */
-	--device-surface: #111827;
-	--device-surface-muted: #1f2937;
-	--device-surface-soft: rgba(255, 255, 255, 0.07);
-	--device-canvas-bg: #17181c;
-	--device-border: rgba(255, 255, 255, 0.14);
-	--device-text: #f8fafc;
-	--device-muted: #cbd5e1;
+	/* Shared GrowClip palette, also used by the demo. */
+	--device-surface: var(--ui-surface-card);
+	--device-surface-muted: var(--ui-surface-panel);
+	--device-surface-soft: var(--color-base-200);
+	--device-canvas-bg: var(--nf-canvas-background);
+	--device-border: var(--ui-border-frame);
+	--device-text: var(--ui-content-primary);
+	--device-muted: var(--ui-content-secondary);
 }
 
 html {
@@ -786,18 +787,19 @@ a {
 	color: var(--device-text);
 }
 
-.device-panel-button:hover {
-	background: rgba(255, 255, 255, 0.1);
+.device-panel-button:hover,
+.device-fullscreen-button:hover {
+	background: var(--control-hover-bg);
 }
 
 .device-tab {
-	background: rgba(255, 255, 255, 0.055);
+	background: var(--device-surface-soft);
 	border-color: var(--device-border);
-	color: #d4d4d8;
+	color: var(--device-text);
 }
 
 .device-tab:hover {
-	background: rgba(255, 255, 255, 0.1);
+	background: var(--control-hover-bg);
 }
 
 .device-tab-active {
@@ -993,4 +995,70 @@ html[data-theme='business'] {
 	color: var(--text-secondary);
 	font-size: 0.75rem;
 	line-height: 1.35;
+}
+
+.device-panel .demo-title {
+	color: var(--device-text);
+}
+.device-panel .demo-description {
+	color: var(--device-muted);
+}
+.device-fullscreen-button {
+	background: var(--device-surface-soft);
+	border-color: var(--device-border);
+	color: var(--device-text);
+}
+.device-panel:fullscreen {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	border: 0;
+	border-radius: 0;
+	transform: none;
+	background: var(--device-surface);
+}
+.device-panel:fullscreen .device-canvas {
+	flex: 1 1 0%;
+	min-height: 0;
+	height: auto;
+}
+.device-panel:fullscreen .device-canvas canvas {
+	display: block;
+}
+
+/* Full-viewport fallback if native fullscreen is unsupported or denied. */
+html.demo-viewport-expanded,
+html.demo-viewport-expanded body {
+	overflow: hidden;
+}
+html.demo-viewport-expanded .site-shell {
+	overflow: visible;
+}
+html.demo-viewport-expanded [data-reveal]:has(.viewport-expanded) {
+	transform: none;
+	transition: none;
+}
+.device-panel.viewport-expanded {
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100dvh;
+	max-width: none;
+	border: 0;
+	border-radius: 0;
+	transform: none;
+	background: var(--device-surface);
+}
+.device-panel.viewport-expanded .device-canvas {
+	flex: 1 1 0%;
+	min-height: 0;
+	height: auto;
+}
+.device-panel.viewport-expanded canvas {
+	display: block;
 }
