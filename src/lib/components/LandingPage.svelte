@@ -1,15 +1,23 @@
 <!-- @runes -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import ArrowRightIcon from '~icons/tabler/arrow-right';
-	import CheckIcon from '~icons/tabler/check';
+	import HeroSection from './sections/HeroSection.svelte';
+	import ProofSection from './sections/ProofSection.svelte';
+	import ProblemSection from './sections/ProblemSection.svelte';
+	import ComparisonSection from './sections/ComparisonSection.svelte';
+	import WorkflowSection from './sections/WorkflowSection.svelte';
+	import DiagnosticsSection from './sections/DiagnosticsSection.svelte';
+	import CapabilitiesSection from './sections/CapabilitiesSection.svelte';
+	import HardwareSection from './sections/HardwareSection.svelte';
+	import ShowcaseSection from './sections/ShowcaseSection.svelte';
+	import BetaSection from './sections/BetaSection.svelte';
+	import FaqSection from './sections/FaqSection.svelte';
 	import CloudOffIcon from '~icons/tabler/cloud-off';
 	import MailIcon from '~icons/tabler/mail';
 
-	import AssetSlot from '$lib/components/AssetSlot.svelte';
 	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
 	import ThemeToggle, { type ThemePreference } from '$lib/components/ThemeToggle.svelte';
-	import { contactHref, elecrowHref, getProductContent, type Locale } from '$lib/content/product';
+	import { contactHref, getProductContent, type Locale } from '$lib/content/product';
 
 	type LiteGraphDemoComponent =
 		typeof import('$lib/features/litegraph/LiteGraphDemo.svelte').default;
@@ -261,132 +269,11 @@
 	</header>
 
 	<main id="top">
-		<section class="hero-section">
-			<img
-				class="hero-image"
-				src={content.hero.imageSrc}
-				alt={content.hero.imageAlt}
-				fetchpriority="high"
-			/>
-			<div class="hero-overlay"></div>
-			<div class="hero-content">
-				<div class="hero-copy" data-reveal>
-					<p class="kicker">{content.hero.kicker}</p>
-					<h1>{content.hero.title}</h1>
-					<p class="hero-headline">{content.hero.headline}</p>
-					<p class="hero-body">{content.hero.copy}</p>
-					<p class="hero-availability">{content.hero.availability}</p>
-					<ul class="hero-highlights">
-						{#each content.hero.highlights as highlight (highlight)}
-							<li>
-								<CheckIcon aria-hidden="true" />
-								<span>{highlight}</span>
-							</li>
-						{/each}
-					</ul>
+		<HeroSection data={content.hero} />
 
-					<div class="hero-actions">
-						<a class="primary-cta h-12 px-5 text-sm" href={contactHref}>
-							<MailIcon aria-hidden="true" />
-							{content.hero.primaryCta}
-						</a>
-						<a class="secondary-cta h-12 px-5 text-sm" href="#demo">
-							{content.hero.secondaryCta}
-							<ArrowRightIcon aria-hidden="true" />
-						</a>
-					</div>
-				</div>
+		<ProofSection data={content.proof} />
 
-				<aside class="hero-proof" data-reveal>
-					{#each content.hero.stats as stat (stat.title)}
-						<div class="hero-stat">
-							<p class="hero-stat-value">{stat.value}</p>
-							<h2>{stat.title}</h2>
-							<p>{stat.body}</p>
-						</div>
-					{/each}
-				</aside>
-			</div>
-		</section>
-
-		<section class="proof-strip" aria-label={content.proof.title}>
-			<div class="site-section proof-grid">
-				<div data-reveal>
-					<p class="kicker">{content.proof.kicker}</p>
-					<h2 class="section-title">{content.proof.title}</h2>
-					<p class="section-copy">{content.proof.copy}</p>
-				</div>
-				<div class="proof-items" data-reveal>
-					{#each content.proof.items as item (item.title)}
-						<article class="proof-item">
-							<CheckIcon aria-hidden="true" />
-							<h3>{item.title}</h3>
-							<p>{item.body}</p>
-						</article>
-					{/each}
-				</div>
-			</div>
-		</section>
-
-		<section class="site-section split-section">
-			<div data-reveal>
-				<p class="kicker">{content.problem.kicker}</p>
-				<h2 class="section-title">{content.problem.title}</h2>
-				<p class="section-copy">{content.problem.copy}</p>
-			</div>
-			<div class="site-grid" data-reveal>
-				{#each content.problem.items as item (item.title)}
-					<article class="feature-card">
-						<h3>{item.title}</h3>
-						<p>{item.body}</p>
-					</article>
-				{/each}
-			</div>
-		</section>
-
-		<section class="comparison-section">
-			<div class="site-section">
-				<div class="section-heading" data-reveal>
-					<p class="kicker">{content.comparison.kicker}</p>
-					<h2 class="section-title">{content.comparison.title}</h2>
-					<p class="section-copy">{content.comparison.copy}</p>
-				</div>
-				<div class="comparison-grid" data-reveal>
-					{#each content.comparison.items as item (item.alternative)}
-						<article class="comparison-card">
-							<h3>{item.alternative}</h3>
-							<div>
-								<p class="comparison-label">{content.comparison.limitationLabel}</p>
-								<p>{item.limitation}</p>
-							</div>
-							<div>
-								<p class="comparison-label">{content.comparison.growclipLabel}</p>
-								<p>{item.growclip}</p>
-							</div>
-						</article>
-					{/each}
-				</div>
-			</div>
-		</section>
-
-		<section class="workflow-band">
-			<div class="site-section">
-				<div class="section-heading" data-reveal>
-					<p class="kicker">{content.workflow.kicker}</p>
-					<h2 class="section-title">{content.workflow.title}</h2>
-					<p class="section-copy">{content.workflow.copy}</p>
-				</div>
-				<div class="workflow-grid" data-reveal>
-					{#each content.workflow.steps as step (step.label)}
-						<article class="workflow-step">
-							<span>{step.label}</span>
-							<h3>{step.title}</h3>
-							<p>{step.body}</p>
-						</article>
-					{/each}
-				</div>
-			</div>
-		</section>
+		<WorkflowSection data={content.workflow} />
 
 		<section id="demo" class="site-section demo-section">
 			<div class="demo-shell">
@@ -441,171 +328,21 @@
 			</details>
 		</section>
 
-		<section id="diagnostics" class="diagnostics-band">
-			<div class="site-section diagnostics-layout">
-				<div data-reveal>
-					<p class="kicker">{content.diagnostics.kicker}</p>
-					<h2 class="section-title">{content.diagnostics.title}</h2>
-					<p class="section-copy">{content.diagnostics.copy}</p>
-					<div class="diagnostics-list">
-						{#each content.diagnostics.items as item (item.title)}
-							<article>
-								<h3>{item.title}</h3>
-								<p>{item.body}</p>
-							</article>
-						{/each}
-					</div>
-				</div>
-				<div data-reveal>
-					<AssetSlot slot={content.media[2]} />
-				</div>
-			</div>
-		</section>
+		<ProblemSection data={content.problem} />
 
-		<section id="capabilities" class="site-section">
-			<div class="section-heading" data-reveal>
-				<p class="kicker">{content.capabilities.kicker}</p>
-				<h2 class="section-title">{content.capabilities.title}</h2>
-				<p class="section-copy">{content.capabilities.copy}</p>
-			</div>
+		<ComparisonSection data={content.comparison} />
 
-			<div class="site-grid" data-reveal>
-				{#each content.capabilities.items as item (item.title)}
-					<article class="feature-card">
-						<h3>{item.title}</h3>
-						<p>{item.body}</p>
-					</article>
-				{/each}
-			</div>
-		</section>
+		<DiagnosticsSection data={content.diagnostics} slot={content.media[2]} />
 
-		<section id="hardware" class="hardware-band">
-			<div class="site-section">
-				<div class="section-heading" data-reveal>
-					<p class="kicker">{content.hardware.kicker}</p>
-					<h2 class="section-title">{content.hardware.title}</h2>
-					<p class="section-copy">{content.hardware.copy}</p>
-				</div>
+		<CapabilitiesSection data={content.capabilities} />
 
-				<div class="hardware-layout" data-reveal>
-					<article class="compact-card hardware-base">
-						<h3>{content.hardware.baseTitle}</h3>
-						<ul>
-							{#each content.hardware.baseItems as item (item)}
-								<li>
-									<CheckIcon aria-hidden="true" />
-									<span>{item}</span>
-								</li>
-							{/each}
-						</ul>
-					</article>
+		<HardwareSection data={content.hardware} />
 
-					<div>
-						<h3 class="hardware-options-title">{content.hardware.optionsTitle}</h3>
-						<div class="hardware-options">
-							{#each content.hardware.options as option (option.title)}
-								<article class="feature-card">
-									<div class="option-heading">
-										<h4>{option.title}</h4>
-										<span class="option-status">{option.status}</span>
-									</div>
-									<p>{option.body}</p>
-								</article>
-							{/each}
-						</div>
-					</div>
-				</div>
+		<ShowcaseSection data={content.showcase} media={content.media} />
 
-				<details class="technical-card" data-reveal>
-					<summary>{content.hardware.technicalTitle}</summary>
-					<p>{content.hardware.technicalBody}</p>
-					<a href={elecrowHref} target="_blank" rel="noreferrer">
-						{content.hardware.sourceLabel}
-						<ArrowRightIcon aria-hidden="true" />
-					</a>
-				</details>
-			</div>
-		</section>
+		<BetaSection data={content.beta} />
 
-		<section class="site-section media-section">
-			<div class="section-heading" data-reveal>
-				<p class="kicker">{content.showcase.kicker}</p>
-				<h2 class="section-title">{content.showcase.title}</h2>
-			</div>
-			<div class="media-grid" data-reveal>
-				{#each content.media as slot (slot.src)}
-					<AssetSlot {slot} />
-				{/each}
-			</div>
-		</section>
-
-		<section class="beta-section">
-			<div class="site-section beta-layout">
-				<div data-reveal>
-					<p class="kicker">{content.beta.kicker}</p>
-					<h2 class="section-title">{content.beta.title}</h2>
-					<p class="section-copy">{content.beta.copy}</p>
-					<p class="beta-note">{content.beta.note}</p>
-					<div class="beta-includes">
-						<h3>{content.beta.includesTitle}</h3>
-						{#each content.beta.includes as item (item.title)}
-							<article>
-								<CheckIcon aria-hidden="true" />
-								<div>
-									<h4>{item.title}</h4>
-									<p>{item.body}</p>
-								</div>
-							</article>
-						{/each}
-					</div>
-					<a class="primary-cta h-12 px-5 text-sm" href={contactHref}>
-						<MailIcon aria-hidden="true" />
-						{content.beta.primaryCta}
-					</a>
-				</div>
-				<div class="beta-fit" data-reveal>
-					<div>
-						<h3>{content.beta.fitTitle}</h3>
-						{#each content.beta.fit as item (item.title)}
-							<article>
-								<CheckIcon aria-hidden="true" />
-								<div>
-									<h4>{item.title}</h4>
-									<p>{item.body}</p>
-								</div>
-							</article>
-						{/each}
-					</div>
-					<div>
-						<h3>{content.beta.notForTitle}</h3>
-						{#each content.beta.notFor as item (item.title)}
-							<article>
-								<span aria-hidden="true">-</span>
-								<div>
-									<h4>{item.title}</h4>
-									<p>{item.body}</p>
-								</div>
-							</article>
-						{/each}
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section id="faq" class="site-section faq-section">
-			<div class="section-heading" data-reveal>
-				<p class="kicker">{content.faq.kicker}</p>
-				<h2 class="section-title">{content.faq.title}</h2>
-			</div>
-			<div class="faq-list" data-reveal>
-				{#each content.faq.items as item (item.question)}
-					<details class="faq-item">
-						<summary>{item.question}</summary>
-						<p>{item.answer}</p>
-					</details>
-				{/each}
-			</div>
-		</section>
+		<FaqSection data={content.faq} />
 	</main>
 
 	<footer class="site-footer border-t">
