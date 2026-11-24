@@ -66,3 +66,19 @@ test('theme controls are disabled in server HTML until hydration', async ({ requ
 	expect(buttons).toHaveLength(3);
 	for (const button of buttons) expect(button).toMatch(/\bdisabled\b/);
 });
+
+test('mobile navigation opens and selects an anchor with keyboard', async ({ page }) => {
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto('/');
+	await expect(page.locator('.theme-toggle button').first()).toBeEnabled();
+	const summary = page.locator('.site-mobile-menu summary');
+	await summary.focus();
+	await page.keyboard.press('Enter');
+	const menu = page.locator('.site-mobile-menu');
+	await expect(menu).toHaveAttribute('open', '');
+	await page.keyboard.press('Tab');
+	await expect(menu.locator('a[href="#demo"]')).toBeFocused();
+	await page.keyboard.press('Enter');
+	await expect(page).toHaveURL(/#demo$/);
+	await expect(menu).not.toHaveAttribute('open', '');
+});

@@ -30,6 +30,10 @@
 	let LiteGraphDemoComponent = $state<LiteGraphDemoComponent | null>(null);
 	let demoLoadError = $state('');
 	const content = $derived(getProductContent(locale));
+	const publicUrl = $derived(
+		'https://michalmatu.github.io/growclip-site/' + (locale === 'en' ? 'en/' : '')
+	);
+	const socialImage = 'https://michalmatu.github.io/growclip-site/media/growclip-hero.webp';
 	let demoImportPromise: Promise<void> | null = null;
 
 	function isThemePreference(value: string | null): value is ThemePreference {
@@ -194,6 +198,10 @@
 		};
 	});
 
+	function closeMobileMenu() {
+		document.querySelector('.site-mobile-menu')?.removeAttribute('open');
+	}
+
 	function setThemePreference(nextPreference: ThemePreference) {
 		applyTheme(nextPreference);
 		try {
@@ -210,13 +218,13 @@
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content={content.meta.socialTitle} />
 	<meta property="og:description" content={content.meta.socialDescription} />
-	<meta property="og:image" content={'https://michalmatu.github.io' + content.hero.imageSrc} />
-	<link
-		rel="canonical"
-		href={locale === 'en'
-			? 'https://michalmatu.github.io/growclip-site/en/'
-			: 'https://michalmatu.github.io/growclip-site/'}
-	/>
+	<meta property="og:image" content={socialImage} />
+	<meta property="og:image:alt" content={content.hero.imageAlt} />
+	<meta property="og:url" content={publicUrl} />
+	<meta property="og:locale" content={locale === 'pl' ? 'pl_PL' : 'en_US'} />
+	<meta property="og:locale:alternate" content={locale === 'pl' ? 'en_US' : 'pl_PL'} />
+	<meta name="twitter:image" content={socialImage} />
+	<link rel="canonical" href={publicUrl} />
 	<link rel="alternate" hreflang="pl" href="https://michalmatu.github.io/growclip-site/" />
 	<link rel="alternate" hreflang="en" href="https://michalmatu.github.io/growclip-site/en/" />
 	<link rel="alternate" hreflang="x-default" href="https://michalmatu.github.io/growclip-site/" />
@@ -258,11 +266,13 @@
 					<ul
 						class="dropdown-content menu z-40 mt-2 w-52 rounded-box border border-base-300 bg-base-100 p-2"
 					>
-						<li><a href="#demo">{content.nav.demo}</a></li>
-						<li><a href="#diagnostics">{content.nav.diagnostics}</a></li>
-						<li><a href="#capabilities">{content.nav.capabilities}</a></li>
-						<li><a href="#hardware">{content.nav.hardware}</a></li>
-						<li><a href="#faq">{content.nav.faq}</a></li>
+						<li><a onclick={closeMobileMenu} href="#demo">{content.nav.demo}</a></li>
+						<li><a onclick={closeMobileMenu} href="#diagnostics">{content.nav.diagnostics}</a></li>
+						<li>
+							<a onclick={closeMobileMenu} href="#capabilities">{content.nav.capabilities}</a>
+						</li>
+						<li><a onclick={closeMobileMenu} href="#hardware">{content.nav.hardware}</a></li>
+						<li><a onclick={closeMobileMenu} href="#faq">{content.nav.faq}</a></li>
 					</ul>
 				</details>
 				<a class="primary-cta hidden h-11 px-5 text-sm sm:inline-flex" href={contactHref}>
