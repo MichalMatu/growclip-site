@@ -16,10 +16,11 @@
 	interface Props {
 		labels: ThemeLabels;
 		preference: ThemePreference;
+		ready: boolean;
 		onChange: (preference: ThemePreference) => void;
 	}
 
-	let { labels, preference, onChange }: Props = $props();
+	let { labels, preference, ready, onChange }: Props = $props();
 
 	const options = [
 		{ id: 'system', icon: DeviceDesktopIcon },
@@ -37,6 +38,7 @@
 		{@const Icon = option.icon}
 		<button
 			type="button"
+			disabled={!ready}
 			class:active={preference === option.id}
 			aria-label={labelFor(option.id)}
 			aria-pressed={preference === option.id}

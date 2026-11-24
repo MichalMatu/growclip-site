@@ -5697,15 +5697,20 @@ LGraphNode.prototype.executeAction = function(action)
 				? LiteGraph.getWheelListenerOptions()
 				: false;
 
-		LiteGraph.pointerListenerRemove(this.canvas, 'move', this._mousedown_callback);
-		LiteGraph.pointerListenerRemove(this.canvas, 'up', this._mousedown_callback);
-		LiteGraph.pointerListenerRemove(this.canvas, 'down', this._mousedown_callback);
+		LiteGraph.pointerListenerRemove(this.canvas, 'move', this._mousemove_callback);
+		LiteGraph.pointerListenerRemove(this.canvas, 'move', this._mousemove_callback, true);
+		LiteGraph.pointerListenerRemove(this.canvas, 'up', this._mouseup_callback, true);
+		LiteGraph.pointerListenerRemove(this.canvas, 'down', this._mousedown_callback, true);
+		LiteGraph.pointerListenerRemove(document, 'move', this._mousemove_callback, true);
+		LiteGraph.pointerListenerRemove(document, 'up', this._mouseup_callback, true);
 		this.canvas.removeEventListener('mousewheel', this._mousewheel_callback, wheelOptions);
 		this.canvas.removeEventListener('wheel', this._mousewheel_callback, wheelOptions);
 		this.canvas.removeEventListener('DOMMouseScroll', this._mousewheel_callback, wheelOptions);
-		this.canvas.removeEventListener('keydown', this._key_callback);
-		document.removeEventListener('keyup', this._key_callback);
+		this.canvas.removeEventListener('keydown', this._key_callback, true);
+		document.removeEventListener('keyup', this._key_callback, true);
 		this.canvas.removeEventListener('contextmenu', this._doNothing);
+		this.canvas.removeEventListener('dragover', this._doNothing);
+		this.canvas.removeEventListener('dragend', this._doNothing);
 		this.canvas.removeEventListener('drop', this._ondrop_callback);
 		this.canvas.removeEventListener('dragenter', this._doReturnTrue);
 

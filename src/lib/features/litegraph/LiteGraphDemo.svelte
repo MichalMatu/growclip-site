@@ -23,6 +23,8 @@
 	);
 
 	let controller: LiteGraphDemoController | null = null;
+	let disposed = false;
+	let initialization: Promise<void> | null = null;
 	let resizeObserver: ResizeObserver | null = null;
 
 	function setError(initializationError: unknown) {
@@ -32,20 +34,26 @@
 				: String(initializationError);
 	}
 
-	async function initializeDemo() {
-		if (!canvasElement) {
-			return;
-		}
-
-		try {
-			await loadLiteGraphClassic();
-			controller = new LiteGraphDemoController(canvasElement, activeExample);
-			controller.reset(activeExample);
-			ready = true;
-			error = '';
-		} catch (initializationError) {
-			setError(initializationError);
-		}
+	function initializeDemo(): Promise<void> {
+		if (disposed || !canvasElement) return Promise.resolve();
+		if (initialization) return initialization;
+		initialization = (async () => {
+			try {
+				await loadLiteGraphClassic();
+				if (disposed || !canvasElement) return;
+				controller = new LiteGraphDemoController(canvasElement, activeExample);
+				controller.reset(activeExample);
+				ready = true;
+				error = '';
+			} catch (initializationError) {
+				controller?.destroy();
+				controller = null;
+				if (!disposed) setError(initializationError);
+			} finally {
+				initialization = null;
+			}
+		})();
+		return initialization;
 	}
 
 	async function resetDemo() {
@@ -88,6 +96,7 @@
 		}
 
 		return () => {
+			disposed = true;
 			resizeObserver?.disconnect();
 			controller?.destroy();
 			controller = null;

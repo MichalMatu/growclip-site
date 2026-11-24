@@ -24,6 +24,7 @@
 
 	let { locale }: { locale: Locale } = $props();
 	let themePreference = $state<ThemePreference>('system');
+	let themeReady = $state(false);
 	let showMobileCta = $state(false);
 	let demoRootElement: HTMLElement | null = null;
 	let LiteGraphDemoComponent = $state<LiteGraphDemoComponent | null>(null);
@@ -79,7 +80,12 @@
 	}
 
 	onMount(() => {
-		const savedTheme = window.localStorage.getItem('growclip.theme');
+		let savedTheme: string | null = null;
+		try {
+			savedTheme = window.localStorage.getItem('growclip.theme');
+		} catch {
+			// Storage can be disabled; the current session still supports theme changes.
+		}
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 		let revealObserver: IntersectionObserver | null = null;
@@ -88,6 +94,7 @@
 
 		document.documentElement.lang = locale;
 		applyTheme(isThemePreference(savedTheme) ? savedTheme : 'system');
+		themeReady = true;
 
 		const handleSystemThemeChange = () => {
 			if (themePreference === 'system') {
@@ -188,8 +195,12 @@
 	});
 
 	function setThemePreference(nextPreference: ThemePreference) {
-		window.localStorage.setItem('growclip.theme', nextPreference);
 		applyTheme(nextPreference);
+		try {
+			window.localStorage.setItem('growclip.theme', nextPreference);
+		} catch {
+			// The applied theme remains usable without persistence.
+		}
 	}
 </script>
 
@@ -261,6 +272,7 @@
 				<ThemeToggle
 					labels={content.nav.theme}
 					preference={themePreference}
+					ready={themeReady}
 					onChange={setThemePreference}
 				/>
 				<LanguageToggle ariaLabel={content.nav.language} {locale} />

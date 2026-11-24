@@ -349,7 +349,7 @@ export const productContent: Record<Locale, ProductContent> = {
 				{
 					id: sharedDemoExampleIds[0],
 					title: 'Wentylacja klimatu',
-					body: 'SCD41 mierzy CO2, histereza ogranicza klikanie, Shelly uruchamia wentylator, Telegram zgłasza przekroczenie.'
+					body: 'Symulowana temperatura z SCD41 przechodzi przez histerezę i filtr czasu; demo pokazuje wynik dla wentylatora i powiadomienia.'
 				},
 				{
 					id: sharedDemoExampleIds[1],
@@ -859,7 +859,7 @@ export const productContent: Record<Locale, ProductContent> = {
 				{
 					id: sharedDemoExampleIds[0],
 					title: 'Climate ventilation',
-					body: 'SCD41 measures CO2, hysteresis avoids chatter, Shelly starts the fan and Telegram reports a threshold breach.'
+					body: 'Simulated SCD41 temperature passes through hysteresis and a time gate; the demo shows the fan and notification outcomes.'
 				},
 				{
 					id: sharedDemoExampleIds[1],

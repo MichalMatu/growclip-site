@@ -1,3 +1,5 @@
+import { compareDemoValues, demoTimeAllowed, demoOutputActive } from './demoLogic';
+
 type Vec2 = [number, number];
 
 export type DemoExampleId = 'climate' | 'nightHumidity' | 'mqttBridge' | 'safetyAlert';
@@ -52,6 +54,9 @@ type LiteGraphGraph = {
 
 type LiteGraphCanvas = {
 	adjustMouseEvent?: (event: LiteGraphWheelEvent) => void;
+	stopRendering?: () => void;
+	unbindEvents?: () => void;
+	setGraph?: (graph: null) => void;
 	allow_dragcanvas?: boolean;
 	connections_width?: number;
 	ds?: {
@@ -302,7 +307,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 				properties: {
 					edge: 'both',
 					label: 'Telegram Alert',
-					message: 'Temp/CO2 limit exceeded'
+					message: 'Temperature threshold active'
 				}
 			}
 		},
@@ -498,7 +503,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 				properties: {
 					edge: 'both',
 					label: 'Sensor Alert',
-					message: 'BLE thermometer stale/offline'
+					message: 'BLE thermometer offline'
 				}
 			}
 		},
@@ -509,7 +514,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			{ from: 'time', fromSlot: 0, to: 'offlineAlert', toSlot: 0 },
 			{ from: 'time', fromSlot: 0, to: 'batteryAlert', toSlot: 0 },
 			{ from: 'co2Compare', fromSlot: 0, to: 'offlineAlert', toSlot: 1 },
-			{ from: 'ble', fromSlot: 4, to: 'batteryAlert', toSlot: 1 }
+			{ from: 'ble', fromSlot: 5, to: 'batteryAlert', toSlot: 1 }
 		]
 	}
 };
@@ -1137,6 +1142,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			this.addOutput('battery', SLOT_TYPES.NUMBER, valueSlot({ label: 'bat' }));
 			this.addOutput('rssi', SLOT_TYPES.NUMBER, valueSlot());
 			this.addOutput('online', SLOT_TYPES.BOOLEAN, conditionSlot());
+			this.addOutput('offline', SLOT_TYPES.BOOLEAN, conditionSlot());
 		}
 
 		onDrawForeground = (ctx: CanvasRenderingContext2D) => {
@@ -1158,6 +1164,17 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 					topPadding: 44
 				}
 			);
+		};
+
+		onExecute = () => {
+			const p = this.properties;
+			const online = readBoolean(p, 'online', true);
+			this.setOutputData(0, online ? readNumber(p, 'temperature', 24.8) : NaN);
+			this.setOutputData(1, online ? readNumber(p, 'humidity', 60.2) : NaN);
+			this.setOutputData(2, readNumber(p, 'battery', 88));
+			this.setOutputData(3, readNumber(p, 'rssi', -64));
+			this.setOutputData(4, online);
+			this.setOutputData(5, !online);
 		};
 	}
 
@@ -1200,6 +1217,14 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 					topPadding: 38
 				}
 			);
+		};
+
+		onExecute = () => {
+			const p = this.properties;
+			const fresh = readNumber(p, 'fresh', 1) >= 0.5;
+			this.setOutputData(0, fresh ? readNumber(p, 'value', 42) : NaN);
+			this.setOutputData(1, fresh ? 1 : 0);
+			this.setOutputData(2, readNumber(p, 'age_sec', 3));
 		};
 	}
 
@@ -1294,6 +1319,10 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				}
 			);
 		};
+
+		onExecute = () => {
+			this.setOutputData(0, readString(this.properties, 'time', '12:00:00'));
+		};
 	}
 
 	class TimeFilterNode extends NodeBase {
@@ -1313,11 +1342,18 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			ctx.textBaseline = 'middle';
 			ctx.textAlign = 'center';
 			ctx.fillText(
-				timeWindowFromProperties(this.properties),
+				timeWindowFromProperties(this.properties) +
+					(this.properties?.result === true ? ' | ON' : ' | OFF'),
 				(this.size?.[0] ?? 280) / 2,
 				(this.size?.[1] ?? 140) / 2
 			);
 			ctx.restore();
+		};
+
+		onExecute = () => {
+			const p = this.properties ?? (this.properties = {});
+			p.result = demoTimeAllowed(this.getInputData(0), p.from, p.to);
+			this.setOutputData(0, p.result);
 		};
 	}
 
@@ -1337,7 +1373,17 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			const operator = readString(props, 'operator', '>');
 			const threshold = readNumber(props, 'threshold', 50);
 			this.title = `A ${operator} ${threshold}`;
-			drawCenteredTextBlock(ctx, this, [`operator: ${operator}`]);
+			drawCenteredTextBlock(ctx, this, [props?.result === true ? 'TRUE' : 'FALSE']);
+		};
+
+		onExecute = () => {
+			const p = this.properties ?? (this.properties = {});
+			const a = this.getInputData(0),
+				b = this.getInputData(1);
+			p.value = a;
+			p.threshold = b;
+			p.result = compareDemoValues(a, b, readString(p, 'operator', '>'));
+			this.setOutputData(0, p.result);
 		};
 	}
 
@@ -1381,9 +1427,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			props.value = value;
 			props.on = onThreshold;
 			props.off = offThreshold;
-			if (evaluation.valid) {
-				props.state = evaluation.state;
-			}
+			props.state = evaluation.valid && evaluation.state;
 			this.setOutputData(0, evaluation.valid ? evaluation.state : false);
 		};
 	}
@@ -1411,14 +1455,20 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				ctx,
 				this,
 				[
-					`State: ${readString(props, 'status', 'ON')}`,
-					`P: ${formatActionMetric(readNumber(props, 'power', 18.4), 1, 'W')}  V: ${formatActionMetric(readNumber(props, 'voltage', 230), 0, 'V')}`,
+					`State: ${readString(props, 'status', 'OFF')}`,
+					`P: ${formatActionMetric(props?.active === true ? readNumber(props, 'power', 18.4) : 0, 1, 'W')}  V: ${formatActionMetric(readNumber(props, 'voltage', 230), 0, 'V')}`,
 					`CID: ${readString(props, 'client_id', 'shelly')}`,
-					'Both'
+					props?.active === true ? 'Simulated ON' : 'Simulated OFF'
 				],
 				{ bottomPadding: 46, lineHeight: 14, maxLines: 4, topPadding: 38 }
 			);
 			drawActionButtons(ctx, this);
+		};
+
+		onExecute = () => {
+			const p = this.properties ?? (this.properties = {});
+			p.active = demoOutputActive(this.getInputData(0), this.getInputData(1));
+			p.status = p.active ? 'ON' : 'OFF';
 		};
 	}
 
@@ -1441,11 +1491,17 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				[
 					`Label: ${readString(props, 'label', 'socket')}`,
 					`Codes: ${compactCode(readString(props, 'codeOn', '8132'))}/${compactCode(readString(props, 'codeOff', '8129'))}`,
-					'Trigger: Both'
+					props?.active === true ? 'Condition: TRUE' : 'Condition: FALSE'
 				],
 				{ bottomPadding: 46, lineHeight: 16, maxLines: 4 }
 			);
 			drawActionButtons(ctx, this);
+		};
+
+		onExecute = () => {
+			const p = this.properties ?? (this.properties = {});
+			p.active = demoOutputActive(this.getInputData(0), this.getInputData(1));
+			p.status = p.active ? 'ON' : 'OFF';
 		};
 	}
 
@@ -1469,10 +1525,16 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				[
 					`Label: ${readString(props, 'label', 'telegram')}`,
 					`Message: ${message.length > 30 ? `${message.slice(0, 27)}...` : message}`,
-					'Trigger: Both'
+					props?.active === true ? 'Condition: TRUE' : 'Condition: FALSE'
 				],
 				{ lineHeight: 16, maxLines: 5 }
 			);
+		};
+
+		onExecute = () => {
+			const p = this.properties ?? (this.properties = {});
+			p.active = demoOutputActive(this.getInputData(0), this.getInputData(1));
+			p.status = p.active ? 'ON' : 'OFF';
 		};
 	}
 
@@ -1494,11 +1556,17 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				[
 					`Output: ${preview(readString(props, 'mqtt_id', 'demo_output'), 32)}`,
 					'Payload: owned by MQTT catalog',
-					'Trigger: Both'
+					props?.active === true ? 'Condition: TRUE' : 'Condition: FALSE'
 				],
 				{ bottomPadding: 46, lineHeight: 16, maxLines: 4, topPadding: 36 }
 			);
 			drawMqttPublishButtons(ctx, this);
+		};
+
+		onExecute = () => {
+			const p = this.properties ?? (this.properties = {});
+			p.active = demoOutputActive(this.getInputData(0), this.getInputData(1));
+			p.status = p.active ? 'ON' : 'OFF';
 		};
 	}
 
@@ -1533,6 +1601,9 @@ export class LiteGraphDemoController {
 
 	destroy() {
 		this.graph?.stop();
+		this.canvas?.stopRendering?.();
+		this.canvas?.unbindEvents?.();
+		this.canvas?.setGraph?.(null);
 		this.graph = null;
 		this.canvas = null;
 		this.groups = [];
