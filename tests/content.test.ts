@@ -131,6 +131,20 @@ describe('product content', () => {
 		}
 	});
 
+	it('keeps product claims scoped to the private beta and the MQTT catalog', () => {
+		for (const content of [productContent.pl, productContent.en]) {
+			const text = flattenText(content);
+			expect(text).toContain('Zigbee');
+			expect(text).toContain('ESP-NOW');
+			expect(text).toContain('MQTT');
+			expect(text).not.toMatch(/commercial-grade/i);
+		}
+		expect(productContent.pl.hero.availability).toContain('bez publicznej sprzedaży');
+		expect(productContent.en.hero.availability).toContain('not on public sale');
+		expect(flattenText(productContent.pl.capabilities)).toContain('Katalog MQTT');
+		expect(flattenText(productContent.en.capabilities)).toContain('MQTT catalog');
+	});
+
 	it('does not ship placeholder copy in public media slots', () => {
 		for (const content of [productContent.pl, productContent.en]) {
 			const text = flattenText(content.media);

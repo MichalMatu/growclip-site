@@ -8,7 +8,7 @@ test.describe('GrowClip marketing smoke', () => {
 
 	test('renders the core sales path and primary CTAs', async ({ page }) => {
 		await expect(page.getByRole('heading', { name: 'GrowClip', exact: true })).toBeVisible();
-		await expect(page.getByText(/Automatyzacja growboxa, która działa lokalnie/i)).toBeVisible();
+		await expect(page.getByText(/Automatyzacja growboxa\. Lokalne reguły/i)).toBeVisible();
 		await expect(page.getByText(/Limitowana beta/i)).toBeVisible();
 
 		const primaryCtas = page.getByRole('link', { name: /Opisz swój growbox/i });
@@ -48,14 +48,14 @@ test.describe('GrowClip marketing smoke', () => {
 		await page.getByRole('button', { name: 'Jasny' }).click();
 		await expect(page.locator('html')).toHaveAttribute('data-theme-mode', 'light');
 
-		await page.getByRole('button', { name: 'EN', exact: true }).click();
+		await page.getByRole('link', { name: 'EN', exact: true }).click();
 		await expect(page.getByRole('heading', { name: 'GrowClip', exact: true })).toBeVisible();
 		await expect(
 			page.getByText(/Local growbox automation that shows the rule as a flow/i)
 		).toBeVisible();
 		await expect(page.getByRole('link', { name: /Describe your growbox/i }).first()).toBeVisible();
 
-		await page.getByRole('button', { name: 'PL', exact: true }).click();
+		await page.getByRole('link', { name: 'PL', exact: true }).click();
 		await expect(page.getByRole('heading', { name: 'GrowClip', exact: true })).toBeVisible();
 	});
 });

@@ -1,16 +1,16 @@
 <!-- @runes -->
 <script lang="ts">
 	import LanguageIcon from '~icons/tabler/language';
+	import { base } from '$app/paths';
 
 	import type { Locale } from '$lib/content/product';
 
 	interface Props {
 		ariaLabel: string;
 		locale: Locale;
-		onChange: (locale: Locale) => void;
 	}
 
-	let { ariaLabel, locale, onChange }: Props = $props();
+	let { ariaLabel, locale }: Props = $props();
 </script>
 
 <div
@@ -22,16 +22,17 @@
 		<LanguageIcon />
 	</span>
 	{#each ['pl', 'en'] as option (option)}
-		<button
-			type="button"
+		<a
+			href={`${base}/${option === 'en' ? 'en/' : ''}`}
+			data-sveltekit-reload
+			hreflang={option}
 			class={[
 				'h-8 rounded-md px-3 text-xs font-semibold transition-colors',
 				locale === option ? 'bg-neutral-900 text-white' : 'text-neutral-600 hover:bg-neutral-100'
 			]}
-			aria-pressed={locale === option}
-			onclick={() => onChange(option as Locale)}
+			aria-current={locale === option ? 'page' : undefined}
 		>
 			{option.toUpperCase()}
-		</button>
+		</a>
 	{/each}
 </div>

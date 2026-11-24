@@ -212,14 +212,13 @@ export const productContent: Record<Locale, ProductContent> = {
 		hero: {
 			kicker: 'Lokalny wizualny sterownik reguł',
 			title: 'GrowClip',
-			headline: 'Automatyzacja growboxa, która działa lokalnie i pokazuje regułę jako flow',
-			copy: 'GrowClip łączy sensory, czas, MQTT, lokalne wyjścia i powiadomienia w jeden czytelny model Input -> Processing -> Output. Reguły wykonują się na urządzeniu, a Automation Timeline i Rule Telemetry pokazują, co uruchomiło akcję, kiedy i dlaczego.',
+			headline: 'Automatyzacja growboxa. Lokalne reguły, pełna kontrola.',
+			copy: 'Połącz czujniki, warunki i urządzenia w model Input -> Processing -> Output. Reguły działają na ESP32-S3, a Automation Timeline i Rule Telemetry pomagają zrozumieć ich decyzje.',
 			availability: 'Limitowana beta prywatna · prototyp · bez publicznej sprzedaży',
 			primaryCta: 'Opisz swój growbox',
 			secondaryCta: 'Zobacz demo flow',
 			imageSrc: '/media/growclip-hero.webp',
-			imageAlt:
-				'GrowClip jako lokalny sterownik w jasnym growboxie z roślinami, sensorami i e-paper panelem',
+			imageAlt: 'Wizualizacja koncepcyjna sterownika w growboxie, nie zdjęcie gotowego urządzenia',
 			stats: [
 				{
 					value: 'local-first',
@@ -238,9 +237,9 @@ export const productContent: Record<Locale, ProductContent> = {
 				}
 			],
 			highlights: [
-				'SCD41, DHT22, BME680, SGP30, BLE, GPIO/analog i MQTT Input jako wejścia',
-				'Shelly, GPIO output, RF433, MQTT Publish, Telegram oraz Device Webhooks/Discord jako akcje',
-				'Hardware RTC, Xiaomi LYWSD03MMC z PVVX i microSD jako opcje odpornej instalacji'
+				'Wizualny edytor reguł — bez pisania kodu',
+				'Czujniki, MQTT, Shelly i powiadomienia w jednym systemie',
+				'Lokalna historia i diagnostyka decyzji'
 			]
 		},
 		proof: {
@@ -371,7 +370,7 @@ export const productContent: Record<Locale, ProductContent> = {
 			points: [
 				{
 					title: 'Wejścia',
-					body: 'Sygnały, z których flow bierze dane.',
+					body: 'Sygnały, z których reguła pobiera dane.',
 					items: [
 						{ name: 'SCD41 / DHT22', body: 'CO2, temperatura i wilgotność dla reguł klimatu.' },
 						{ name: 'BME680 / SGP30', body: 'Środowisko, gaz, TVOC i CO2eq jako lokalne wejścia.' },
@@ -383,7 +382,10 @@ export const productContent: Record<Locale, ProductContent> = {
 							name: 'GPIO / Analog',
 							body: 'Przycisk, krańcówka, touchRead() albo ADC z board profile.'
 						},
-						{ name: 'MQTT Input', body: 'Exact-topic input z JSON path.' }
+						{
+							name: 'MQTT Input',
+							body: 'Wybór wejścia z katalogu MQTT; wartość, świeżość i wiek odczytu.'
+						}
 					]
 				},
 				{
@@ -408,7 +410,10 @@ export const productContent: Record<Locale, ProductContent> = {
 					body: 'Wyjścia, które wykonują reakcję.',
 					items: [
 						{ name: 'Shelly / GPIO / RF433', body: 'Lokalne wyjścia dla dobranej instalacji.' },
-						{ name: 'MQTT Publish', body: 'Publikacja stanu lub komendy do brokera.' },
+						{
+							name: 'MQTT Publish',
+							body: 'Wybór wyjścia z katalogu MQTT z wcześniej zdefiniowaną treścią.'
+						},
 						{ name: 'Telegram', body: 'Alert z kontekstem i trace reguły.' },
 						{
 							name: 'Device Webhooks',
@@ -464,7 +469,7 @@ export const productContent: Record<Locale, ProductContent> = {
 				},
 				{
 					title: 'Lokalny MQTT gateway',
-					body: 'Exact-topic input z JSON path, MQTT Publish z QoS/retain i lokalna integracja Shelly bez Home Assistanta.'
+					body: 'Katalog MQTT definiuje wejścia (temat, JSON path, świeżość) i wyjścia (temat, treść, QoS/retain). Nody wybierają pozycje katalogu. Shelly może działać lokalnie bez Home Assistanta.'
 				},
 				{
 					title: 'Szeroka warstwa wejść',
@@ -476,11 +481,11 @@ export const productContent: Record<Locale, ProductContent> = {
 				},
 				{
 					title: 'Telegram worker',
-					body: 'Kolejka alertów i komendy /status, /sensors, /nodeflow dla szybkiego podglądu poza panelem.'
+					body: 'Powiadomienia i obsługiwane komendy po skonfigurowaniu Telegrama. Wysyłka alertu została sprawdzona na urządzeniu; usługa wymaga internetu.'
 				},
 				{
 					title: 'Device Webhooks',
-					body: 'Kolejkowane powiadomienia generic JSON albo Discord z redakcją sekretów w support data.'
+					body: 'Powiadomienia wychodzące JSON lub Discord po konfiguracji. Komendy przychodzące Discord nie są częścią obecnej bety.'
 				},
 				{
 					title: 'Odporność czasu',
@@ -489,6 +494,18 @@ export const productContent: Record<Locale, ProductContent> = {
 				{
 					title: 'Manual override',
 					body: 'Wybrane wyjścia można przełączyć ręcznie, ale nadal widzisz, co automatyka zrobiła przed i po interwencji.'
+				},
+				{
+					title: 'Zigbee — opcja ESP32-C6',
+					body: 'Rozszerzenie z osobnym koordynatorem Zigbee. Integracja i mapowanie pomiarów zostały sprawdzone w określonych konfiguracjach; zgodność zależy od urządzenia.'
+				},
+				{
+					title: 'ESP-NOW — odbiór telemetrii',
+					body: 'Wejście Nodeflow odbiera dane od skonfigurowanych urządzeń. Nadawanie komend i fizyczne potwierdzenia pozostają w rozwoju.'
+				},
+				{
+					title: 'Potwierdzony zakres bety',
+					body: 'Sprawdzono zapis i odczyt reguł oraz MQTT → Nodeflow → Shelly ON/OFF na sprzęcie. Formalne dopuszczenie do publicznej sprzedaży jeszcze nie nastąpiło.'
 				},
 				{
 					title: 'Modułowa instalacja',
@@ -506,7 +523,7 @@ export const productContent: Record<Locale, ProductContent> = {
 				'Wbudowany panel webowy, edytor LiteGraph i lokalny runtime Nodeflow',
 				'Tryby Wi-Fi: AP, router albo oba naraz',
 				'MQTT input/output, Shelly, Telegram, Device Webhooks, GPIO digital/touch/analog i lokalne decyzje',
-				'Automation Timeline, Rule Telemetry, System Snapshot i microSD dla historii',
+				'Automation Timeline, Rule Telemetry, System Snapshot; opcjonalne archiwum microSD',
 				'E-paper HMI z menu, dashboardem i wybranymi akcjami ręcznymi'
 			],
 			optionsTitle: 'Opcjonalne moduły',
@@ -600,7 +617,7 @@ export const productContent: Record<Locale, ProductContent> = {
 			]
 		},
 		showcase: {
-			kicker: 'Powierzchnie produktu',
+			kicker: 'Poznaj interfejs',
 			title: 'Panel, flow i historia decyzji są częścią produktu'
 		},
 		media: [
@@ -624,7 +641,7 @@ export const productContent: Record<Locale, ProductContent> = {
 			},
 			{
 				title: 'Automation Archive',
-				body: 'Trendy sensorów i decyzji automatyki jako dane do reguł, a nie osobne dashboardy per czujnik.',
+				body: 'Ilustracja archiwum zdarzeń automatyki; zapis na microSD zależy od konfiguracji. Trendy pomiarów to osobna funkcja Data Logger.',
 				src: '/media/automation-archive-mockup.svg',
 				alt: 'Mockup Automation Archive z trendami sensorów i decyzji'
 			},
@@ -632,7 +649,7 @@ export const productContent: Record<Locale, ProductContent> = {
 				title: 'Moduł prototypowy',
 				body: 'Zdjęcie referencyjne modułu e-paper HMI używanego w prototypie. Nie przedstawia gotowego urządzenia GrowClip.',
 				src: '/media/crowpanel-beta-module.jpg',
-				alt: 'Moduł e-paper HMI używany jako baza pierwszej serii beta GrowClip'
+				alt: 'Zdjęcie referencyjne modułu e-paper HMI prototypu'
 			}
 		],
 		faq: {
@@ -647,7 +664,7 @@ export const productContent: Record<Locale, ProductContent> = {
 				{
 					question: 'Czy Shelly i MQTT działają bez Home Assistanta?',
 					answer:
-						'Tak. GrowClip może sterować Shelly lokalnie i używać MQTT szerzej: odbierać dane po topicu i JSON path oraz publikować własny payload.'
+						'Tak, w skonfigurowanej sieci lokalnej. GrowClip używa katalogu MQTT: definiujesz temat, JSON path i świeżość wejść oraz temat i treść wyjść, a następnie wybierasz wpisy w edytorze.'
 				},
 				{
 					question: 'Czy moduły RF433, RTC, SCD41, DS18B20 i bateria są wymagane?',
@@ -713,13 +730,12 @@ export const productContent: Record<Locale, ProductContent> = {
 			kicker: 'Local visual rule controller',
 			title: 'GrowClip',
 			headline: 'Local growbox automation that shows the rule as a flow',
-			copy: 'GrowClip connects sensors, time, MQTT, local outputs and notifications into one readable Input -> Processing -> Output model. Rules execute on the device, while Automation Timeline and Rule Telemetry show what triggered an action, when and why.',
+			copy: 'Connect sensors, conditions and devices in an Input -> Processing -> Output model. Rules run on the ESP32-S3, while Automation Timeline and Rule Telemetry help explain their decisions.',
 			availability: 'Limited beta · private field testing · not on public sale',
 			primaryCta: 'Describe your growbox',
 			secondaryCta: 'See the flow demo',
 			imageSrc: '/media/growclip-hero.webp',
-			imageAlt:
-				'GrowClip as a local controller in a bright growbox with plants, sensors and an e-paper panel',
+			imageAlt: 'Concept illustration of a controller in a growbox, not a finished device',
 			stats: [
 				{
 					value: 'local-first',
@@ -738,9 +754,9 @@ export const productContent: Record<Locale, ProductContent> = {
 				}
 			],
 			highlights: [
-				'SCD41, DHT22, BME680, SGP30, BLE, GPIO/analog and MQTT Input as rule inputs',
-				'Shelly, GPIO output, RF433, MQTT Publish, Telegram and Device Webhooks/Discord as actions',
-				'Hardware RTC, Xiaomi LYWSD03MMC with PVVX and microSD as resilient-installation options'
+				'Visual rule editor — no coding required',
+				'Sensors, MQTT, Shelly and notifications in one system',
+				'Local decision history and diagnostics'
 			]
 		},
 		proof: {
@@ -882,7 +898,10 @@ export const productContent: Record<Locale, ProductContent> = {
 							name: 'GPIO / Analog',
 							body: 'A button, limit switch, touchRead() or ADC from the board profile.'
 						},
-						{ name: 'MQTT Input', body: 'Exact-topic input with JSON path.' }
+						{
+							name: 'MQTT Input',
+							body: 'Select an MQTT catalog input; value, freshness and reading age.'
+						}
 					]
 				},
 				{
@@ -904,7 +923,7 @@ export const productContent: Record<Locale, ProductContent> = {
 					body: 'Outputs that perform the reaction.',
 					items: [
 						{ name: 'Shelly / GPIO / RF433', body: 'Local outputs for the selected installation.' },
-						{ name: 'MQTT Publish', body: 'Publishes state or commands to the broker.' },
+						{ name: 'MQTT Publish', body: 'Select a catalog output with a predefined payload.' },
 						{ name: 'Telegram', body: 'Alert with context and rule trace.' },
 						{
 							name: 'Device Webhooks',
@@ -960,7 +979,7 @@ export const productContent: Record<Locale, ProductContent> = {
 				},
 				{
 					title: 'Local MQTT gateway',
-					body: 'Exact-topic input with JSON path, MQTT Publish with QoS/retain and local Shelly integration without Home Assistant.'
+					body: 'The MQTT catalog defines inputs (topic, JSON path, freshness) and outputs (topic, payload, QoS/retain). Nodes select catalog entries. Shelly can operate locally without Home Assistant.'
 				},
 				{
 					title: 'Wide input layer',
@@ -972,11 +991,11 @@ export const productContent: Record<Locale, ProductContent> = {
 				},
 				{
 					title: 'Telegram worker',
-					body: 'Alert queue and /status, /sensors, /nodeflow commands for quick checks outside the panel.'
+					body: 'Notifications and supported commands after configuring Telegram. Alert delivery was verified on a device; the service requires internet.'
 				},
 				{
 					title: 'Device Webhooks',
-					body: 'Queued generic JSON or Discord notifications with secret redaction in support data.'
+					body: 'Configured outbound JSON or Discord webhooks. Inbound Discord commands are not part of the current beta.'
 				},
 				{
 					title: 'Time resilience',
@@ -985,6 +1004,18 @@ export const productContent: Record<Locale, ProductContent> = {
 				{
 					title: 'Manual override',
 					body: 'Selected outputs can be switched manually while keeping automation context visible.'
+				},
+				{
+					title: 'Zigbee — optional ESP32-C6',
+					body: 'An extension with a separate Zigbee coordinator. Integration and measurement mapping have been verified in selected configurations; compatibility depends on the device.'
+				},
+				{
+					title: 'ESP-NOW — telemetry reception',
+					body: 'A Nodeflow input receives data from configured peers. Command transmission and physical acknowledgements remain in development.'
+				},
+				{
+					title: 'Verified beta scope',
+					body: 'Graph save and reload, and MQTT → Nodeflow → Shelly ON/OFF were verified on hardware. Formal public sales release has not been qualified.'
 				},
 				{
 					title: 'Modular installation',
@@ -1002,7 +1033,7 @@ export const productContent: Record<Locale, ProductContent> = {
 				'Embedded web panel, LiteGraph editor and local Nodeflow runtime',
 				'Wi-Fi modes: AP, router or both at once',
 				'MQTT input/output, Shelly, Telegram, Device Webhooks, GPIO digital/touch/analog and local decisions',
-				'Automation Timeline, Rule Telemetry, System Snapshot and microSD history',
+				'Automation Timeline, Rule Telemetry, System Snapshot; optional microSD archive',
 				'E-paper HMI with menu, dashboard and selected manual actions'
 			],
 			optionsTitle: 'Optional modules',
@@ -1120,15 +1151,15 @@ export const productContent: Record<Locale, ProductContent> = {
 			},
 			{
 				title: 'Automation Archive',
-				body: 'Sensor and automation decision trends used as rule context, not separate per-sensor dashboards.',
+				body: 'Illustration of the automation event archive; microSD storage depends on configuration. Measurement trends are a separate Data Logger function.',
 				src: '/media/automation-archive-mockup.svg',
 				alt: 'Automation Archive sensor and decision trend mockup'
 			},
 			{
 				title: 'Beta base module',
-				body: 'Photo of the e-paper HMI module used as the first beta base. Final assembly and enclosure may differ.',
+				body: 'Reference image of the e-paper module used in the prototype, not a finished GrowClip device.',
 				src: '/media/crowpanel-beta-module.jpg',
-				alt: 'E-paper HMI module used as the base for the first GrowClip beta run'
+				alt: 'Reference image of the prototype e-paper HMI module'
 			}
 		],
 		faq: {
@@ -1143,7 +1174,7 @@ export const productContent: Record<Locale, ProductContent> = {
 				{
 					question: 'Can Shelly and MQTT work without Home Assistant?',
 					answer:
-						'Yes. GrowClip can control Shelly locally and use MQTT more broadly: receive data by topic and JSON path, then publish a custom payload.'
+						'Yes, on a configured local network. Define input topics, JSON paths and freshness limits, and output topics and payloads in the MQTT catalog; select entries in the editor.'
 				},
 				{
 					question: 'Are RF433, RTC, SCD41, DS18B20 and battery required?',
