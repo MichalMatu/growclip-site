@@ -1,0 +1,263 @@
+{
+	"source": "1bbbb954b722eb40f37ace968916f6aa39824876",
+	"captureTask": "growclip-site-redesign-s5-close-s6-matrix-20261124-v2-eslint",
+	"visualReview": "pending",
+	"configurations": [
+		{
+			"configuration": "pl-light-desktop",
+			"filename": "pl-light-desktop.jpg",
+			"sha256": "c06e4529ef3434e2713bb8a628fbbefbdb429fe0a3ad90e10377b9fdf77a9c41",
+			"bytes": 371451,
+			"originals": [
+				{
+					"section": "hero",
+					"path": "test-results/release-matrix-pl-light-desktop-chromium/hero.png",
+					"bytes": 622859,
+					"sha256": "1bf0e4f8638711d3a402529928b5c3bf69adc0c909c0cce2eb19fa6f7617ac9a"
+				},
+				{
+					"section": "demo",
+					"path": "test-results/release-matrix-pl-light-desktop-chromium/demo.png",
+					"bytes": 168642,
+					"sha256": "6df817a0cd133083602400f6d1a47ed04c42cd73ba967ff97487135da49a4fee"
+				},
+				{
+					"section": "gallery",
+					"path": "test-results/release-matrix-pl-light-desktop-chromium/gallery.png",
+					"bytes": 417682,
+					"sha256": "bae35e403c00399155ee74c38670cb9b51e6a3a2795f76d857c4938082afb6c2"
+				},
+				{
+					"section": "cta",
+					"path": "test-results/release-matrix-pl-light-desktop-chromium/cta.png",
+					"bytes": 173998,
+					"sha256": "e323719ba2a299dca8f52e778afeb11c4b2543f47c858c815c38dc96f50e0ecb"
+				}
+			]
+		},
+		{
+			"configuration": "pl-light-mobile",
+			"filename": "pl-light-mobile.jpg",
+			"sha256": "8ac138b36a1de083e38c0798856c4cb28233135e3fa675899160f6edeef53f27",
+			"bytes": 381442,
+			"originals": [
+				{
+					"section": "hero",
+					"path": "test-results/release-matrix-pl-light-mobile-chromium/hero.png",
+					"bytes": 160756,
+					"sha256": "2003ecd28580d16b2e48fabb2a3a17a429deb802364d650d8d874981feec4c4a"
+				},
+				{
+					"section": "demo",
+					"path": "test-results/release-matrix-pl-light-mobile-chromium/demo.png",
+					"bytes": 77920,
+					"sha256": "61fd535c073acd9a3d8c8fa1be469050bbdc400080898858ff97c3f0f724245e"
+				},
+				{
+					"section": "gallery",
+					"path": "test-results/release-matrix-pl-light-mobile-chromium/gallery.png",
+					"bytes": 160384,
+					"sha256": "4292bebb83b60f058d876a71ea011956cead6953e7e180b05c73643846519c4e"
+				},
+				{
+					"section": "cta",
+					"path": "test-results/release-matrix-pl-light-mobile-chromium/cta.png",
+					"bytes": 153015,
+					"sha256": "09b8cb919e4f39b3eebe7007b6e0843b76361307956f61b7d1e24a5fc440001f"
+				}
+			]
+		},
+		{
+			"configuration": "pl-dark-desktop",
+			"filename": "pl-dark-desktop.jpg",
+			"sha256": "6a2ae2e706e32ae9655d0e2838febcb6b2e7857560e6293972b4bf2571e66ff4",
+			"bytes": 351406,
+			"originals": [
+				{
+					"section": "hero",
+					"path": "test-results/release-matrix-pl-dark-desktop-chromium/hero.png",
+					"bytes": 622588,
+					"sha256": "3a2b319a97fa06eff696f75556c916a9d28844adc0c1bb4364b906246c25dc76"
+				},
+				{
+					"section": "demo",
+					"path": "test-results/release-matrix-pl-dark-desktop-chromium/demo.png",
+					"bytes": 165106,
+					"sha256": "ed22cfc31eb37298c8b2dc996a92befc153307fd52d82f51d913fbc821cc1285"
+				},
+				{
+					"section": "gallery",
+					"path": "test-results/release-matrix-pl-dark-desktop-chromium/gallery.png",
+					"bytes": 412265,
+					"sha256": "17b2721f6417dcc90f3697ab438e5bd28f360e52b10e869f2a0742ce2950c74f"
+				},
+				{
+					"section": "cta",
+					"path": "test-results/release-matrix-pl-dark-desktop-chromium/cta.png",
+					"bytes": 157557,
+					"sha256": "78a170c9315a101466a8da7d81aeb7a02f90efdba489c26b54f5efc336acc15c"
+				}
+			]
+		},
+		{
+			"configuration": "pl-dark-mobile",
+			"filename": "pl-dark-mobile.jpg",
+			"sha256": "52295878d7aa22d72ef5026d51012a165aeda4162493928f2986b8db5bcb8bfd",
+			"bytes": 355385,
+			"originals": [
+				{
+					"section": "hero",
+					"path": "test-results/release-matrix-pl-dark-mobile-chromium/hero.png",
+					"bytes": 162633,
+					"sha256": "5793c3cc75b62f49568b995f311c66f3d0e708a3fedd517cc895b309b796333e"
+				},
+				{
+					"section": "demo",
+					"path": "test-results/release-matrix-pl-dark-mobile-chromium/demo.png",
+					"bytes": 75131,
+					"sha256": "81b4c41e5f6c03ce67757cecf36744849d724a218c343031833f1c72175efa88"
+				},
+				{
+					"section": "gallery",
+					"path": "test-results/release-matrix-pl-dark-mobile-chromium/gallery.png",
+					"bytes": 153609,
+					"sha256": "fe70ab3625e0f244d66f98335f471c59551adc4ff4df8edc5b43149e806e395e"
+				},
+				{
+					"section": "cta",
+					"path": "test-results/release-matrix-pl-dark-mobile-chromium/cta.png",
+					"bytes": 137257,
+					"sha256": "580332bb1b9e2a64cc93f8d502aab0e92988ea165302aedfd52bb3fe39d70ccd"
+				}
+			]
+		},
+		{
+			"configuration": "en-light-desktop",
+			"filename": "en-light-desktop.jpg",
+			"sha256": "650a2a9f389200e49d1741f308e1b4376a0ea16c88ce867425b964df30e47c52",
+			"bytes": 373699,
+			"originals": [
+				{
+					"section": "hero",
+					"path": "test-results/release-matrix-en-light-desktop-chromium/hero.png",
+					"bytes": 616384,
+					"sha256": "acf2cf9fa4e16d40db5f47372aaf8e985646b07ddc81f282c18b3ece1ee6151b"
+				},
+				{
+					"section": "demo",
+					"path": "test-results/release-matrix-en-light-desktop-chromium/demo.png",
+					"bytes": 171186,
+					"sha256": "754c1d9f1a0351231cbcc73694e47cd8fc79771e05db3748b1ea150e68e756d0"
+				},
+				{
+					"section": "gallery",
+					"path": "test-results/release-matrix-en-light-desktop-chromium/gallery.png",
+					"bytes": 413785,
+					"sha256": "daee449813a5fb0dcf18245095f213a50ac3bbd05230c07039ee802d5ae30a33"
+				},
+				{
+					"section": "cta",
+					"path": "test-results/release-matrix-en-light-desktop-chromium/cta.png",
+					"bytes": 159363,
+					"sha256": "4eba9ac6a2d7895c0992732b94cfc63497b31a7d8dbb0cb86f494f5dfd3ef2d8"
+				}
+			]
+		},
+		{
+			"configuration": "en-light-mobile",
+			"filename": "en-light-mobile.jpg",
+			"sha256": "cd8ae25bdc050543754b3df6276b46d724e07963c63574f74e600fcebb86fcab",
+			"bytes": 381509,
+			"originals": [
+				{
+					"section": "hero",
+					"path": "test-results/release-matrix-en-light-mobile-chromium/hero.png",
+					"bytes": 155411,
+					"sha256": "a9b8857e96c657301fa0b9a629777c3a8f73a48cc0d75cfa9b534bb7b285df9e"
+				},
+				{
+					"section": "demo",
+					"path": "test-results/release-matrix-en-light-mobile-chromium/demo.png",
+					"bytes": 77153,
+					"sha256": "67511d522cb1d2e5b6a5dbb2343da2cc2add53a4c03e8dcbce87235e7bd67758"
+				},
+				{
+					"section": "gallery",
+					"path": "test-results/release-matrix-en-light-mobile-chromium/gallery.png",
+					"bytes": 157139,
+					"sha256": "4cb27e386946752d6d2c03323e245a935b7968aa0ee93d38ea34c7207467909a"
+				},
+				{
+					"section": "cta",
+					"path": "test-results/release-matrix-en-light-mobile-chromium/cta.png",
+					"bytes": 139614,
+					"sha256": "d79811db02db3dbc409b0166d75c67c1cb97aa0a09f5257779d6b842f5f03a17"
+				}
+			]
+		},
+		{
+			"configuration": "en-dark-desktop",
+			"filename": "en-dark-desktop.jpg",
+			"sha256": "bc9aae38ee91541bfed470c0f1a73624148b5cfb0d493780ecb7c6d2c9faa928",
+			"bytes": 353097,
+			"originals": [
+				{
+					"section": "hero",
+					"path": "test-results/release-matrix-en-dark-desktop-chromium/hero.png",
+					"bytes": 617151,
+					"sha256": "2163962c3fda1c66114da0534393a807a5ecbf0268e1aabd2da019791a42f594"
+				},
+				{
+					"section": "demo",
+					"path": "test-results/release-matrix-en-dark-desktop-chromium/demo.png",
+					"bytes": 167394,
+					"sha256": "c916659c41d6e6a259d22d20f1bb72bf4942426cb91d9864cbff56da247a580a"
+				},
+				{
+					"section": "gallery",
+					"path": "test-results/release-matrix-en-dark-desktop-chromium/gallery.png",
+					"bytes": 409294,
+					"sha256": "11769dbb48464df99ecd11850b2fe949580218c1d3323da07a41d804ad1a43dc"
+				},
+				{
+					"section": "cta",
+					"path": "test-results/release-matrix-en-dark-desktop-chromium/cta.png",
+					"bytes": 144648,
+					"sha256": "53acb563b4001ec26dbd8705aedc864301fe2bf15d4109a20fded577935c42ed"
+				}
+			]
+		},
+		{
+			"configuration": "en-dark-mobile",
+			"filename": "en-dark-mobile.jpg",
+			"sha256": "23f000cbe2b7a6dd068ef1a1fdd08e1201d876814ad82b14aec932c22b61950b",
+			"bytes": 354775,
+			"originals": [
+				{
+					"section": "hero",
+					"path": "test-results/release-matrix-en-dark-mobile-chromium/hero.png",
+					"bytes": 158410,
+					"sha256": "77bc70d37e2913e985cdd349730432785d84a44d0d435851bd3bed3ae5308a01"
+				},
+				{
+					"section": "demo",
+					"path": "test-results/release-matrix-en-dark-mobile-chromium/demo.png",
+					"bytes": 73968,
+					"sha256": "9ab88ba3d7929c1c555ef742569a40a1edd13c0ef21de306d54ed98db584b518"
+				},
+				{
+					"section": "gallery",
+					"path": "test-results/release-matrix-en-dark-mobile-chromium/gallery.png",
+					"bytes": 150644,
+					"sha256": "39655a337727e70a579e945852ac90f18d8b13c6882bea3bb0abfadaab50a292"
+				},
+				{
+					"section": "cta",
+					"path": "test-results/release-matrix-en-dark-mobile-chromium/cta.png",
+					"bytes": 126267,
+					"sha256": "90f1b19ff1989154c3be50493d6bad870dc2764c4e4a7b7ca1ff5a8a1e2ab371"
+				}
+			]
+		}
+	]
+}
