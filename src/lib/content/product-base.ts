@@ -214,7 +214,7 @@ export const productContent: Record<Locale, ProductContent> = {
 			title: 'GrowClip',
 			headline: 'Automatyzacja growboxa, która działa lokalnie i pokazuje regułę jako flow',
 			copy: 'GrowClip łączy sensory, czas, MQTT, lokalne wyjścia i powiadomienia w jeden czytelny model Input -> Processing -> Output. Reguły wykonują się na urządzeniu, a Automation Timeline i Rule Telemetry pokazują, co uruchomiło akcję, kiedy i dlaczego.',
-			availability: 'Limitowana beta · konfiguracja indywidualna · bez publicznej ceny',
+			availability: 'Limitowana beta prywatna · prototyp · bez publicznej sprzedaży',
 			primaryCta: 'Opisz swój growbox',
 			secondaryCta: 'Zobacz demo flow',
 			imageSrc: '/media/growclip-hero.webp',
@@ -433,7 +433,7 @@ export const productContent: Record<Locale, ProductContent> = {
 		diagnostics: {
 			kicker: 'Diagnostyka',
 			title: 'Automatyka, która zostawia ślad',
-			copy: 'Commercial-grade sterownik nie może być czarną skrzynką. GrowClip pokazuje decyzję od wejścia, przez warunek, po akcję i pozwala odróżnić dobrą ciszę od brakującego sensora.',
+			copy: 'Sterownik lokalnej automatyki nie powinien być czarną skrzynką. GrowClip pokazuje decyzję od wejścia, przez warunek, po akcję i pozwala odróżnić dobrą ciszę od brakującego sensora.',
 			items: [
 				{
 					title: 'Automation Timeline',
@@ -499,7 +499,7 @@ export const productContent: Record<Locale, ProductContent> = {
 		hardware: {
 			kicker: 'Sprzęt',
 			title: 'Baza działa samodzielnie, moduły rozszerzają konkretne scenariusze',
-			copy: 'Pierwsza beta opiera się na module ESP32-S3 z e-paper HMI i zapasem pamięci na panel webowy oraz runtime Nodeflow. Dodatki dobiera się pod instalację, nie pod katalog funkcji.',
+			copy: 'Aktualny prototyp wykorzystuje moduł ESP32-S3 z e-paper HMI i zapasem pamięci na panel webowy oraz runtime Nodeflow. Dodatki dobiera się pod instalację, nie pod katalog funkcji.',
 			baseTitle: 'Wariant bazowy',
 			baseItems: [
 				'ESP32-S3 z Wi-Fi, rekomendowane 8 MB Flash i 8 MB PSRAM',
@@ -540,15 +540,15 @@ export const productContent: Record<Locale, ProductContent> = {
 			],
 			technicalTitle: 'Baza pierwszej bety',
 			technicalBody:
-				'Pierwsza seria bazuje na module Elecrow CrowPanel ESP32 2.9" e-paper HMI. Potwierdzona specyfikacja: ESP32-S3-WROOM-1-N8R8, 8 MB Flash, 8 MB PSRAM, 128x296 e-paper, SPI, Wi-Fi, TF Card/BAT.',
+				'Aktualny prototyp bazuje na module Elecrow CrowPanel ESP32 2.9" e-paper HMI. Potwierdzona specyfikacja: ESP32-S3-WROOM-1-N8R8, 8 MB Flash, 8 MB PSRAM, 128x296 e-paper, SPI, Wi-Fi, TF Card/BAT.',
 			sourceLabel: 'Źródło specyfikacji Elecrow'
 		},
 		beta: {
-			kicker: 'Pierwsza partia',
+			kicker: 'Prywatna beta',
 			title: 'Mała beta dla osób, które chcą realnie testować lokalną automatykę',
-			copy: 'Na start GrowClip nie udaje masowego produktu z koszyka. To limitowana seria do instalacji, w których konfiguracja, moduły i obudowa muszą pasować do konkretnego growboxa.',
+			copy: 'GrowClip jest na etapie prywatnych testów. Konfiguracja, moduły i obudowa nie stanowią jeszcze gotowego pakietu sprzedażowego.',
 			primaryCta: 'Zapytaj o beta moduł',
-			note: 'Brak publicznej ceny w tej wersji strony. Wycena zależy od modułów opcjonalnych, obudowy i zakresu konfiguracji.',
+			note: 'Publiczna sprzedaż, cena i finalna konfiguracja sprzętu nie zostały ogłoszone.',
 			includesTitle: 'Co obejmuje beta',
 			includes: [
 				{
@@ -629,8 +629,8 @@ export const productContent: Record<Locale, ProductContent> = {
 				alt: 'Mockup Automation Archive z trendami sensorów i decyzji'
 			},
 			{
-				title: 'Moduł bazowy bety',
-				body: 'Zdjęcie modułu e-paper HMI, na którym bazuje pierwsza seria beta. Finalny montaż i obudowa mogą się różnić.',
+				title: 'Moduł prototypowy',
+				body: 'Zdjęcie referencyjne modułu e-paper HMI używanego w prototypie. Nie przedstawia gotowego urządzenia GrowClip.',
 				src: '/media/crowpanel-beta-module.jpg',
 				alt: 'Moduł e-paper HMI używany jako baza pierwszej serii beta GrowClip'
 			}
@@ -714,7 +714,7 @@ export const productContent: Record<Locale, ProductContent> = {
 			title: 'GrowClip',
 			headline: 'Local growbox automation that shows the rule as a flow',
 			copy: 'GrowClip connects sensors, time, MQTT, local outputs and notifications into one readable Input -> Processing -> Output model. Rules execute on the device, while Automation Timeline and Rule Telemetry show what triggered an action, when and why.',
-			availability: 'Limited beta · individual configuration · no public price',
+			availability: 'Limited beta · private field testing · not on public sale',
 			primaryCta: 'Describe your growbox',
 			secondaryCta: 'See the flow demo',
 			imageSrc: '/media/growclip-hero.webp',
@@ -929,7 +929,7 @@ export const productContent: Record<Locale, ProductContent> = {
 		diagnostics: {
 			kicker: 'Diagnostics',
 			title: 'Automation that leaves a trace',
-			copy: 'A commercial-grade controller cannot be a black box. GrowClip shows the decision from input, through condition, to action and helps separate healthy silence from a missing sensor.',
+			copy: 'A local automation controller should not be a black box. GrowClip shows the decision from input, through condition, to action and helps separate healthy silence from a missing sensor.',
 			items: [
 				{
 					title: 'Automation Timeline',
@@ -995,7 +995,7 @@ export const productContent: Record<Locale, ProductContent> = {
 		hardware: {
 			kicker: 'Hardware',
 			title: 'The base unit works on its own, add-ons cover specific scenarios',
-			copy: 'The first beta uses an ESP32-S3 module with e-paper HMI and enough memory headroom for the web panel and Nodeflow runtime. Add-ons are selected for the installation, not for a feature catalogue.',
+			copy: 'The current prototype uses an ESP32-S3 module with e-paper HMI and enough memory headroom for the web panel and Nodeflow runtime. Add-ons are selected for the installation, not for a feature catalogue.',
 			baseTitle: 'Base variant',
 			baseItems: [
 				'ESP32-S3 with Wi-Fi, recommended 8 MB Flash and 8 MB PSRAM',
@@ -1036,15 +1036,15 @@ export const productContent: Record<Locale, ProductContent> = {
 			],
 			technicalTitle: 'First beta base',
 			technicalBody:
-				'The first run is based on the Elecrow CrowPanel ESP32 2.9" e-paper HMI module. Confirmed specification: ESP32-S3-WROOM-1-N8R8, 8 MB Flash, 8 MB PSRAM, 128x296 e-paper, SPI, Wi-Fi, TF Card/BAT.',
+				'The current prototype is based on the Elecrow CrowPanel ESP32 2.9" e-paper HMI module. Confirmed specification: ESP32-S3-WROOM-1-N8R8, 8 MB Flash, 8 MB PSRAM, 128x296 e-paper, SPI, Wi-Fi, TF Card/BAT.',
 			sourceLabel: 'Elecrow specification source'
 		},
 		beta: {
-			kicker: 'First batch',
+			kicker: 'Private field beta',
 			title: 'A small beta for people who want to test local automation in practice',
-			copy: 'GrowClip does not pretend to be a mass-market cart item at launch. It is a limited run for installations where configuration, modules and enclosure need to match a specific growbox.',
+			copy: 'GrowClip is in private field testing. Configuration, modules and enclosure are not yet a public sales package.',
 			primaryCta: 'Ask about the beta module',
-			note: 'No public price in this version of the site. Pricing depends on optional modules, enclosure and configuration scope.',
+			note: 'Public sales, pricing and final hardware configuration have not been announced.',
 			includesTitle: 'What the beta includes',
 			includes: [
 				{

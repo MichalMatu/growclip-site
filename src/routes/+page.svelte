@@ -22,7 +22,6 @@
 
 	let locale = $state<Locale>('pl');
 	let themePreference = $state<ThemePreference>('system');
-	let resolvedTheme = $state<'light' | 'dark'>('light');
 	let showMobileCta = $state(false);
 	let demoRootElement: HTMLElement | null = null;
 	let LiteGraphDemoComponent = $state<LiteGraphDemoComponent | null>(null);
@@ -47,8 +46,9 @@
 	function applyTheme(preference: ThemePreference) {
 		const nextResolvedTheme = resolveTheme(preference);
 		themePreference = preference;
-		resolvedTheme = nextResolvedTheme;
 		document.documentElement.dataset.themeMode = nextResolvedTheme;
+		document.documentElement.dataset.theme =
+			nextResolvedTheme === 'dark' ? 'business' : 'corporate';
 		document.documentElement.dataset.themePreference = preference;
 		document.documentElement.style.colorScheme = nextResolvedTheme;
 	}
@@ -202,11 +202,11 @@
 <svelte:head>
 	<title>{content.meta.title}</title>
 	<meta name="description" content={content.meta.description} />
-	<meta name="theme-color" content={resolvedTheme === 'dark' ? '#111827' : '#f6f8f5'} />
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content={content.meta.socialTitle} />
 	<meta property="og:description" content={content.meta.socialDescription} />
-	<meta property="og:image" content={content.hero.imageSrc} />
+	<meta property="og:image" content={'https://michalmatu.github.io' + content.hero.imageSrc} />
+	<link rel="canonical" href="https://michalmatu.github.io/growclip-site/" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={content.meta.socialTitle} />
 	<meta name="twitter:description" content={content.meta.socialDescription} />
@@ -217,14 +217,18 @@
 		<nav
 			class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
 		>
-			<a href="#top" class="flex items-center gap-3 text-neutral-950" aria-label="GrowClip">
+			<a
+				href="#top"
+				class="flex shrink-0 items-center gap-2 text-neutral-950"
+				aria-label="GrowClip"
+			>
 				<span class="brand-mark flex h-9 w-9 items-center justify-center rounded-lg">
 					<CloudOffIcon />
 				</span>
 				<span class="text-sm font-semibold tracking-normal">GrowClip</span>
 			</a>
 
-			<div class="hidden items-center gap-4 text-sm font-medium lg:gap-6 md:flex">
+			<div class="hidden items-center gap-4 text-sm font-medium lg:gap-6 lg:flex">
 				<a class="nav-link" href="#demo">{content.nav.demo}</a>
 				<a class="nav-link" href="#diagnostics">{content.nav.diagnostics}</a>
 				<a class="nav-link" href="#capabilities">{content.nav.capabilities}</a>
@@ -233,6 +237,21 @@
 			</div>
 
 			<div class="flex items-center gap-2">
+				<details class="site-mobile-menu dropdown dropdown-end lg:hidden">
+					<summary
+						class="btn btn-ghost btn-square"
+						aria-label={locale === 'pl' ? 'Menu nawigacji' : 'Navigation menu'}>☰</summary
+					>
+					<ul
+						class="dropdown-content menu z-40 mt-2 w-52 rounded-box border border-base-300 bg-base-100 p-2"
+					>
+						<li><a href="#demo">{content.nav.demo}</a></li>
+						<li><a href="#diagnostics">{content.nav.diagnostics}</a></li>
+						<li><a href="#capabilities">{content.nav.capabilities}</a></li>
+						<li><a href="#hardware">{content.nav.hardware}</a></li>
+						<li><a href="#faq">{content.nav.faq}</a></li>
+					</ul>
+				</details>
 				<a class="primary-cta hidden h-11 px-5 text-sm sm:inline-flex" href={contactHref}>
 					<MailIcon aria-hidden="true" />
 					{content.nav.contact}
@@ -249,7 +268,12 @@
 
 	<main id="top">
 		<section class="hero-section">
-			<img class="hero-image" src={content.hero.imageSrc} alt={content.hero.imageAlt} />
+			<img
+				class="hero-image"
+				src={content.hero.imageSrc}
+				alt={content.hero.imageAlt}
+				fetchpriority="high"
+			/>
 			<div class="hero-overlay"></div>
 			<div class="hero-content">
 				<div class="hero-copy" data-reveal>

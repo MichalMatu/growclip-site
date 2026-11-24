@@ -13,10 +13,12 @@
 					var mode =
 						preference === 'dark' || (preference === 'system' && systemDark) ? 'dark' : 'light';
 					document.documentElement.dataset.themeMode = mode;
+					document.documentElement.dataset.theme = mode === 'dark' ? 'business' : 'corporate';
 					document.documentElement.dataset.themePreference = preference;
 					document.documentElement.style.colorScheme = mode;
 				} catch (_) {
 					document.documentElement.dataset.themeMode = 'light';
+					document.documentElement.dataset.theme = 'corporate';
 					document.documentElement.dataset.themePreference = 'system';
 				}
 			})();

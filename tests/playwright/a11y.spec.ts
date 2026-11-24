@@ -27,7 +27,15 @@ test.describe('Accessibility smoke (WCAG 2 A/AA)', () => {
 			);
 
 			if (STRICT) {
-				expect(blocking).toEqual([]);
+				expect(
+					blocking.flatMap((violation) =>
+						violation.nodes.map((node) => ({
+							rule: violation.id,
+							target: node.target,
+							summary: node.failureSummary
+						}))
+					)
+				).toEqual([]);
 			}
 		});
 	}

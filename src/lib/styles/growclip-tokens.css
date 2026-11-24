@@ -1,0 +1,167 @@
+/*
+ * App semantic tokens.
+ *
+ * DaisyUI remains the source of vendor palette variables (`--color-*`) and
+ * atomic component classes. These `--ui-*` tokens describe app-owned surfaces,
+ * effects, spacing, type rhythm, and motion used by shared primitives.
+ */
+
+:root {
+	/* Surface and material */
+	--ui-surface-page: var(--color-base-100);
+	--ui-surface-card: color-mix(in oklab, var(--color-base-100) 95%, transparent);
+	--ui-surface-panel: color-mix(in oklab, var(--color-base-100) 92%, transparent);
+	--ui-surface-mini: color-mix(in oklab, var(--color-base-100) 85%, transparent);
+	--ui-surface-tile: color-mix(in oklab, var(--color-base-100) 75%, transparent);
+	--ui-surface-modal: color-mix(in oklab, var(--color-base-100) 95%, transparent);
+	--ui-surface-modal-footer: color-mix(in oklab, var(--color-base-200) 30%, transparent);
+	--ui-surface-toast: color-mix(in oklab, var(--color-base-100) 80%, transparent);
+	--ui-surface-toast-control: color-mix(in oklab, var(--color-base-100) 65%, transparent);
+	--ui-surface-toast-control-hover: color-mix(in oklab, var(--color-base-200) 60%, transparent);
+	--ui-surface-navigation: color-mix(in oklab, var(--color-base-200) 82%, transparent);
+	--ui-navigation-width: 17.5rem;
+	--ui-surface-badge: color-mix(in oklab, var(--color-base-100) 68%, var(--color-base-200));
+	--ui-surface-badge-muted: color-mix(in oklab, var(--color-base-100) 55%, transparent);
+	--ui-surface-badge-primary: color-mix(in oklab, var(--color-primary) 8%, var(--ui-surface-badge));
+	--ui-surface-badge-secondary: color-mix(
+		in oklab,
+		var(--color-secondary) 8%,
+		var(--ui-surface-badge)
+	);
+	--ui-surface-badge-accent: color-mix(in oklab, var(--color-accent) 8%, var(--ui-surface-badge));
+	--ui-surface-badge-info: color-mix(in oklab, var(--color-info) 8%, var(--ui-surface-badge));
+	--ui-surface-badge-success: color-mix(in oklab, var(--color-success) 8%, var(--ui-surface-badge));
+	--ui-surface-badge-warning: color-mix(in oklab, var(--color-warning) 8%, var(--ui-surface-badge));
+	--ui-surface-badge-error: color-mix(in oklab, var(--color-error) 8%, var(--ui-surface-badge));
+	--ui-surface-selectable: color-mix(in oklab, var(--color-base-100) 25%, transparent);
+	--ui-surface-selectable-hover: var(--ui-surface-tile);
+	--ui-surface-overlay: color-mix(in oklab, #000 20%, transparent);
+	--ui-material-backdrop-blur: blur(8px);
+	--ui-material-backdrop-blur-strong: blur(12px);
+	--ui-modal-contained-max-height: min(34rem, calc(100dvh - 2rem));
+	--ui-modal-roomy-max-height: min(42rem, calc(100dvh - 2rem));
+	--ui-modal-expanded-min-height: min(46rem, calc(100dvh - 2rem));
+	--ui-modal-expanded-max-height: min(52rem, calc(100dvh - 2rem));
+	--ui-modal-tall-height: min(96dvh, calc(100dvh - 2rem));
+	--ui-modal-overscroll: contain;
+	--ui-layer-modal: 100;
+	--ui-layer-toast: 120;
+
+	/* Content */
+	--ui-content-primary: var(--color-base-content);
+	--ui-content-secondary: color-mix(in oklab, var(--color-base-content) 80%, transparent);
+	--ui-content-muted: color-mix(in oklab, var(--color-base-content) 85%, var(--color-base-100));
+	--ui-content-subtle: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+	--ui-content-badge: color-mix(in oklab, var(--color-base-content) 90%, var(--color-base-100));
+	--ui-content-on-accent: var(--color-primary-content);
+
+	/* Borders and focus */
+	--ui-border-subtle: color-mix(in oklab, var(--color-base-200) 50%, transparent);
+	--ui-border-default: color-mix(in oklab, var(--color-base-200) 60%, transparent);
+	--ui-border-strong: color-mix(in oklab, var(--color-base-200) 70%, transparent);
+	--ui-border-frame: color-mix(in oklab, var(--color-base-content) 20%, var(--color-base-200));
+	--ui-border-frame-subtle: color-mix(
+		in oklab,
+		var(--color-base-content) 14%,
+		var(--color-base-200)
+	);
+	--ui-border-divider: color-mix(in oklab, var(--color-base-content) 8%, var(--color-base-200));
+	--ui-border-divider-width: 1px;
+	--ui-border-badge: var(--ui-border-frame);
+	--ui-border-badge-primary: color-mix(in oklab, var(--color-primary) 34%, var(--ui-border-badge));
+	--ui-border-badge-secondary: color-mix(
+		in oklab,
+		var(--color-secondary) 34%,
+		var(--ui-border-badge)
+	);
+	--ui-border-badge-accent: color-mix(in oklab, var(--color-accent) 34%, var(--ui-border-badge));
+	--ui-border-badge-info: color-mix(in oklab, var(--color-info) 34%, var(--ui-border-badge));
+	--ui-border-badge-success: color-mix(in oklab, var(--color-success) 34%, var(--ui-border-badge));
+	--ui-border-badge-warning: color-mix(in oklab, var(--color-warning) 34%, var(--ui-border-badge));
+	--ui-border-badge-error: color-mix(in oklab, var(--color-error) 34%, var(--ui-border-badge));
+	--ui-border-hover: color-mix(in oklab, var(--color-base-content) 22%, transparent);
+	--ui-border-selected: color-mix(in oklab, var(--color-base-content) 58%, transparent);
+	--ui-border-focus: color-mix(in oklab, var(--color-base-content) 44%, transparent);
+	--ui-focus-ring-color: color-mix(in oklab, var(--color-base-content) 58%, transparent);
+	--ui-focus-ring-width: 2px;
+
+	/* Form controls */
+	--ui-form-control-height: 2.5rem;
+
+	/* Range controls */
+	--ui-range-accent: var(--color-primary);
+	--ui-range-value-bg: color-mix(in oklab, var(--color-primary) 12%, transparent);
+	--ui-range-value-text: var(--ui-content-primary);
+	--ui-range-hit-size: 1.75rem;
+
+	/* Accent and status */
+	--ui-accent: var(--color-primary);
+	--ui-accent-secondary: var(--color-secondary);
+	--ui-success: var(--color-success);
+	--ui-info: var(--color-info);
+	--ui-warning: var(--color-warning);
+	--ui-danger: var(--color-error);
+
+	/* Radius */
+	--ui-radius-card: 1.5rem;
+	--ui-radius-panel: 1.5rem;
+	--ui-radius-tile: 1rem;
+	--ui-radius-modal: 1.5rem;
+	--ui-radius-toast: 1rem;
+	--ui-radius-field: 0.5rem;
+
+	/* Spacing */
+	--ui-space-card-x: 1.25rem;
+	--ui-space-card-y: 1rem;
+	--ui-space-tile-x: 1.25rem;
+	--ui-space-tile-y: 1rem;
+	--ui-space-modal-x: 1.5rem;
+	--ui-space-modal-y: 1rem;
+	--ui-space-toast-x: 1rem;
+	--ui-space-toast-y: 0.75rem;
+	--ui-space-card-body-gap: 1rem;
+	--ui-space-page-stack-gap: 1.25rem;
+	--ui-space-section-stack-gap: 1.25rem;
+	--ui-space-form-stack-gap: 1.25rem;
+
+	/* Typography */
+	--ui-font-family: inherit;
+	--ui-text-title-size: 1.125rem;
+	--ui-text-body-size: 0.875rem;
+	--ui-text-caption-size: 0.75rem;
+	--ui-text-title-line-height: 1.75rem;
+	--ui-text-body-line-height: 1.25rem;
+	--ui-text-caption-line-height: 1rem;
+
+	/* Motion */
+	--ui-motion-fast: 180ms;
+	--ui-motion-standard: 300ms;
+	--ui-motion-breathe: 1100ms;
+	--ui-ease-standard: ease;
+	--ui-ease-out: ease-out;
+
+	/* Semantic text tones */
+	--ui-success-text: color-mix(in oklab, var(--color-base-content) 85%, var(--color-success));
+	--ui-warning-text: color-mix(in oklab, var(--color-base-content) 85%, var(--color-warning));
+	--ui-danger-text: color-mix(in oklab, var(--color-base-content) 85%, var(--color-error));
+	--ui-info-text: color-mix(in oklab, var(--color-base-content) 85%, var(--color-info));
+	--ui-primary-text: color-mix(in oklab, var(--color-base-content) 85%, var(--color-primary));
+	--ui-secondary-text: color-mix(in oklab, var(--color-base-content) 85%, var(--color-secondary));
+	--ui-accent-text: color-mix(in oklab, var(--color-base-content) 85%, var(--color-accent));
+
+	/* Shadows and glows */
+	--ui-shadow-sm: none;
+	--ui-shadow-hover: none;
+	--ui-shadow-card: none;
+	--ui-shadow-panel: none;
+	--ui-shadow-modal: 0 18px 36px -24px
+		color-mix(in oklab, var(--color-base-content) 30%, transparent);
+	--ui-shadow-toast: 0 16px 32px -22px
+		color-mix(in oklab, var(--color-base-content) 28%, transparent);
+
+	/* Tone-derived toast material */
+	--ui-toast-tone-border: color-mix(in oklab, var(--toast-tone) 22%, transparent);
+	--ui-toast-tone-bg: color-mix(in oklab, var(--toast-tone) 12%, transparent);
+	--ui-toast-tone-action-bg: color-mix(in oklab, var(--toast-tone) 15%, transparent);
+	--ui-toast-tone-action-bg-hover: color-mix(in oklab, var(--toast-tone) 25%, transparent);
+}
