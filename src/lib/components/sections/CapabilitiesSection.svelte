@@ -9,7 +9,6 @@
 	<div class="section-heading" data-reveal>
 		<p class="kicker">{data.kicker}</p>
 		<h2 class="section-title">{data.title}</h2>
-		<p class="section-copy">{data.copy}</p>
 	</div>
 
 	<div class="site-grid" data-reveal>

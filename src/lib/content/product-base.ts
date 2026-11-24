@@ -5,31 +5,6 @@ export type FeatureBlock = {
 	body: string;
 };
 
-export type MetricBlock = FeatureBlock & {
-	value: string;
-};
-
-export type WorkflowStep = FeatureBlock & {
-	label: string;
-};
-
-export type ComparisonItem = {
-	alternative: string;
-	limitation: string;
-	growclip: string;
-};
-
-export type NodePaletteItem = {
-	name: string;
-	body: string;
-};
-
-export type NodePaletteGroup = {
-	title: string;
-	body: string;
-	items: NodePaletteItem[];
-};
-
 export type HardwareOption = {
 	title: string;
 	status: string;
@@ -86,34 +61,6 @@ export type ProductContent = {
 		secondaryCta: string;
 		imageSrc: string;
 		imageAlt: string;
-		stats: MetricBlock[];
-		highlights: string[];
-	};
-	proof: {
-		kicker: string;
-		title: string;
-		copy: string;
-		items: FeatureBlock[];
-	};
-	problem: {
-		kicker: string;
-		title: string;
-		copy: string;
-		items: FeatureBlock[];
-	};
-	comparison: {
-		kicker: string;
-		title: string;
-		copy: string;
-		limitationLabel: string;
-		growclipLabel: string;
-		items: ComparisonItem[];
-	};
-	workflow: {
-		kicker: string;
-		title: string;
-		copy: string;
-		steps: WorkflowStep[];
 	};
 	demo: {
 		kicker: string;
@@ -121,15 +68,7 @@ export type ProductContent = {
 		copy: string;
 		loading: string;
 		reset: string;
-		paletteToggle: string;
 		examples: DemoFlowExample[];
-		points: NodePaletteGroup[];
-	};
-	diagnostics: {
-		kicker: string;
-		title: string;
-		copy: string;
-		items: FeatureBlock[];
 	};
 	capabilities: {
 		kicker: string;
@@ -155,12 +94,6 @@ export type ProductContent = {
 		copy: string;
 		primaryCta: string;
 		note: string;
-		includesTitle: string;
-		includes: FeatureBlock[];
-		fitTitle: string;
-		fit: FeatureBlock[];
-		notForTitle: string;
-		notFor: FeatureBlock[];
 	};
 	showcase: {
 		kicker: string;
@@ -213,138 +146,19 @@ export const productContent: Record<Locale, ProductContent> = {
 			kicker: 'Lokalny wizualny sterownik reguł',
 			title: 'GrowClip',
 			headline: 'Automatyzacja growboxa. Lokalne reguły, pełna kontrola.',
-			copy: 'Połącz czujniki, warunki i urządzenia w model Input -> Processing -> Output. Reguły działają na ESP32-S3, a Automation Timeline i Rule Telemetry pomagają zrozumieć ich decyzje.',
+			copy: 'Wizualnie połącz czujniki, warunki i akcje (Input -> Processing -> Output). Reguły działają lokalnie, a ich decyzje można sprawdzić w historii.',
 			availability: 'Limitowana beta prywatna · prototyp · bez publicznej sprzedaży',
 			primaryCta: 'Opisz swój growbox',
 			secondaryCta: 'Zobacz demo flow',
 			imageSrc: '/media/growclip-hero.webp',
-			imageAlt: 'Wizualizacja koncepcyjna sterownika w growboxie, nie zdjęcie gotowego urządzenia',
-			stats: [
-				{
-					value: 'local-first',
-					title: 'Reguły bez chmury',
-					body: 'Najważniejsze decyzje wykonują się na ESP32-S3, nie w zewnętrznej usłudze.'
-				},
-				{
-					value: 'visual flow',
-					title: 'Mniej zgadywania',
-					body: 'Łączysz wejścia, warunki i akcje w flow, który można obejrzeć przed uruchomieniem.'
-				},
-				{
-					value: 'trace ready',
-					title: 'Dowód działania',
-					body: 'Timeline, telemetria reguł i snapshot systemu pokazują przyczynę decyzji.'
-				}
-			],
-			highlights: [
-				'Wizualny edytor reguł — bez pisania kodu',
-				'Czujniki, MQTT, Shelly i powiadomienia w jednym systemie',
-				'Lokalna historia i diagnostyka decyzji'
-			]
-		},
-		proof: {
-			kicker: 'Efekt dla użytkownika',
-			title: 'Jeden panel zamiast kilku aplikacji i domysłów',
-			copy: 'GrowClip porządkuje małą instalację w jeden lokalny system: widzisz warunki, reguły, akcje i historię decyzji zamiast skakać między aplikacjami.',
-			items: [
-				{
-					title: 'Wiesz, co działa',
-					body: 'Status runtime, czujniki, Shelly, MQTT i alerty są widoczne obok reguł, które z nich korzystają.'
-				},
-				{
-					title: 'Reagujesz szybciej',
-					body: 'Ręczne akcje w panelu webowym i e-paper HMI pozwalają przejąć kontrolę bez szukania właściwej aplikacji.'
-				},
-				{
-					title: 'Nie tracisz śladu',
-					body: 'Automation Timeline i zapis na microSD pomagają wrócić do zdarzenia po czasie, także gdy internet nie był dostępny.'
-				}
-			]
-		},
-		problem: {
-			kicker: 'Problem',
-			title: 'Mały growbox szybko robi się systemem rozproszonym',
-			copy: 'Pomiary są w jednej aplikacji, gniazdka w drugiej, alerty w Telegramie, a proste timery nie widzą kontekstu. GrowClip porządkuje te elementy w lokalny sterownik oparty na warunkach.',
-			items: [
-				{
-					title: 'Zwykły timer nie zna warunków',
-					body: 'Wentylator może pracować za często albo za późno, jeśli reguła nie patrzy na CO2, wilgotność, temperaturę i czas naraz.'
-				},
-				{
-					title: 'Chmura nie jest sterownikiem awaryjnym',
-					body: 'Internet może pomagać w Telegramie lub NTP, ale bazowa automatyka powinna działać przy urządzeniu.'
-				},
-				{
-					title: 'Brak historii utrudnia diagnozę',
-					body: 'Bez śladu decyzji trudno ocenić, czy problemem był sensor, próg, filtr czasu, gniazdko czy sama reguła.'
-				}
-			]
-		},
-		comparison: {
-			kicker: 'Dlaczego nie zwykły kontroler',
-			title:
-				'GrowClip nie zastępuje jednej aplikacji. Zastępuje zgadywanie między kilkoma systemami.',
-			copy: 'Największa różnica nie polega na kolejnym przełączniku on/off. GrowClip łączy warunki, akcje i ślad decyzji w jednym lokalnym flow, który da się sprawdzić po fakcie.',
-			limitationLabel: 'Typowe ograniczenie',
-			growclipLabel: 'GrowClip',
-			items: [
-				{
-					alternative: 'Timer albo smart plug',
-					limitation:
-						'Włącza urządzenie o godzinie, ale nie widzi CO2, VPD, wilgotności, okna czasu i stanu sensora jednocześnie.',
-					growclip:
-						'Reguła może wymagać kilku warunków naraz i zostawia trace, dlaczego akcja została uruchomiona albo pominięta.'
-				},
-				{
-					alternative: 'Chmurowy grow controller',
-					limitation:
-						'Jest wygodny zdalnie, ale krytyczna automatyka zależy od konta, usługi albo stabilnego internetu.',
-					growclip:
-						'Bazowe decyzje wykonują się na ESP32-S3 lokalnie; internet pomaga w Telegramie, NTP lub zdalnym podglądzie.'
-				},
-				{
-					alternative: 'Własne skrypty i broker MQTT',
-					limitation:
-						'Elastyczne, ale po kilku integracjach trudno pokazać domownikowi albo testerowi, co naprawdę steruje growboxem.',
-					growclip:
-						'Flow, panel, timeline i ręczne akcje są jedną powierzchnią produktu, a nie zbiorem rozproszonych plików.'
-				}
-			]
-		},
-		workflow: {
-			kicker: 'Jak to działa',
-			title: 'Measure, decide, act, explain',
-			copy: 'GrowClip trzyma prosty model IPO: wejścia dają dane, nody przetwarzają je w decyzję, a akcje uruchamiają sprzęt albo powiadomienia. Każdy krok ma sens diagnostyczny.',
-			steps: [
-				{
-					label: '01',
-					title: 'Mierz',
-					body: 'SCD41, DHT22, BME680, SGP30, DS18B20, BLE, MQTT, GPIO/touchRead(), analog i status systemu trafiają do lokalnego flow.'
-				},
-				{
-					label: '02',
-					title: 'Decyduj',
-					body: 'Compare, Hysteresis, Math Scale, Formula VPD, Condition Gate, Time Filter i Time Trigger ograniczają fałszywe akcje.'
-				},
-				{
-					label: '03',
-					title: 'Działaj',
-					body: 'Shelly, GPIO output, RF433, MQTT Publish, Telegram, Device Webhooks, Text to Speech i Tab Flash wykonują reakcję.'
-				},
-				{
-					label: '04',
-					title: 'Wyjaśniaj',
-					body: 'System Snapshot, Rule Telemetry i Executable Flow pokazują, co trafiło do runtime urządzenia.'
-				}
-			]
+			imageAlt: 'Wizualizacja koncepcyjna sterownika w growboxie, nie zdjęcie gotowego urządzenia'
 		},
 		demo: {
 			kicker: 'Interaktywne demo',
-			title: 'Zobacz język flow, zanim zapytasz o betę',
-			copy: 'Demo działa w przeglądarce i nie łączy się z urządzeniem. Pokazuje język pracy GrowClip: wejście, przetwarzanie, wyjście i diagnostykę. To przykłady ilustracyjne, nie katalog gotowych konfiguracji dla cudzej instalacji.',
+			title: 'Zobacz język flow w praktyce',
+			copy: 'Cztery symulacje w przeglądarce. Bez połączenia ze sprzętem; nie katalog gotowych konfiguracji.',
 			loading: 'Demo ładuje edytor dopiero przy tej sekcji',
 			reset: 'Reset demo',
-			paletteToggle: 'Pokaż pełną paletę nodów',
 			examples: [
 				{
 					id: sharedDemoExampleIds[0],
@@ -366,259 +180,90 @@ export const productContent: Record<Locale, ProductContent> = {
 					title: 'Alert bezpieczeństwa',
 					body: 'Przekroczenie CO2 albo offline sensor trafia przez filtr czasu do Telegrama bez dotykania wykonawców.'
 				}
-			],
-			points: [
-				{
-					title: 'Wejścia',
-					body: 'Sygnały, z których reguła pobiera dane.',
-					items: [
-						{ name: 'SCD41 / DHT22', body: 'CO2, temperatura i wilgotność dla reguł klimatu.' },
-						{ name: 'BME680 / SGP30', body: 'Środowisko, gaz, TVOC i CO2eq jako lokalne wejścia.' },
-						{
-							name: 'BLE',
-							body: 'Termometry, presence i beacon decoder dla bezprzewodowych sygnałów.'
-						},
-						{
-							name: 'GPIO / Analog',
-							body: 'Przycisk, krańcówka, touchRead() albo ADC z board profile.'
-						},
-						{
-							name: 'MQTT Input',
-							body: 'Wybór wejścia z katalogu MQTT; wartość, świeżość i wiek odczytu.'
-						}
-					]
-				},
-				{
-					title: 'Warunki',
-					body: 'Nody, które zamieniają dane w decyzję.',
-					items: [
-						{ name: 'Compare', body: 'Porównanie wartości z progiem, np. CO2 > 1200 ppm.' },
-						{
-							name: 'Hysteresis',
-							body: 'Osobne progi ON/OFF, żeby urządzenie nie klikało co chwilę.'
-						},
-						{ name: 'Math Scale / Formula', body: 'Skalowanie i własne wzory, np. VPD.' },
-						{ name: 'Condition Gate', body: 'Łączenie warunków przed wyjściem.' },
-						{
-							name: 'Time Filter / Trigger',
-							body: 'Okna czasu, interwały i zaplanowane zdarzenia.'
-						}
-					]
-				},
-				{
-					title: 'Akcje',
-					body: 'Wyjścia, które wykonują reakcję.',
-					items: [
-						{ name: 'Shelly / GPIO / RF433', body: 'Lokalne wyjścia dla dobranej instalacji.' },
-						{
-							name: 'MQTT Publish',
-							body: 'Wybór wyjścia z katalogu MQTT z wcześniej zdefiniowaną treścią.'
-						},
-						{ name: 'Telegram', body: 'Alert z kontekstem i trace reguły.' },
-						{
-							name: 'Device Webhooks',
-							body: 'Generic JSON albo Discord webhook przez kolejkę urządzenia.'
-						},
-						{ name: 'Browser Actions', body: 'Text to Speech, Tab Flash i Monitor w panelu.' }
-					]
-				},
-				{
-					title: 'Diagnostyka',
-					body: 'Nody, które pomagają zaufać automatyce.',
-					items: [
-						{ name: 'System Snapshot', body: 'Stan pamięci, sensorów, runtime i kolejek.' },
-						{ name: 'Rule Telemetry', body: 'Która reguła zadziałała i dlaczego.' },
-						{ name: 'Automation Timeline', body: 'Lokalny ślad decyzji i zmian stanu.' },
-						{ name: 'Executable Flow', body: 'Payload, który trafi do firmware runtime.' },
-						{ name: 'Support Snapshot', body: 'Status funkcji, GPIO, czasu, BLE, MQTT i archiwum.' }
-					]
-				}
-			]
-		},
-		diagnostics: {
-			kicker: 'Diagnostyka',
-			title: 'Automatyka, która zostawia ślad',
-			copy: 'Sterownik lokalnej automatyki nie powinien być czarną skrzynką. GrowClip pokazuje decyzję od wejścia, przez warunek, po akcję i pozwala odróżnić dobrą ciszę od brakującego sensora.',
-			items: [
-				{
-					title: 'Automation Timeline',
-					body: 'Chronologiczny zapis decyzji: trigger, reguła, stan warunków, action health i ewentualne dropy/truncate.'
-				},
-				{
-					title: 'Rule Telemetry',
-					body: 'Na flow widać, który warunek przepuścił akcję, który ją zatrzymał i z jakim trace została wykonana.'
-				},
-				{
-					title: 'System Snapshot',
-					body: 'Stan runtime, pamięci, MQTT, BLE, sensorów i kolejek w jednym punkcie obserwacji.'
-				},
-				{
-					title: 'Support bundle surface',
-					body: 'Status funkcji, GPIO inventory, czas, BLE RTC, MQTT, Nodeflow export i archiwum dają materiał do diagnozy bez zgadywania.'
-				}
 			]
 		},
 		capabilities: {
 			kicker: 'Możliwości',
-			title: 'Funkcje dobrane pod realny mały growbox',
-			copy: 'Najważniejsze nie jest to, ile integracji da się wymienić, tylko czy można z nich zbudować stabilną regułę i później ją zrozumieć.',
+			title: 'Co potrafi GrowClip',
+			copy: '',
 			items: [
 				{
-					title: 'Trzy tryby Wi-Fi',
-					body: 'Własna sieć urządzenia, połączenie z routerem albo oba warianty naraz: lokalny panel plus łączność z siecią.'
+					title: 'Czujniki i wejścia',
+					body: 'SCD41, DHT22, BME680, SGP30, DS18B20, BLE Thermometer, BLE Presence, BLE Beacon, GPIO/touchRead i analog.'
 				},
 				{
-					title: 'Lokalny MQTT gateway',
-					body: 'Katalog MQTT definiuje wejścia (temat, JSON path, świeżość) i wyjścia (temat, treść, QoS/retain). Nody wybierają pozycje katalogu. Shelly może działać lokalnie bez Home Assistanta.'
+					title: 'Reguły i sterowanie',
+					body: 'Porównania, histereza, VPD, harmonogramy, Shelly, GPIO, RF433 i ręczne sterowanie.'
 				},
 				{
-					title: 'Szeroka warstwa wejść',
-					body: 'SCD41, DHT22, BME680, SGP30, DS18B20, BLE Thermometer, BLE Presence, BLE Beacon, GPIO, analog i MQTT Input jako źródła reguł.'
+					title: 'MQTT i sieć',
+					body: 'Katalog MQTT: temat, JSON path, świeżość, QoS i retain. Wi-Fi AP/router/AP+router; bez wymogu Home Assistanta.'
+				},
+				{
+					title: 'Zigbee — opcjonalny ESP32-C6',
+					body: 'Parowanie i zarządzanie urządzeniami, pomiary w regułach i Data Loggerze. Sprawdzone wybrane konfiguracje; zgodność zależy od urządzenia.'
+				},
+				{
+					title: 'Historia i wykresy',
+					body: 'Automation Timeline i Rule Telemetry pokazują decyzje. Data Logger: historia pomiarów, wykresy, CSV i zapis na microSD.'
 				},
 				{
 					title: 'E-paper HMI',
-					body: 'Status, menu i szybkie akcje ręczne przy urządzeniu, bez konieczności otwierania laptopa.'
+					body: 'Menu, dashboard, akcje ręczne i Charts — podgląd do 64 ostatnich próbek wybranego pomiaru.'
 				},
 				{
-					title: 'Telegram worker',
-					body: 'Powiadomienia i obsługiwane komendy po skonfigurowaniu Telegrama. Wysyłka alertu została sprawdzona na urządzeniu; usługa wymaga internetu.'
+					title: 'Powiadomienia',
+					body: 'Telegram, Device Webhooks (JSON/Discord, tylko wychodzące), Text to Speech w panelu.'
 				},
 				{
-					title: 'Device Webhooks',
-					body: 'Powiadomienia wychodzące JSON lub Discord po konfiguracji. Komendy przychodzące Discord nie są częścią obecnej bety.'
-				},
-				{
-					title: 'Odporność czasu',
-					body: 'NTP/manual time, hardware RTC jako trusted backup i Xiaomi LYWSD03MMC z PVVX jako zdegradowany backup BLE.'
-				},
-				{
-					title: 'Manual override',
-					body: 'Wybrane wyjścia można przełączyć ręcznie, ale nadal widzisz, co automatyka zrobiła przed i po interwencji.'
-				},
-				{
-					title: 'Zigbee — opcja ESP32-C6',
-					body: 'Rozszerzenie z osobnym koordynatorem Zigbee. Integracja i mapowanie pomiarów zostały sprawdzone w określonych konfiguracjach; zgodność zależy od urządzenia.'
-				},
-				{
-					title: 'ESP-NOW — odbiór telemetrii',
-					body: 'Wejście Nodeflow odbiera dane od skonfigurowanych urządzeń. Nadawanie komend i fizyczne potwierdzenia pozostają w rozwoju.'
-				},
-				{
-					title: 'Potwierdzony zakres bety',
-					body: 'Sprawdzono zapis i odczyt reguł oraz MQTT → Nodeflow → Shelly ON/OFF na sprzęcie. Formalne dopuszczenie do publicznej sprzedaży jeszcze nie nastąpiło.'
-				},
-				{
-					title: 'Modułowa instalacja',
-					body: 'RF433, DS3231 RTC, SCD41, DS18B20, bateria i obudowa są opcjami, a nie ukrytymi wymaganiami.'
+					title: 'ESP-NOW',
+					body: 'Odbiór telemetrii. Nadawanie komend pozostaje w rozwoju.'
 				}
 			]
 		},
 		hardware: {
 			kicker: 'Sprzęt',
-			title: 'Baza działa samodzielnie, moduły rozszerzają konkretne scenariusze',
-			copy: 'Aktualny prototyp wykorzystuje moduł ESP32-S3 z e-paper HMI i zapasem pamięci na panel webowy oraz runtime Nodeflow. Dodatki dobiera się pod instalację, nie pod katalog funkcji.',
+			title: 'ESP32-S3 i opcjonalne rozszerzenia',
+			copy: 'Prototyp CrowPanel 2,9″ e-paper. Rekomendowane 8 MB Flash i 8 MB PSRAM.',
 			baseTitle: 'Wariant bazowy',
-			baseItems: [
-				'ESP32-S3 z Wi-Fi, rekomendowane 8 MB Flash i 8 MB PSRAM',
-				'Wbudowany panel webowy, edytor LiteGraph i lokalny runtime Nodeflow',
-				'Tryby Wi-Fi: AP, router albo oba naraz',
-				'MQTT input/output, Shelly, Telegram, Device Webhooks, GPIO digital/touch/analog i lokalne decyzje',
-				'Automation Timeline, Rule Telemetry, System Snapshot; opcjonalne archiwum microSD',
-				'E-paper HMI z menu, dashboardem i wybranymi akcjami ręcznymi'
-			],
-			optionsTitle: 'Opcjonalne moduły',
+			baseItems: ['ESP32-S3 · Wi-Fi/BLE · e-paper 128 × 296'],
+			optionsTitle: 'Moduły i szczegóły',
 			options: [
-				{ title: 'RF433', status: 'Opcja', body: 'Sterowanie prostymi gniazdkami 433 MHz.' },
-				{ title: 'Hardware RTC', status: 'Opcja', body: 'Zaufany backup czasu dla harmonogramów.' },
 				{
-					title: 'PVVX Xiaomi LYWSD03MMC',
+					title: 'Czujniki',
 					status: 'Opcja',
-					body: 'Zdegradowany backup czasu przez BLE, nie źródło autorytatywne.'
+					body: 'Dobór do instalacji; DS18B20 wymaga walidacji fizycznej.'
 				},
-				{ title: 'SCD41', status: 'Opcja', body: 'CO2, temperatura i wilgotność dla klimatu.' },
-				{ title: 'DHT22', status: 'Opcja', body: 'Prosty sensor temperatury i wilgotności.' },
 				{
-					title: 'BME680',
+					title: 'Zigbee / RF433',
 					status: 'Opcja',
-					body: 'Temperatura, wilgotność, ciśnienie i gaz bez claimu IAQ.'
+					body: 'Koordynator ESP32-C6 lub moduł radiowy 433 MHz.'
 				},
-				{ title: 'SGP30', status: 'Opcja', body: 'TVOC i CO2eq jako podstawowe wejście lokalne.' },
 				{
-					title: 'DS18B20',
-					status: 'Walidacja',
-					body: 'Sonda temperatury wymagająca live testu dla unit.'
-				},
-				{ title: 'Bateria Li-ion', status: 'Opcja', body: 'Podtrzymanie lub wariant testowy.' },
-				{
-					title: 'Obudowa',
+					title: 'Czas',
 					status: 'Opcja',
-					body: 'Docelowy montaż zamiast modułu deweloperskiego.'
+					body: 'RTC jako zaufany backup; Xiaomi PVVX jako zdegradowany backup BLE.'
+				},
+				{
+					title: 'Montaż i zapis',
+					status: 'Opcja',
+					body: 'microSD, bateria Li-ion, obudowa.'
 				}
 			],
-			technicalTitle: 'Baza pierwszej bety',
-			technicalBody:
-				'Aktualny prototyp bazuje na module Elecrow CrowPanel ESP32 2.9" e-paper HMI. Potwierdzona specyfikacja: ESP32-S3-WROOM-1-N8R8, 8 MB Flash, 8 MB PSRAM, 128x296 e-paper, SPI, Wi-Fi, TF Card/BAT.',
-			sourceLabel: 'Źródło specyfikacji Elecrow'
+			technicalTitle: 'Specyfikacja modułu',
+			technicalBody: 'Elecrow CrowPanel ESP32-S3-WROOM-1-N8R8, SPI, Wi-Fi, TF Card/BAT.',
+			sourceLabel: 'Specyfikacja Elecrow'
 		},
 		beta: {
-			kicker: 'Prywatna beta',
-			title: 'Mała beta dla osób, które chcą realnie testować lokalną automatykę',
-			copy: 'GrowClip jest na etapie prywatnych testów. Konfiguracja, moduły i obudowa nie stanowią jeszcze gotowego pakietu sprzedażowego.',
+			kicker: 'Beta',
+			title: 'Dołącz do prywatnych testów',
+			copy: 'Opisz instalację i potrzebne funkcje. Ustalimy zakres testów oraz konfigurację.',
 			primaryCta: 'Zapytaj o beta moduł',
-			note: 'Publiczna sprzedaż, cena i finalna konfiguracja sprzętu nie zostały ogłoszone.',
-			includesTitle: 'Co obejmuje beta',
-			includes: [
-				{
-					title: 'Konfiguracja pod instalację',
-					body: 'Ustalenie czujników, wyjść, Shelly/MQTT/Telegram/Webhooks i ręcznych akcji przed przygotowaniem modułu.'
-				},
-				{
-					title: 'Lokalny panel i flow',
-					body: 'Panel webowy, widoczny model flow, Automation Timeline, Rule Telemetry i System Snapshot.'
-				},
-				{
-					title: 'Ustalone ograniczenia',
-					body: 'Jasna lista tego, co działa w danej konfiguracji, co jest opcją, a co zostaje poza pierwszą partią.'
-				},
-				{
-					title: 'Materiał do wsparcia',
-					body: 'Eksport Nodeflow i redagowany support bundle dla diagnozy bez zgadywania.'
-				}
-			],
-			fitTitle: 'Dobry kandydat',
-			fit: [
-				{
-					title: 'Masz kilka urządzeń',
-					body: 'Sensor, wentylator, światło, nawilżacz albo Shelly działają dziś osobno.'
-				},
-				{
-					title: 'Chcesz lokalnej logiki',
-					body: 'Podstawowe decyzje mają działać przy urządzeniu, nawet gdy internet pomaga tylko pobocznie.'
-				},
-				{
-					title: 'Lubisz widzieć przyczynę',
-					body: 'Interesuje Cię historia reguł, trace i diagnostyka, a nie tylko przełącznik on/off.'
-				}
-			],
-			notForTitle: 'Nie dla każdego',
-			notFor: [
-				{
-					title: 'Nie jest zamkniętym termostatem',
-					body: 'Jeśli nie chcesz edytować flow po instrukcji, lepszy będzie prosty kontroler on/off.'
-				},
-				{
-					title: 'Nie zastępuje wiedzy o uprawie',
-					body: 'Automatyka pomaga utrzymać warunki, ale nie obiecuje wyników biologicznych.'
-				},
-				{
-					title: 'Nie jest katalogiem presetów',
-					body: 'Przykłady pokazują język systemu, a nie uniwersalne przepisy dla cudzej instalacji.'
-				}
-			]
+			note: 'Brak publicznej sprzedaży i ogłoszonej ceny.'
 		},
 		showcase: {
-			kicker: 'Poznaj interfejs',
-			title: 'Panel, flow i historia decyzji są częścią produktu'
+			kicker: 'Interfejs',
+			title: 'Panel i historia decyzji'
 		},
 		media: [
 			{
@@ -651,44 +296,18 @@ export const productContent: Record<Locale, ProductContent> = {
 			title: 'Krótko, bez obietnic ponad stan',
 			items: [
 				{
-					question: 'Czy GrowClip musi być podłączony do routera?',
-					answer:
-						'Nie zawsze. Może utworzyć własną sieć Wi-Fi, połączyć się z routerem albo działać w obu wariantach naraz. Reguły automatyzacji działają lokalnie; internet jest potrzebny tylko dla usług zewnętrznych, takich jak Telegram albo NTP.'
-				},
-				{
-					question: 'Czy Shelly i MQTT działają bez Home Assistanta?',
-					answer:
-						'Tak, w skonfigurowanej sieci lokalnej. GrowClip używa katalogu MQTT: definiujesz temat, JSON path i świeżość wejść oraz temat i treść wyjść, a następnie wybierasz wpisy w edytorze.'
-				},
-				{
-					question: 'Czy moduły RF433, RTC, SCD41, DS18B20 i bateria są wymagane?',
-					answer:
-						'Nie. Baza działa samodzielnie, a moduły są opcjami konkretnej instalacji. DS18B20 wymaga live walidacji dla danego unit, BME680 jest wejściem środowiskowym bez claimu IAQ, a SGP30 jest podstawowym wejściem TVOC/CO2eq bez obietnicy baseline persistence.'
-				},
-				{
-					question: 'Czy historia decyzji wymaga chmury?',
-					answer:
-						'Nie. Automation Timeline i Rule Telemetry są lokalnym śladem pracy flow. Przy wariancie z microSD historia może być zapisywana na karcie.'
-				},
-				{
-					question: 'Czy demo flow to gotowe presety do użycia?',
-					answer:
-						'Nie. Demo pokazuje język GrowClip: wybierz wejście, przetwarzanie i wyjście, a potem połącz linie. Realne progi, sensory, wyjścia i wiring muszą pasować do konkretnej instalacji.'
-				},
-				{
-					question: 'Czy Xiaomi thermometer może robić backup czasu?',
-					answer:
-						'Tak, kompatybilny Xiaomi LYWSD03MMC z firmware PVVX może działać jako zdegradowany backup czasu przez BLE. NTP albo manual time są autorytatywne, a hardware RTC pozostaje preferowanym trusted backup.'
-				},
-				{
-					question: 'Czy GrowClip wysyła alerty do Discorda?',
-					answer:
-						'Może wysyłać Device Webhooks w formacie generic JSON albo Discord, jeśli webhook jest skonfigurowany dla danego unit. Sekrety webhooków muszą być redagowane w danych supportowych.'
+					question: 'Czy demo to gotowe presety?',
+					answer: 'Nie. Progi i okablowanie trzeba dopasować do własnej instalacji.'
 				},
 				{
 					question: 'Co jeśli czujnik przestanie odpowiadać?',
 					answer:
-						'Brak odczytu, niski poziom baterii BLE, zanik sygnału albo przekroczenie progu mogą być zdarzeniem do reakcji. Dzięki temu wiesz, czy automatyka milczy, bo warunki są dobre, czy dlatego, że sensor zniknął.'
+						'Reguły mogą uwzględniać brak pomiaru i stan źródła, a diagnostyka pomaga ustalić przyczynę.'
+				},
+				{
+					question: 'Czy urządzenie działa bez internetu?',
+					answer:
+						'Podstawowe reguły działają lokalnie. Usługi zewnętrzne, np. Telegram, wymagają internetu.'
 				}
 			]
 		},
@@ -724,137 +343,19 @@ export const productContent: Record<Locale, ProductContent> = {
 			kicker: 'Local visual rule controller',
 			title: 'GrowClip',
 			headline: 'Local growbox automation that shows the rule as a flow',
-			copy: 'Connect sensors, conditions and devices in an Input -> Processing -> Output model. Rules run on the ESP32-S3, while Automation Timeline and Rule Telemetry help explain their decisions.',
+			copy: 'Connect sensors, conditions and actions visually (Input -> Processing -> Output). Rules run locally and their decisions can be reviewed.',
 			availability: 'Limited beta · private field testing · not on public sale',
 			primaryCta: 'Describe your growbox',
 			secondaryCta: 'See the flow demo',
 			imageSrc: '/media/growclip-hero.webp',
-			imageAlt: 'Concept illustration of a controller in a growbox, not a finished device',
-			stats: [
-				{
-					value: 'local-first',
-					title: 'Rules without cloud',
-					body: 'Core decisions execute on the ESP32-S3 instead of an external service.'
-				},
-				{
-					value: 'visual flow',
-					title: 'Less guesswork',
-					body: 'Inputs, conditions and actions are connected in a flow you can inspect before running.'
-				},
-				{
-					value: 'trace ready',
-					title: 'Proof of action',
-					body: 'Timeline, rule telemetry and system snapshots explain the reason behind a decision.'
-				}
-			],
-			highlights: [
-				'Visual rule editor — no coding required',
-				'Sensors, MQTT, Shelly and notifications in one system',
-				'Local decision history and diagnostics'
-			]
-		},
-		proof: {
-			kicker: 'User outcome',
-			title: 'One panel instead of several apps and assumptions',
-			copy: 'GrowClip organizes a small installation into one local system: conditions, rules, actions and decision history are visible instead of split across apps.',
-			items: [
-				{
-					title: 'Know what is running',
-					body: 'Runtime status, sensors, Shelly, MQTT and alerts appear next to the rules that use them.'
-				},
-				{
-					title: 'React faster',
-					body: 'Manual actions in the web panel and e-paper HMI let you take control without hunting for the right app.'
-				},
-				{
-					title: 'Keep the trace',
-					body: 'Automation Timeline and microSD logging help review an event later, even when internet was unavailable.'
-				}
-			]
-		},
-		problem: {
-			kicker: 'Problem',
-			title: 'A small growbox quickly becomes a distributed system',
-			copy: 'Measurements live in one app, sockets in another, alerts in Telegram, and simple timers do not understand context. GrowClip organizes these parts into a local condition-based controller.',
-			items: [
-				{
-					title: 'A plain timer does not know the conditions',
-					body: 'A fan can run too often or too late when a rule does not consider CO2, humidity, temperature and time together.'
-				},
-				{
-					title: 'The cloud is not an emergency controller',
-					body: 'Internet can help with Telegram or NTP, but core automation should run beside the hardware.'
-				},
-				{
-					title: 'No history makes debugging harder',
-					body: 'Without a decision trace, it is hard to tell whether the sensor, threshold, time filter, socket or rule caused the issue.'
-				}
-			]
-		},
-		comparison: {
-			kicker: 'Why not a normal controller',
-			title: 'GrowClip does not replace one app. It replaces guessing between several systems.',
-			copy: 'The difference is not another on/off switch. GrowClip connects conditions, actions and decision traces into one local flow that can be reviewed later.',
-			limitationLabel: 'Typical limit',
-			growclipLabel: 'GrowClip',
-			items: [
-				{
-					alternative: 'Timer or smart plug',
-					limitation:
-						'It can turn a device on at a time, but it does not see CO2, VPD, humidity, time windows and sensor state together.',
-					growclip:
-						'A rule can require several conditions at once and leaves a trace explaining why an action ran or was skipped.'
-				},
-				{
-					alternative: 'Cloud grow controller',
-					limitation:
-						'Convenient remotely, but critical automation depends on an account, service or stable internet.',
-					growclip:
-						'Core decisions run locally on the ESP32-S3; internet helps with Telegram, NTP or remote viewing.'
-				},
-				{
-					alternative: 'Custom scripts and MQTT broker',
-					limitation:
-						'Flexible, but after a few integrations it is hard to show another person what really controls the growbox.',
-					growclip:
-						'Flow, panel, timeline and manual actions are one product surface instead of scattered files.'
-				}
-			]
-		},
-		workflow: {
-			kicker: 'How it works',
-			title: 'Measure, decide, act, explain',
-			copy: 'GrowClip keeps a simple IPO model: inputs provide data, processing nodes turn it into a decision, and actions trigger hardware or notifications. Every step is useful for diagnostics.',
-			steps: [
-				{
-					label: '01',
-					title: 'Measure',
-					body: 'SCD41, DHT22, BME680, SGP30, DS18B20, BLE, MQTT, GPIO/touchRead(), analog and system status enter the local flow.'
-				},
-				{
-					label: '02',
-					title: 'Decide',
-					body: 'Compare, Hysteresis, Math Scale, VPD Formula, Condition Gate, Time Filter and Time Trigger reduce false actions.'
-				},
-				{
-					label: '03',
-					title: 'Act',
-					body: 'Shelly, GPIO output, RF433, MQTT Publish, Telegram, Device Webhooks, Text to Speech and Tab Flash react.'
-				},
-				{
-					label: '04',
-					title: 'Explain',
-					body: 'System Snapshot, Rule Telemetry and Executable Flow show what reached the device runtime.'
-				}
-			]
+			imageAlt: 'Concept illustration of a controller in a growbox, not a finished device'
 		},
 		demo: {
 			kicker: 'Interactive demo',
-			title: 'Inspect the flow language before asking about the beta',
-			copy: "The demo runs in the browser and does not connect to a device. It shows the GrowClip language: input, processing, output and diagnostics. These are illustrative examples, not a catalogue of ready-made configurations for someone else's installation.",
+			title: 'Try the visual rule editor',
+			copy: 'Four browser simulations. No device connection; not a catalogue of ready-to-use presets.',
 			loading: 'The editor loads only when this section is reached',
 			reset: 'Reset demo',
-			paletteToggle: 'Show the full node palette',
 			examples: [
 				{
 					id: sharedDemoExampleIds[0],
@@ -876,253 +377,90 @@ export const productContent: Record<Locale, ProductContent> = {
 					title: 'Safety alert',
 					body: 'CO2 threshold breach or stale sensor state goes through a time filter to Telegram without touching actuators.'
 				}
-			],
-			points: [
-				{
-					title: 'Inputs',
-					body: 'Signals the flow can use as data.',
-					items: [
-						{ name: 'SCD41 / DHT22', body: 'CO2, temperature and humidity for climate rules.' },
-						{ name: 'BME680 / SGP30', body: 'Environment, gas, TVOC and CO2eq as local inputs.' },
-						{
-							name: 'BLE',
-							body: 'Thermometers, presence and beacon decoder for wireless signals.'
-						},
-						{
-							name: 'GPIO / Analog',
-							body: 'A button, limit switch, touchRead() or ADC from the board profile.'
-						},
-						{
-							name: 'MQTT Input',
-							body: 'Select an MQTT catalog input; value, freshness and reading age.'
-						}
-					]
-				},
-				{
-					title: 'Conditions',
-					body: 'Nodes that turn data into a decision.',
-					items: [
-						{ name: 'Compare', body: 'Compares a value with a threshold, e.g. CO2 > 1200 ppm.' },
-						{ name: 'Hysteresis', body: 'Separate ON/OFF thresholds so devices do not chatter.' },
-						{
-							name: 'Math Scale / Formula',
-							body: 'Scaling and custom formulas, such as VPD.'
-						},
-						{ name: 'Condition Gate', body: 'Combines conditions before the output.' },
-						{ name: 'Time Filter / Trigger', body: 'Time windows, intervals and scheduled events.' }
-					]
-				},
-				{
-					title: 'Actions',
-					body: 'Outputs that perform the reaction.',
-					items: [
-						{ name: 'Shelly / GPIO / RF433', body: 'Local outputs for the selected installation.' },
-						{ name: 'MQTT Publish', body: 'Select a catalog output with a predefined payload.' },
-						{ name: 'Telegram', body: 'Alert with context and rule trace.' },
-						{
-							name: 'Device Webhooks',
-							body: 'Generic JSON or Discord webhook through the device queue.'
-						},
-						{ name: 'Browser Actions', body: 'Text to Speech, Tab Flash and Monitor in the panel.' }
-					]
-				},
-				{
-					title: 'Diagnostics',
-					body: 'Nodes that make automation trustworthy.',
-					items: [
-						{ name: 'System Snapshot', body: 'Memory, sensors, runtime and queue state.' },
-						{ name: 'Rule Telemetry', body: 'Which rule acted and why.' },
-						{ name: 'Automation Timeline', body: 'Local trace of decisions and state changes.' },
-						{ name: 'Executable Flow', body: 'Payload sent to the firmware runtime.' },
-						{ name: 'Support Snapshot', body: 'Feature, GPIO, time, BLE, MQTT and archive status.' }
-					]
-				}
-			]
-		},
-		diagnostics: {
-			kicker: 'Diagnostics',
-			title: 'Automation that leaves a trace',
-			copy: 'A local automation controller should not be a black box. GrowClip shows the decision from input, through condition, to action and helps separate healthy silence from a missing sensor.',
-			items: [
-				{
-					title: 'Automation Timeline',
-					body: 'A chronological decision log: trigger, rule, condition state, action health and dropped/truncated diagnostics.'
-				},
-				{
-					title: 'Rule Telemetry',
-					body: 'The flow shows which condition allowed an action, which blocked it and which trace was attached.'
-				},
-				{
-					title: 'System Snapshot',
-					body: 'Runtime, memory, MQTT, BLE, sensor and queue state in one observation point.'
-				},
-				{
-					title: 'Support bundle surface',
-					body: 'Feature status, GPIO inventory, time, BLE RTC, MQTT, Nodeflow export and archive state give support data without guessing.'
-				}
 			]
 		},
 		capabilities: {
 			kicker: 'Capabilities',
-			title: 'Features chosen for a real small growbox',
-			copy: 'The important question is not how many integrations can be listed, but whether they can build a stable rule that remains understandable later.',
+			title: 'What GrowClip can do',
+			copy: '',
 			items: [
 				{
-					title: 'Three Wi-Fi modes',
-					body: 'Device-owned network, router connection or both at once: local panel plus network connectivity.'
+					title: 'Sensors and inputs',
+					body: 'SCD41, DHT22, BME680, SGP30, DS18B20, BLE Thermometer, BLE Presence, BLE Beacon, GPIO/touchRead and analog.'
 				},
 				{
-					title: 'Local MQTT gateway',
-					body: 'The MQTT catalog defines inputs (topic, JSON path, freshness) and outputs (topic, payload, QoS/retain). Nodes select catalog entries. Shelly can operate locally without Home Assistant.'
+					title: 'Rules and control',
+					body: 'Compare, hysteresis, VPD, schedules, Shelly, GPIO, RF433 and manual control.'
 				},
 				{
-					title: 'Wide input layer',
-					body: 'SCD41, DHT22, BME680, SGP30, DS18B20, BLE Thermometer, BLE Presence, BLE Beacon, GPIO, analog and MQTT Input as rule sources.'
-				},
-				{
-					title: 'E-paper HMI',
-					body: 'Status, menu and quick manual actions beside the device without opening a laptop.'
-				},
-				{
-					title: 'Telegram worker',
-					body: 'Notifications and supported commands after configuring Telegram. Alert delivery was verified on a device; the service requires internet.'
-				},
-				{
-					title: 'Device Webhooks',
-					body: 'Configured outbound JSON or Discord webhooks. Inbound Discord commands are not part of the current beta.'
-				},
-				{
-					title: 'Time resilience',
-					body: 'NTP/manual time, hardware RTC as trusted backup and Xiaomi LYWSD03MMC with PVVX as degraded BLE backup.'
-				},
-				{
-					title: 'Manual override',
-					body: 'Selected outputs can be switched manually while keeping automation context visible.'
+					title: 'MQTT and networking',
+					body: 'MQTT catalog: topic, JSON path, freshness, QoS and retain. Wi-Fi AP/router/AP+router; no Home Assistant required.'
 				},
 				{
 					title: 'Zigbee — optional ESP32-C6',
-					body: 'An extension with a separate Zigbee coordinator. Integration and measurement mapping have been verified in selected configurations; compatibility depends on the device.'
+					body: 'Pair and manage devices; use measurements in rules and Data Logger. Selected configurations verified; device compatibility varies.'
 				},
 				{
-					title: 'ESP-NOW — telemetry reception',
-					body: 'A Nodeflow input receives data from configured peers. Command transmission and physical acknowledgements remain in development.'
+					title: 'History and charts',
+					body: 'Automation Timeline and Rule Telemetry explain decisions. Data Logger: measurement history, charts, CSV and microSD storage.'
 				},
 				{
-					title: 'Verified beta scope',
-					body: 'Graph save and reload, and MQTT → Nodeflow → Shelly ON/OFF were verified on hardware. Formal public sales release has not been qualified.'
+					title: 'E-paper HMI',
+					body: 'Menu, dashboard, manual actions and Charts — preview up to 64 recent samples of a selected measurement.'
 				},
 				{
-					title: 'Modular installation',
-					body: 'RF433, DS3231 RTC, SCD41, DS18B20, battery and enclosure are options, not hidden requirements.'
+					title: 'Notifications',
+					body: 'Telegram, Device Webhooks (outbound JSON/Discord only), Text to Speech in the panel.'
+				},
+				{
+					title: 'ESP-NOW',
+					body: 'Telemetry reception. Command transmission remains in development.'
 				}
 			]
 		},
 		hardware: {
 			kicker: 'Hardware',
-			title: 'The base unit works on its own, add-ons cover specific scenarios',
-			copy: 'The current prototype uses an ESP32-S3 module with e-paper HMI and enough memory headroom for the web panel and Nodeflow runtime. Add-ons are selected for the installation, not for a feature catalogue.',
+			title: 'ESP32-S3 and optional extensions',
+			copy: 'CrowPanel 2.9-inch e-paper prototype. Recommended 8 MB Flash and 8 MB PSRAM.',
 			baseTitle: 'Base variant',
-			baseItems: [
-				'ESP32-S3 with Wi-Fi, recommended 8 MB Flash and 8 MB PSRAM',
-				'Embedded web panel, LiteGraph editor and local Nodeflow runtime',
-				'Wi-Fi modes: AP, router or both at once',
-				'MQTT input/output, Shelly, Telegram, Device Webhooks, GPIO digital/touch/analog and local decisions',
-				'Automation Timeline, Rule Telemetry, System Snapshot; optional microSD archive',
-				'E-paper HMI with menu, dashboard and selected manual actions'
-			],
-			optionsTitle: 'Optional modules',
+			baseItems: ['ESP32-S3 · Wi-Fi/BLE · e-paper 128 × 296'],
+			optionsTitle: 'Modules and details',
 			options: [
-				{ title: 'RF433', status: 'Option', body: 'Control simple 433 MHz sockets.' },
-				{ title: 'Hardware RTC', status: 'Option', body: 'Trusted backup time for schedules.' },
 				{
-					title: 'PVVX Xiaomi LYWSD03MMC',
+					title: 'Sensors',
 					status: 'Option',
-					body: 'Degraded BLE time backup, not an authoritative source.'
+					body: 'Installation-specific selection; DS18B20 needs physical validation.'
 				},
-				{ title: 'SCD41', status: 'Option', body: 'CO2, temperature and humidity for climate.' },
-				{ title: 'DHT22', status: 'Option', body: 'Simple temperature and humidity sensor.' },
 				{
-					title: 'BME680',
+					title: 'Zigbee / RF433',
 					status: 'Option',
-					body: 'Temperature, humidity, pressure and gas without an IAQ claim.'
+					body: 'ESP32-C6 coordinator or 433 MHz radio module.'
 				},
-				{ title: 'SGP30', status: 'Option', body: 'TVOC and CO2eq as a basic local input.' },
 				{
-					title: 'DS18B20',
-					status: 'Validate',
-					body: 'Temperature probe that needs live validation for the unit.'
-				},
-				{ title: 'Li-ion battery', status: 'Option', body: 'Backup or test variant.' },
-				{
-					title: 'Enclosure',
+					title: 'Time',
 					status: 'Option',
-					body: 'Target mounting instead of a development module.'
+					body: 'RTC as trusted backup; Xiaomi PVVX as degraded BLE backup.'
+				},
+				{
+					title: 'Assembly and storage',
+					status: 'Option',
+					body: 'microSD, Li-ion battery, enclosure.'
 				}
 			],
-			technicalTitle: 'First beta base',
-			technicalBody:
-				'The current prototype is based on the Elecrow CrowPanel ESP32 2.9" e-paper HMI module. Confirmed specification: ESP32-S3-WROOM-1-N8R8, 8 MB Flash, 8 MB PSRAM, 128x296 e-paper, SPI, Wi-Fi, TF Card/BAT.',
-			sourceLabel: 'Elecrow specification source'
+			technicalTitle: 'Module specification',
+			technicalBody: 'Elecrow CrowPanel ESP32-S3-WROOM-1-N8R8, SPI, Wi-Fi, TF Card/BAT.',
+			sourceLabel: 'Elecrow specification'
 		},
 		beta: {
-			kicker: 'Private field beta',
-			title: 'A small beta for people who want to test local automation in practice',
-			copy: 'GrowClip is in private field testing. Configuration, modules and enclosure are not yet a public sales package.',
+			kicker: 'Beta',
+			title: 'Join private field testing',
+			copy: 'Describe your installation and required features. We will agree on the test scope and configuration.',
 			primaryCta: 'Ask about the beta module',
-			note: 'Public sales, pricing and final hardware configuration have not been announced.',
-			includesTitle: 'What the beta includes',
-			includes: [
-				{
-					title: 'Installation-specific configuration',
-					body: 'Sensors, outputs, Shelly/MQTT/Telegram/Webhooks and manual actions are agreed before the module is prepared.'
-				},
-				{
-					title: 'Local panel and flow',
-					body: 'Web panel, visible flow model, Automation Timeline, Rule Telemetry and System Snapshot.'
-				},
-				{
-					title: 'Clear limits',
-					body: 'A concrete list of what works in the chosen setup, what is optional and what stays outside the first batch.'
-				},
-				{
-					title: 'Support material',
-					body: 'Nodeflow export and a redacted support bundle for diagnosis without guessing.'
-				}
-			],
-			fitTitle: 'Good fit',
-			fit: [
-				{
-					title: 'You have several devices',
-					body: 'Sensor, fan, light, humidifier or Shelly currently work separately.'
-				},
-				{
-					title: 'You want local logic',
-					body: 'Core decisions should run beside the device, while internet only helps around the edges.'
-				},
-				{
-					title: 'You care about cause',
-					body: 'Rule history, traces and diagnostics matter more than a simple on/off switch.'
-				}
-			],
-			notForTitle: 'Not for everyone',
-			notFor: [
-				{
-					title: 'Not a sealed thermostat',
-					body: 'If you do not want to edit a flow after the guide, a simple on/off controller is a better fit.'
-				},
-				{
-					title: 'Not a grow knowledge replacement',
-					body: 'Automation helps maintain conditions but does not promise biological outcomes.'
-				},
-				{
-					title: 'Not a preset catalogue',
-					body: "Examples show the system language, not universal recipes for someone else's installation."
-				}
-			]
+			note: 'No public sales or announced price.'
 		},
 		showcase: {
-			kicker: 'Product surfaces',
-			title: 'Panel, flow and decision history are part of the product'
+			kicker: 'Interface',
+			title: 'Panel and decision history'
 		},
 		media: [
 			{
@@ -1152,47 +490,20 @@ export const productContent: Record<Locale, ProductContent> = {
 		],
 		faq: {
 			kicker: 'FAQ',
-			title: 'Short answers without overpromising',
+			title: 'Frequently asked questions',
 			items: [
 				{
-					question: 'Does GrowClip have to connect to a router?',
-					answer:
-						'Not always. It can create its own Wi-Fi network, connect to a router or run both modes at once. Automation rules run locally; internet is only needed for external services such as Telegram or NTP.'
-				},
-				{
-					question: 'Can Shelly and MQTT work without Home Assistant?',
-					answer:
-						'Yes, on a configured local network. Define input topics, JSON paths and freshness limits, and output topics and payloads in the MQTT catalog; select entries in the editor.'
-				},
-				{
-					question: 'Are RF433, RTC, SCD41, DS18B20 and battery required?',
-					answer:
-						'No. The base unit works on its own, while modules are options for a specific installation. DS18B20 needs live validation for the unit, BME680 is an environmental input without an IAQ claim, and SGP30 is a basic TVOC/CO2eq input without a baseline-persistence promise.'
-				},
-				{
-					question: 'Does decision history require the cloud?',
-					answer:
-						'No. Automation Timeline and Rule Telemetry are local traces of flow execution. With a microSD variant, history can be written to the card.'
-				},
-				{
 					question: 'Are demo flows ready-to-use presets?',
-					answer:
-						'No. The demo shows the GrowClip language: choose an input, processing and output, then connect the lines. Real thresholds, sensors, outputs and wiring must match the specific installation.'
-				},
-				{
-					question: 'Can a Xiaomi thermometer back up the clock?',
-					answer:
-						'Yes, a compatible Xiaomi LYWSD03MMC running PVVX firmware can act as a degraded BLE time backup. NTP or manual time are authoritative, while hardware RTC remains the preferred trusted backup.'
-				},
-				{
-					question: 'Can GrowClip send Discord alerts?',
-					answer:
-						'It can send Device Webhooks as generic JSON or Discord format when the webhook is configured for the unit. Webhook secrets must be redacted from support data.'
+					answer: 'No. Thresholds and wiring must match your installation.'
 				},
 				{
 					question: 'What if a sensor stops responding?',
 					answer:
-						'Missing readings, low BLE battery, signal loss or threshold breaches can become events that deserve a reaction. That way you know whether automation is quiet because conditions are good, or because a sensor disappeared.'
+						'Rules can account for missing readings and source state; diagnostics help identify the cause.'
+				},
+				{
+					question: 'Can it work without internet?',
+					answer: 'Core rules run locally. External services such as Telegram require internet.'
 				}
 			]
 		},

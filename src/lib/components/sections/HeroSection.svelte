@@ -1,7 +1,6 @@
 <!-- @runes -->
 <script lang="ts">
 	import type { ProductContent } from '$lib/content/product';
-	import CheckIcon from '~icons/tabler/check';
 	import MailIcon from '~icons/tabler/mail';
 	import ArrowRightIcon from '~icons/tabler/arrow-right';
 	import { contactHref } from '$lib/content/product';
@@ -19,14 +18,6 @@
 			<p class="hero-headline">{data.headline}</p>
 			<p class="hero-body">{data.copy}</p>
 			<p class="hero-availability">{data.availability}</p>
-			<ul class="hero-highlights">
-				{#each data.highlights as highlight (highlight)}
-					<li>
-						<CheckIcon aria-hidden="true" />
-						<span>{highlight}</span>
-					</li>
-				{/each}
-			</ul>
 
 			<div class="hero-actions">
 				<a class="primary-cta h-12 px-5 text-sm" href={contactHref}>
@@ -39,15 +30,5 @@
 				</a>
 			</div>
 		</div>
-
-		<aside class="hero-proof" data-reveal>
-			{#each data.stats as stat (stat.title)}
-				<div class="hero-stat">
-					<p class="hero-stat-value">{stat.value}</p>
-					<h2>{stat.title}</h2>
-					<p>{stat.body}</p>
-				</div>
-			{/each}
-		</aside>
 	</div>
 </section>

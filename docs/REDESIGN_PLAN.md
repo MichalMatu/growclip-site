@@ -9,3 +9,5 @@ Scope: public growclip-site only. Product UI is visual reference, not a modifica
 - [x] S4 — browser-only causal IPO for four scenarios, stale/offline inputs, midnight time gates, reset/resize and graph disposal, hydration-safe theme controls. QA: 16 Vitest, 20 Playwright; 12 repeated foundation checks; zero serious/critical accessibility findings. No hardware access.
 - [x] S5 — prerendered PL/EN metadata, canonical/social URLs and sitemap; mobile keyboard navigation and close-on-selection; build budgets (JS gzip 100 kB, CSS gzip 30 kB, gallery 200 kB, hero 100 kB, lazy vendor 1 MB).
 - [ ] S6 — visual screenshot comparison and full PL/EN light/dark responsive QA; record release evidence. Deploy separately only on explicit authorization.
+
+- [ ] S6C — compact landing requested after production screenshots: remove duplicated proof/problem/comparison/workflow and palette, single real-product gallery, concise beta and FAQ, refresh Zigbee and e-paper Charts claims. Re-run QA; prior visual evidence superseded by new candidate.

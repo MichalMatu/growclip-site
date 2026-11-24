@@ -2,11 +2,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import HeroSection from './sections/HeroSection.svelte';
-	import ProofSection from './sections/ProofSection.svelte';
-	import ProblemSection from './sections/ProblemSection.svelte';
-	import ComparisonSection from './sections/ComparisonSection.svelte';
-	import WorkflowSection from './sections/WorkflowSection.svelte';
-	import DiagnosticsSection from './sections/DiagnosticsSection.svelte';
 	import CapabilitiesSection from './sections/CapabilitiesSection.svelte';
 	import HardwareSection from './sections/HardwareSection.svelte';
 	import ShowcaseSection from './sections/ShowcaseSection.svelte';
@@ -136,7 +131,7 @@
 						demoObserver?.disconnect();
 					}
 				},
-				{ rootMargin: '360px 0px', threshold: 0.01 }
+				{ rootMargin: '0px', threshold: 0.01 }
 			);
 			demoObserver.observe(demoRootElement);
 		}
@@ -293,10 +288,6 @@
 	<main id="top">
 		<HeroSection data={content.hero} />
 
-		<ProofSection data={content.proof} />
-
-		<WorkflowSection data={content.workflow} />
-
 		<section id="demo" class="site-section demo-section">
 			<div class="demo-shell">
 				<div class="section-heading" data-reveal>
@@ -328,33 +319,7 @@
 					{/if}
 				</div>
 			</div>
-
-			<details class="demo-shell mt-6" data-reveal>
-				<summary class="details-summary">{content.demo.paletteToggle}</summary>
-				<div class="mt-4 grid gap-4 md:grid-cols-2">
-					{#each content.demo.points as point (point.title)}
-						<article class="compact-card">
-							<h3>{point.title}</h3>
-							<p>{point.body}</p>
-							<dl class="node-list">
-								{#each point.items as item (item.name)}
-									<div>
-										<dt>{item.name}</dt>
-										<dd>{item.body}</dd>
-									</div>
-								{/each}
-							</dl>
-						</article>
-					{/each}
-				</div>
-			</details>
 		</section>
-
-		<ProblemSection data={content.problem} />
-
-		<ComparisonSection data={content.comparison} />
-
-		<DiagnosticsSection data={content.diagnostics} slot={content.media[2]} />
 
 		<CapabilitiesSection data={content.capabilities} />
 

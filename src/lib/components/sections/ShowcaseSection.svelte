@@ -7,7 +7,7 @@
 		$props();
 </script>
 
-<section class="site-section media-section">
+<section id="diagnostics" class="site-section media-section">
 	<div class="section-heading" data-reveal>
 		<p class="kicker">{data.kicker}</p>
 		<h2 class="section-title">{data.title}</h2>

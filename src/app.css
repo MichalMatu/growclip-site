@@ -71,7 +71,7 @@ a {
 	}
 
 	.site-section {
-		@apply mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-18;
+		@apply mx-auto w-full max-w-7xl px-4 py-9 sm:px-6 lg:px-8 lg:py-12;
 	}
 
 	.site-grid {
@@ -228,7 +228,7 @@ a {
 .hero-section {
 	position: relative;
 	isolation: isolate;
-	min-height: clamp(620px, 82svh, 820px);
+	min-height: clamp(560px, 82svh, 700px);
 	overflow: hidden;
 	background: var(--ui-surface-page);
 }
@@ -270,7 +270,7 @@ a {
 .hero-copy h1 {
 	margin-top: 0.8rem;
 	color: var(--text-primary);
-	font-size: clamp(3.6rem, 8vw, 7.4rem);
+	font-size: clamp(3.2rem, 6.5vw, 6rem);
 	font-weight: 800;
 	line-height: 0.94;
 	letter-spacing: 0;
@@ -575,10 +575,6 @@ a {
 
 .media-grid {
 	@apply mt-8 grid gap-4 md:grid-cols-2;
-}
-
-.media-grid .asset-frame:first-child {
-	@apply md:col-span-2;
 }
 
 .beta-section {

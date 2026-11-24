@@ -15,3 +15,7 @@ Reviewed against current product source and accepted private field-beta evidence
 | Availability                                          | Private field beta; no public sales or pricing promise                                                                                                |
 
 Polish is the canonical root; English is a separate prerendered /en/ route. Both have explicit canonical and language alternates. Do not silently switch URL content from local storage. Keep parity tests and review wording whenever product contracts change.
+
+## Product refresh — 2026-11-24
+
+Product source: 64dc7713b0b360d5d56e04b36533a33285e4b688. The optional ESP32-C6 Zigbee coordinator supports device management and physically qualified measurement mapping in selected configurations (docs/main_docs/integrations/ZIGBEE_C6_INTEGRATION.md). E-paper Clay Charts previews one selected configured field, up to 64 recent matching raw samples within six hours (docs/main_docs/architecture/DATA_LOGGER.md); implementation confirmed, not a new physical qualification. Separate Data Logger measurements from Automation Archive decisions.

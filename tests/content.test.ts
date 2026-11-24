@@ -96,20 +96,13 @@ describe('product content', () => {
 		}
 	});
 
-	it('keeps the growbox workflow concrete in both languages', () => {
-		expect(flattenText(productContent.pl.workflow)).toContain('VPD');
-		expect(flattenText(productContent.pl.workflow)).toContain('touchRead');
-		expect(flattenText(productContent.en.workflow)).toContain('VPD');
-		expect(flattenText(productContent.en.workflow)).toContain('touchRead');
-	});
-
-	it('explains positioning and beta scope before the contact path', () => {
+	it('keeps concise feature coverage and private beta scope', () => {
 		for (const content of [productContent.pl, productContent.en]) {
-			expect(content.comparison.items).toHaveLength(3);
-			expect(flattenText(content.comparison)).toContain('MQTT');
-			expect(content.beta.includes).toHaveLength(4);
-			expect(flattenText(content.beta.includes)).toContain('Automation Timeline');
-			expect(flattenText(content.beta.includes)).toContain('Rule Telemetry');
+			expect(content.capabilities.items).toHaveLength(8);
+			expect(flattenText(content.capabilities)).toContain('Zigbee');
+			expect(flattenText(content.capabilities)).toContain('64');
+			expect(flattenText(content.capabilities)).toContain('Data Logger');
+			expect(content.faq.items).toHaveLength(3);
 		}
 	});
 
