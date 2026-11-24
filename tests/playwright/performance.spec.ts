@@ -43,32 +43,42 @@ test.describe('Marketing runtime sanity', () => {
 			)
 			.toBe(true);
 
-		const canvasState = await page.locator('#demo canvas').evaluate((canvas: HTMLCanvasElement) => {
-			const context = canvas.getContext('2d');
-			const width = canvas.width;
-			const height = canvas.height;
+		await expect(page.locator('#demo .device-panel-button')).toBeEnabled();
+		await expect(page.locator('#demo .text-red-200')).toHaveCount(0);
+		const readCanvas = () =>
+			page.locator('#demo canvas').evaluate((canvas: HTMLCanvasElement) => {
+				const context = canvas.getContext('2d');
+				const width = canvas.width;
+				const height = canvas.height;
 
-			if (!context || width === 0 || height === 0) {
-				return { width, height, paintedSamples: 0 };
-			}
-
-			const sample = context.getImageData(0, 0, width, height).data;
-			let paintedSamples = 0;
-			const stride = Math.max(4, Math.floor(sample.length / 800));
-
-			for (let index = 0; index < sample.length; index += stride - (stride % 4)) {
-				const alpha = sample[index + 3] ?? 0;
-				if (alpha > 0) {
-					paintedSamples += 1;
+				if (!context || width === 0 || height === 0) {
+					return { width, height, paintedSamples: 0 };
 				}
-			}
 
-			return { width, height, paintedSamples };
-		});
+				const sample = context.getImageData(0, 0, width, height).data;
+				let paintedSamples = 0;
+				const stride = Math.max(4, Math.floor(sample.length / 800));
 
-		expect(canvasState.width).toBeGreaterThan(100);
-		expect(canvasState.height).toBeGreaterThan(100);
-		expect(canvasState.paintedSamples).toBeGreaterThan(10);
+				for (let index = 0; index < sample.length; index += stride - (stride % 4)) {
+					const alpha = sample[index + 3] ?? 0;
+					if (alpha > 0) {
+						paintedSamples += 1;
+					}
+				}
+
+				return { width, height, paintedSamples };
+			});
+
+		// Loading the script and creating a canvas do not imply the first animation frame has painted.
+		await expect
+			.poll(
+				async () => {
+					const state = await readCanvas();
+					return state.width > 100 && state.height > 100 && state.paintedSamples > 10;
+				},
+				{ timeout: 10000, message: 'LiteGraph must paint a visible canvas' }
+			)
+			.toBe(true);
 		expect(pageErrors).toEqual([]);
 		expect(consoleErrors).toEqual([]);
 	});

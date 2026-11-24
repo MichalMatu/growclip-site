@@ -179,7 +179,6 @@ export type ProductContent = {
 
 export const locales = ['pl', 'en'] as const satisfies readonly Locale[];
 
-export const contactHref = 'mailto:hello@example.com?subject=GrowClip%20growbox%20setup';
 export const elecrowHref =
 	'https://www.elecrow.com/crowpanel-esp32-2-9-e-paper-hmi-display-with-128-296-resolution-black-white-color-driven-by-spi-interface.html';
 

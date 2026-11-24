@@ -24,6 +24,23 @@ test.describe('GrowClip marketing smoke', () => {
 		).toBeVisible();
 	});
 
+	test('initializes and switches every illustrative flow', async ({ page }) => {
+		await page.locator('#demo').scrollIntoViewIfNeeded();
+		const reset = page.locator('#demo .device-panel-button');
+		await expect(reset).toBeEnabled();
+		await expect(page.getByText('LiteGraph loading', { exact: true })).toHaveCount(0);
+		await expect(page.locator('#demo .text-red-200')).toHaveCount(0);
+		const tabs = page.locator('#demo .device-tab');
+		await expect(tabs).toHaveCount(4);
+		for (const tab of await tabs.all()) {
+			await tab.click();
+			await expect(tab).toHaveAttribute('aria-pressed', 'true');
+			await expect(page.locator('#demo .text-red-200')).toHaveCount(0);
+		}
+		await reset.click();
+		await expect(page.locator('#demo .text-red-200')).toHaveCount(0);
+	});
+
 	test('supports language and theme controls', async ({ page }) => {
 		await page.getByRole('button', { name: 'Ciemny' }).click();
 		await expect(page.locator('html')).toHaveAttribute('data-theme-mode', 'dark');

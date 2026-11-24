@@ -1,9 +1,6 @@
 export * from './product-base';
 
-import {
-	getProductContent as getBaseProductContent,
-	type ProductContent
-} from './product-base';
+import { getProductContent as getBaseProductContent, type ProductContent } from './product-base';
 
 const assetPrefix = import.meta.env.PROD ? '/growclip-site' : '';
 

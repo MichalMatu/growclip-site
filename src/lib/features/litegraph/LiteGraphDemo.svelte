@@ -3,10 +3,7 @@
 	import { onMount } from 'svelte';
 	import RefreshIcon from '~icons/tabler/refresh';
 
-	import {
-		LiteGraphDemoController,
-		type DemoExampleId
-	} from '$lib/features/litegraph/demoRuntime';
+	import { LiteGraphDemoController, type DemoExampleId } from '$lib/features/litegraph/demoRuntime';
 	import { loadLiteGraphClassic } from '$lib/features/litegraph/litegraphLoader';
 	import type { DemoFlowExample } from '$lib/content/product';
 

@@ -381,12 +381,12 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 				type: 'Sensor/MQTT Input',
 				pos: [24, 72],
 				properties: {
-					path: '$.vwc',
-					json_path: '$.vwc',
+					mqtt_id: 'soil_vwc',
 					label: 'MQTT Input',
 					status: 'fresh',
-					topic: 'growbox/soil',
-					value: 31.6
+					value: 31.6,
+					fresh: 1,
+					age_sec: 2
 				}
 			},
 			threshold: {
@@ -426,11 +426,8 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 				type: 'Devices/MQTT Publish',
 				pos: [800, 324],
 				properties: {
-					label: 'local state',
-					body: '{"pump":true}',
-					qos: 0,
-					retain: false,
-					topic: 'growbox/actions/pump'
+					mqtt_id: 'pump_state',
+					label: 'local state'
 				}
 			}
 		},
@@ -935,10 +932,6 @@ function compactCode(value: unknown): string {
 	return text.length > 10 ? `${text.slice(0, 4)}...${text.slice(-3)}` : text;
 }
 
-function readBody(properties: Record<string, unknown> | undefined): string {
-	return readString(properties, 'body', readString(properties, 'payload', '{"state":true}'));
-}
-
 function formatFreshValue(value: number): string {
 	return value >= 0.5 ? 'yes' : 'no';
 }
@@ -1176,10 +1169,9 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			this.properties = {
 				age_sec: 3,
 				fresh: 1,
-				json_path: '$.value',
+				mqtt_id: 'demo_input',
 				label: 'MQTT Input',
 				status: 'fresh',
-				topic: 'growbox/input',
 				value: 42
 			};
 			this.addOutput('value', SLOT_TYPES.NUMBER, valueSlot());
@@ -1194,8 +1186,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				ctx,
 				this,
 				[
-					`Topic: ${preview(readString(props, 'topic', 'growbox/input'), 32)}`,
-					`JSON value: ${preview(readString(props, 'json_path', '$.value'), 32)}`,
+					`Input: ${preview(readString(props, 'mqtt_id', 'demo_input'), 32)}`,
 					`Value: ${formatMetric(readNumber(props, 'value', 42), '%')}`,
 					`Fresh: ${formatFreshValue(readNumber(props, 'fresh', 1))} | age: ${formatMetric(readNumber(props, 'age_sec', 3), 's')}`,
 					`Status: ${readString(props, 'status', 'ok')}`
@@ -1490,13 +1481,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			super();
 			this.title = 'MQTT Publish';
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Devices/MQTT Publish');
-			this.properties = {
-				label: 'publish',
-				body: '{"state":true}',
-				qos: 0,
-				retain: false,
-				topic: 'growbox/action'
-			};
+			this.properties = { mqtt_id: 'demo_output', label: 'publish' };
 			this.addInput(SLOT_LABELS.TIME_OK, SLOT_TYPES.TIME, timeSlot());
 			this.addInput(SLOT_LABELS.CONDITION, SLOT_TYPES.BOOLEAN, conditionSlot());
 		}
@@ -1507,9 +1492,8 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				ctx,
 				this,
 				[
-					`topic: ${readString(props, 'topic', 'growbox/action')}`,
-					`payload: ${readBody(props)}`,
-					`qos: ${Math.round(readNumber(props, 'qos', 0))}  Retain: ${readBoolean(props, 'retain', false) ? 'yes' : 'no'}`,
+					`Output: ${preview(readString(props, 'mqtt_id', 'demo_output'), 32)}`,
+					'Payload: owned by MQTT catalog',
 					'Trigger: Both'
 				],
 				{ bottomPadding: 46, lineHeight: 16, maxLines: 4, topPadding: 36 }
@@ -1675,14 +1659,4 @@ export class LiteGraphDemoController {
 			return group;
 		});
 	}
-}
-
-export async function mountLiteGraphDemo(
-	target: HTMLCanvasElement,
-	initialExample: DemoExampleId = DEFAULT_EXAMPLE
-): Promise<LiteGraphDemoController> {
-	await import('$lib/features/litegraph/vendor/litegraph.js');
-	const controller = new LiteGraphDemoController(target, initialExample);
-	controller.reset(initialExample);
-	return controller;
 }

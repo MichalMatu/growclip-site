@@ -6,6 +6,10 @@ The firmware, device authentication, API implementation and full Nodeflow runtim
 
 **Live site:** https://michalmatu.github.io/growclip-site/
 
+## Source ownership
+
+This repository is the canonical source for the public marketing site. Product positioning and internal release evidence belong in the private GrowClip repository; do not maintain a second editable copy of this site there. Keep public claims aligned with the product's verified capabilities. The demo is illustrative and uses mock data only.
+
 ## Stack
 
 - SvelteKit 2 + static adapter
@@ -27,7 +31,9 @@ Verification:
 
 ```bash
 npm run check
+npm run lint
 npm run test
+npm run test:e2e
 npm run build
 ```
 
