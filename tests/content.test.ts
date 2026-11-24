@@ -145,6 +145,15 @@ describe('product content', () => {
 		expect(flattenText(productContent.en.capabilities)).toContain('MQTT catalog');
 	});
 
+	it('uses the four actual product captures in both locales', () => {
+		const names = ['nodeflow', 'hardware', 'event-detail', 'archive'];
+		for (const content of [productContent.pl, productContent.en]) {
+			expect(content.media.map((slot) => slot.src)).toEqual(
+				names.map((name) => '/media/product-' + name + '.webp')
+			);
+		}
+	});
+
 	it('does not ship placeholder copy in public media slots', () => {
 		for (const content of [productContent.pl, productContent.en]) {
 			const text = flattenText(content.media);

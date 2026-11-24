@@ -622,34 +622,28 @@ export const productContent: Record<Locale, ProductContent> = {
 		},
 		media: [
 			{
-				title: 'Panel webowy',
-				body: 'Dashboard, status runtime, ostatnie decyzje i ręczna kontrola w jednym miejscu.',
-				src: '/media/panel-mockup.svg',
-				alt: 'Mockup panelu webowego GrowClip z klimatem, akcjami i historią decyzji'
+				title: 'Edytor Nodeflow',
+				body: 'Rzeczywisty edytor reguł z demonstracyjnym przepływem klimatu.',
+				src: '/media/product-nodeflow.webp',
+				alt: 'Edytor Nodeflow GrowClip z przykładową regułą klimatu'
 			},
 			{
-				title: 'Flow automatyzacji',
-				body: 'Czytelne połączenie wejść, warunków, akcji i diagnostyki przed uruchomieniem na urządzeniu.',
-				src: '/media/flow-mockup.svg',
-				alt: 'Mockup flow automatyzacji GrowClip dla wentylacji klimatu'
+				title: 'Konfiguracja sprzętu',
+				body: 'Panel konfiguracji czujników i funkcji sprzętowych z danymi demonstracyjnymi.',
+				src: '/media/product-hardware.webp',
+				alt: 'Panel konfiguracji sprzętu GrowClip'
 			},
 			{
-				title: 'Automation Timeline',
-				body: 'Ślad decyzji zapisany lokalnie: trigger, reguła, warunek, akcja i trace.',
-				src: '/media/timeline-mockup.svg',
-				alt: 'Mockup timeline decyzji automatyzacji GrowClip'
+				title: 'Szczegóły zdarzenia',
+				body: 'Przykładowe zdarzenie: reguła, warunki, wynik i ślad decyzji.',
+				src: '/media/product-event-detail.webp',
+				alt: 'Okno szczegółów zdarzenia automatyzacji GrowClip'
 			},
 			{
 				title: 'Automation Archive',
-				body: 'Ilustracja archiwum zdarzeń automatyki; zapis na microSD zależy od konfiguracji. Trendy pomiarów to osobna funkcja Data Logger.',
-				src: '/media/automation-archive-mockup.svg',
-				alt: 'Mockup Automation Archive z trendami sensorów i decyzji'
-			},
-			{
-				title: 'Moduł prototypowy',
-				body: 'Zdjęcie referencyjne modułu e-paper HMI używanego w prototypie. Nie przedstawia gotowego urządzenia GrowClip.',
-				src: '/media/crowpanel-beta-module.jpg',
-				alt: 'Zdjęcie referencyjne modułu e-paper HMI prototypu'
+				body: 'Archiwum z przykładowymi zdarzeniami; zapis na microSD zależy od konfiguracji.',
+				src: '/media/product-archive.webp',
+				alt: 'Lista i wykres przykładowych zdarzeń Automation Archive'
 			}
 		],
 		faq: {
@@ -1132,34 +1126,28 @@ export const productContent: Record<Locale, ProductContent> = {
 		},
 		media: [
 			{
-				title: 'Web panel',
-				body: 'Dashboard, runtime status, recent decisions and manual control in one place.',
-				src: '/media/panel-mockup.svg',
-				alt: 'GrowClip web panel mockup with climate, actions and decision history'
+				title: 'Nodeflow editor',
+				body: 'Actual rule editor with an illustrative climate flow.',
+				src: '/media/product-nodeflow.webp',
+				alt: 'GrowClip Nodeflow editor showing an illustrative climate rule'
 			},
 			{
-				title: 'Automation flow',
-				body: 'Readable connection of inputs, conditions, actions and diagnostics before running on the device.',
-				src: '/media/flow-mockup.svg',
-				alt: 'GrowClip climate ventilation automation flow mockup'
+				title: 'Hardware configuration',
+				body: 'Hardware and sensor configuration panel using demonstration data.',
+				src: '/media/product-hardware.webp',
+				alt: 'GrowClip hardware configuration panel'
 			},
 			{
-				title: 'Automation Timeline',
-				body: 'Decision trace stored locally: trigger, rule, condition, action and trace.',
-				src: '/media/timeline-mockup.svg',
-				alt: 'GrowClip automation decision timeline mockup'
+				title: 'Event details',
+				body: 'Example event details: rule, conditions, outcome and decision trace.',
+				src: '/media/product-event-detail.webp',
+				alt: 'GrowClip automation event details dialog'
 			},
 			{
 				title: 'Automation Archive',
-				body: 'Illustration of the automation event archive; microSD storage depends on configuration. Measurement trends are a separate Data Logger function.',
-				src: '/media/automation-archive-mockup.svg',
-				alt: 'Automation Archive sensor and decision trend mockup'
-			},
-			{
-				title: 'Beta base module',
-				body: 'Reference image of the e-paper module used in the prototype, not a finished GrowClip device.',
-				src: '/media/crowpanel-beta-module.jpg',
-				alt: 'Reference image of the prototype e-paper HMI module'
+				body: 'Archive with example events; microSD storage depends on configuration.',
+				src: '/media/product-archive.webp',
+				alt: 'Automation Archive list and chart with example events'
 			}
 		],
 		faq: {

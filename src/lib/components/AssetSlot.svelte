@@ -7,14 +7,15 @@
 	}
 
 	let { slot }: Props = $props();
-	const isRasterPhoto = $derived(/\.(avif|jpe?g|png|webp)$/i.test(slot.src));
 </script>
 
-<figure class="asset-frame" class:asset-photo-frame={isRasterPhoto}>
+<figure class="asset-frame asset-photo-frame">
 	<img
 		src={slot.src}
 		alt={slot.alt}
-		class={['aspect-[3/2] w-full', isRasterPhoto ? 'object-cover' : 'object-contain']}
+		class="aspect-[8/5] w-full object-contain"
+		width={1440}
+		height={900}
 		loading="lazy"
 		decoding="async"
 	/>

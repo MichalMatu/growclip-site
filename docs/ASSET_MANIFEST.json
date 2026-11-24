@@ -1,0 +1,46 @@
+{
+	"productSource": "64dc7713b0b360d5d56e04b36533a33285e4b688",
+	"assets": [
+		{
+			"filename": "product-nodeflow.webp",
+			"width": 1440,
+			"height": 900,
+			"bytes": 33694,
+			"sha256": "42c6d33fe50a9fd0e5689cb5d92fd88175711d14a06dd29846d58a7df8654b94",
+			"originalPngSha256": "e841d662f66a0c0bf9d360a0a80c54b68e0f782f382b9aba0fdff521e72729ad",
+			"path": "static/media/product-nodeflow.webp"
+		},
+		{
+			"filename": "product-hardware.webp",
+			"width": 1440,
+			"height": 900,
+			"bytes": 44508,
+			"sha256": "9514631ea16ec0397764330965331bed05417ef0ed13826f8c552379567f9807",
+			"originalPngSha256": "152d1abcf854009f858f22cc845d82b5920002ecd3a7156ac81d4815e80d1d68",
+			"path": "static/media/product-hardware.webp"
+		},
+		{
+			"filename": "product-archive.webp",
+			"width": 1440,
+			"height": 900,
+			"bytes": 46066,
+			"sha256": "1ae159e298d4d3912d182ce27d4629e12e6af4155451286baaaf5af20f44ed71",
+			"originalPngSha256": "b33673246eb95f7b9d8a471c2a8d56f179d0e3520fda04ec4e45d28526b021e3",
+			"path": "static/media/product-archive.webp"
+		},
+		{
+			"filename": "product-event-detail.webp",
+			"width": 1440,
+			"height": 900,
+			"bytes": 36144,
+			"sha256": "b2077a769ed191f365c87488a65d88f0221b97b0b0ed93da760d7f10a50a66b5",
+			"originalPngSha256": "ce9b0fbc0ccc7b68319456d38a0cb9be2127fbd7b7ecfcaf464ad7379aa2adc0",
+			"path": "static/media/product-event-detail.webp"
+		}
+	],
+	"captureMode": "Actual product UI with synthetic fixtures; no physical device",
+	"captureReceipts": [
+		"growclip-site-redesign-s2-asset-capture-20261124-v1",
+		"growclip-site-redesign-s2-asset-capture-20261124-v2-archive"
+	]
+}
