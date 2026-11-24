@@ -291,12 +291,11 @@
 		<section id="demo" class="site-section demo-section">
 			<div class="demo-shell">
 				<div class="section-heading" data-reveal>
-					<p class="kicker">{content.demo.kicker}</p>
 					<h2 class="section-title">{content.demo.title}</h2>
 					<p class="section-copy">{content.demo.copy}</p>
 				</div>
 
-				<div bind:this={demoRootElement} class="mt-6" data-reveal>
+				<div bind:this={demoRootElement} class="mt-4" data-reveal>
 					{#if LiteGraphDemoComponent}
 						<LiteGraphDemoComponent
 							examples={content.demo.examples}
@@ -317,6 +316,21 @@
 							</div>
 						</article>
 					{/if}
+				</div>
+				<div class="node-library-preview mt-5" data-reveal>
+					<h3 class="text-sm font-semibold">{content.demo.libraryTitle}</h3>
+					<div class="mt-3 grid gap-3 sm:grid-cols-3">
+						{#each content.demo.libraryGroups as group (group.label)}
+							<div class="node-library-group">
+								<h4 class="text-xs font-semibold">{group.label}</h4>
+								<ul class="mt-2 flex flex-wrap gap-1.5">
+									{#each group.nodes as node (node)}
+										<li>{node}</li>
+									{/each}
+								</ul>
+							</div>
+						{/each}
+					</div>
 				</div>
 			</div>
 		</section>

@@ -69,6 +69,8 @@ export type ProductContent = {
 		loading: string;
 		reset: string;
 		examples: DemoFlowExample[];
+		libraryTitle: string;
+		libraryGroups: { label: string; nodes: string[] }[];
 	};
 	capabilities: {
 		kicker: string;
@@ -159,6 +161,15 @@ export const productContent: Record<Locale, ProductContent> = {
 			copy: 'Cztery symulacje w przeglądarce. Bez połączenia ze sprzętem; nie katalog gotowych konfiguracji.',
 			loading: 'Demo ładuje edytor dopiero przy tej sekcji',
 			reset: 'Reset demo',
+			libraryTitle: 'Biblioteka nodów — wybrane elementy',
+			libraryGroups: [
+				{
+					label: 'Wejścia',
+					nodes: ['SCD41', 'BLE Thermometer', 'MQTT Input', 'Gateway Input (Zigbee)']
+				},
+				{ label: 'Logika', nodes: ['Compare', 'Hysteresis', 'Formula', 'Time Filter'] },
+				{ label: 'Wyjścia', nodes: ['Shelly Plug', 'MQTT Publish', 'Telegram', 'GPIO Output'] }
+			],
 			examples: [
 				{
 					id: sharedDemoExampleIds[0],
@@ -356,6 +367,15 @@ export const productContent: Record<Locale, ProductContent> = {
 			copy: 'Four browser simulations. No device connection; not a catalogue of ready-to-use presets.',
 			loading: 'The editor loads only when this section is reached',
 			reset: 'Reset demo',
+			libraryTitle: 'Node library — selected nodes',
+			libraryGroups: [
+				{
+					label: 'Inputs',
+					nodes: ['SCD41', 'BLE Thermometer', 'MQTT Input', 'Gateway Input (Zigbee)']
+				},
+				{ label: 'Logic', nodes: ['Compare', 'Hysteresis', 'Formula', 'Time Filter'] },
+				{ label: 'Outputs', nodes: ['Shelly Plug', 'MQTT Publish', 'Telegram', 'GPIO Output'] }
+			],
 			examples: [
 				{
 					id: sharedDemoExampleIds[0],

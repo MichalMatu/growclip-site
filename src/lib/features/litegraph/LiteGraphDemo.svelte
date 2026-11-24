@@ -106,10 +106,7 @@
 
 <article class="asset-frame device-panel">
 	<div class="device-panel-header flex items-center justify-between gap-3 border-b px-4 py-3">
-		<div>
-			<p class="text-sm font-semibold text-neutral-50">Nodeflow LiteGraph demo</p>
-			<p class="mt-1 text-xs text-neutral-400">same node style as the device panel</p>
-		</div>
+		<p class="text-sm font-semibold text-neutral-50">Nodeflow / LiteGraph</p>
 		<button
 			type="button"
 			class="device-panel-button inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-xs font-semibold"
@@ -137,7 +134,7 @@
 				</button>
 			{/each}
 		</div>
-		<p class="mt-3 min-h-10 text-xs leading-5 text-neutral-300">
+		<p class="mt-2 text-xs leading-5 text-neutral-300">
 			{activeExampleBody}
 		</p>
 	</div>

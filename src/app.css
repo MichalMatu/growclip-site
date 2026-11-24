@@ -972,3 +972,25 @@ html[data-theme='business'] {
 .site-header .site-mobile-menu:not([open]) > ul {
 	display: none;
 }
+
+/* Compact, non-interactive preview of selected product nodes below the demo. */
+.node-library-preview {
+	border-top: 1px solid var(--border);
+	padding-top: 1rem;
+	color: var(--text-primary);
+}
+
+.node-library-group {
+	min-width: 0;
+	border-left: 2px solid var(--border);
+	padding-left: 0.75rem;
+}
+
+.node-library-group li {
+	border-radius: 0.25rem;
+	background: var(--ui-surface-card);
+	padding: 0.25rem 0.5rem;
+	color: var(--text-secondary);
+	font-size: 0.75rem;
+	line-height: 1.35;
+}

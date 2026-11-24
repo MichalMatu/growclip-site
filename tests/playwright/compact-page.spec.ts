@@ -4,6 +4,13 @@ for (const route of ['/', '/en/']) {
 		await page.goto(route);
 		await expect(page.locator('main > section')).toHaveCount(7);
 		await expect(page.locator('main > section').nth(1)).toHaveAttribute('id', 'demo');
+		await expect(page.locator('#demo .node-library-group')).toHaveCount(3);
+		await expect(page.locator('#demo .node-library-preview li')).toHaveCount(12);
+		await expect(page.locator('#demo .node-library-preview')).toContainText(
+			'Gateway Input (Zigbee)'
+		);
+		await expect(page.locator('#demo .node-library-preview')).toContainText('Formula');
+		await expect(page.locator('#demo .node-library-preview button')).toHaveCount(0);
 		await expect(page.locator('main img[src*="product-event-detail.webp"]')).toHaveCount(1);
 		await expect(page.locator('#capabilities')).toContainText('Zigbee');
 		await expect(page.locator('#capabilities')).toContainText('64');

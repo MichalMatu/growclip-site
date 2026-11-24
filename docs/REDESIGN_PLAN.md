@@ -11,3 +11,7 @@ Scope: public growclip-site only. Product UI is visual reference, not a modifica
 - [ ] S6 — visual screenshot comparison and full PL/EN light/dark responsive QA; record release evidence. Deploy separately only on explicit authorization.
 
 - [ ] S6C — compact landing requested after production screenshots: remove duplicated proof/problem/comparison/workflow and palette, single real-product gallery, concise beta and FAQ, refresh Zigbee and e-paper Charts claims. Re-run QA; prior visual evidence superseded by new candidate.
+
+- [x] S6C.1 — owner-approved demo-first visual refinement: unchanged hero, compact selected-node library immediately under the four browser examples, remove repeated demo labels. Product library preview is informational (not a claim that every listed node is implemented in the browser demo). Further capability grouping and technical hierarchy require owner review. Product reference 64dc7713b0b360d5d56e04b36533a33285e4b688.
+
+S6C.1 automated acceptance passed (15 Vitest, 34 Playwright including all 8 release matrix configurations); owner visual review remains pending. No production deployment.
