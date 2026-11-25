@@ -8,7 +8,7 @@ Scope: public growclip-site only. Product UI is visual reference, not a modifica
 - [x] S3 — extracted 11 typed landing sections, retained shared design tokens, prioritized workflow and interactive demo ahead of comparison. Integrated QA: 13 Vitest, 17 Playwright, zero serious/critical accessibility findings.
 - [x] S4 — browser-only causal IPO for four scenarios, stale/offline inputs, midnight time gates, reset/resize and graph disposal, hydration-safe theme controls. QA: 16 Vitest, 20 Playwright; 12 repeated foundation checks; zero serious/critical accessibility findings. No hardware access.
 - [x] S5 — prerendered PL/EN metadata, canonical/social URLs and sitemap; mobile keyboard navigation and close-on-selection; build budgets (JS gzip 100 kB, CSS gzip 30 kB, gallery 200 kB, hero 100 kB, lazy vendor 1 MB).
-- [ ] S6 — visual screenshot comparison and full PL/EN light/dark responsive QA; record release evidence. Deploy separately only on explicit authorization.
+- [x] S6 — MVP release accepted: automated visual captures and responsive QA, published candidate verified on the public site. Exhaustive manual screenshot comparison deferred by MVP scope.
 
 - [x] S6C — compact landing requested after production screenshots: remove duplicated proof/problem/comparison/workflow and palette, single real-product gallery, concise beta and FAQ, refresh Zigbee and e-paper Charts claims. Re-run QA; prior visual evidence superseded by new candidate.
 
@@ -26,4 +26,6 @@ S6C.3 contract QA passed at 17d2829315b7280252bbb0ae78a7a63b8fa0a9d1 (17 Vitest,
 
 - [x] S6C.4 — remove panel hover and reveal movement, align Number rendering and numeric behavior. Confirmed at a2fa0c8dbaafae42fd572210b30000975df209c8: 19 Vitest, 38 Playwright, both hover regression tests passed.
 
-Current status and remaining release work: [RELEASE_GATE.md](RELEASE_GATE.md). Historical acceptance counts above apply only to their original candidates; the latest capture manifest supersedes earlier screenshots.
+Final MVP release status (closed): [RELEASE_GATE.md](RELEASE_GATE.md). Historical acceptance counts above apply only to their original candidates; the latest capture manifest supersedes earlier screenshots.
+
+- [x] S6C.5 — closeout, cleanup, Compare and Hysteresis refinements; 19 Vitest and 39 Playwright passed at c54cdaafcba2cf7af10049e7d47307499c29c66c. Public behavioral smoke passed in four locale/theme combinations. Owner accepted MVP scope; no further implementation planned.
