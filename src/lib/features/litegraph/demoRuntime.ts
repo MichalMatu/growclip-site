@@ -784,7 +784,15 @@ function drawHysteresisBand(
 		ctx.globalAlpha = 1;
 		ctx.fillStyle = NODEFLOW_COLORS.TEXT;
 		ctx.textAlign = 'center';
-		ctx.fillText('ON and OFF must differ', x + width / 2, 92);
+		ctx.fillText(
+			!Number.isFinite(value)
+				? 'No input value'
+				: !Number.isFinite(onThreshold) || !Number.isFinite(offThreshold)
+					? 'Set thresholds'
+					: 'ON = OFF',
+			x + width / 2,
+			92
+		);
 		ctx.fillText('output fails closed', x + width / 2, 112);
 		ctx.restore();
 		return;
@@ -1405,6 +1413,21 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 		};
 	}
 
+	const compareOperators = ['<', '<=', '==', '!=', '>=', '>'] as const;
+	function compareButtons(size: Vec2) {
+		const width = 30,
+			height = 24,
+			gap = 4;
+		const left =
+			(size[0] - compareOperators.length * width - (compareOperators.length - 1) * gap) / 2;
+		return compareOperators.map((operator, i) => ({
+			operator,
+			x: left + i * (width + gap),
+			y: size[1] - 10 - height,
+			w: width,
+			h: height
+		}));
+	}
 	class CompareNode extends NodeBase {
 		constructor() {
 			super();
@@ -1420,7 +1443,41 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			const props = this.properties;
 			const operator = readString(props, 'operator', '>');
 			this.title = `${typeof props?.value === 'number' && Number.isFinite(props.value) ? formatFixed(props.value, 2) : '?'} ${operator} ${typeof props?.threshold === 'number' && Number.isFinite(props.threshold) ? formatFixed(props.threshold, 2) : '?'}`;
-			drawCenteredTextBlock(ctx, this, [props?.result === true ? 'TRUE' : 'FALSE']);
+			if (this.flags?.collapsed) return;
+			const size = this.size ?? METRIC_CARD_DEFAULT_SIZE;
+			const theme = resolveNodeflowCanvasTheme();
+			ctx.save();
+			ctx.font = '600 14px sans-serif';
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = props?.result === true ? NODEFLOW_COLORS.SUCCESS : NODEFLOW_COLORS.TEXT;
+			ctx.fillText(props?.result === true ? 'TRUE' : 'FALSE', size[0] / 2, 62);
+			for (const b of compareButtons(size)) {
+				drawRoundedRect(ctx, b.x, b.y, b.w, b.h, 4);
+				ctx.fillStyle = theme.widgetBackgroundColor;
+				ctx.fill();
+				ctx.strokeStyle =
+					b.operator === operator ? theme.widgetTextColor : theme.widgetOutlineColor;
+				ctx.lineWidth = b.operator === operator ? 2 : 1;
+				ctx.stroke();
+				ctx.fillStyle = theme.widgetTextColor;
+				ctx.font = '700 12px monospace';
+				ctx.fillText(b.operator, b.x + b.w / 2, b.y + b.h / 2);
+			}
+			ctx.restore();
+		};
+
+		onMouseDown = (event: { button: number }, local: unknown) => {
+			if (event.button !== 0 || this.flags?.collapsed || !Array.isArray(local)) return false;
+			const [x, y] = local;
+			const b = compareButtons(this.size ?? METRIC_CARD_DEFAULT_SIZE).find(
+				(b) => x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h
+			);
+			if (!b || !this.properties) return false;
+			this.properties.operator = b.operator;
+			this.onExecute();
+			this.setDirtyCanvas?.(true, true);
+			return true;
 		};
 
 		onExecute = () => {

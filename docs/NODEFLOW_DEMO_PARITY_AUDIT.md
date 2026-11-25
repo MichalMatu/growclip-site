@@ -22,3 +22,7 @@ Four scenarios: climate rising hysteresis; night humidity with overnight time ga
 Owner reported whole panel moving on hover and outdated Number styling. The shared `.asset-frame:hover` lift is excluded from the interactive canvas. Number uses the current default 280×140 geometry, 6px ring, continuous cyan/green/red ratio, theme track/body/text, numeric precision 0–2 and drag hint. Examples stack paired Number nodes to prevent overlap. Regression tests cover panel bounds and canvas offset on pointer-only hover and the gauge contract. Other card renderers remain a separate visual review; no claim of full renderer parity.
 
 The interactive demo root also opts out of the scroll-reveal transform. The hover test waits for page motion to settle, confirms the pointer is over the canvas, and compares document-space panel coordinates plus exact graph geometry.
+
+## Closeout candidate
+
+Compare adds the six product operator controls in the public-only simulation; Hysteresis differentiates invalid thresholds from missing input. The remaining device-specific card bodies are intentionally simplified. A visual comparison with the product gallery remains required, not inferred from test success.

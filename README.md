@@ -17,7 +17,7 @@ This repository is the canonical source for the public marketing site. Product p
 - Vite 5
 - TypeScript
 - Tailwind CSS 4 + DaisyUI
-- Vitest content checks
+- Vitest content and demo contract checks
 - Playwright + Axe smoke, responsive, visual and accessibility tests
 
 ## Run locally
@@ -39,6 +39,8 @@ npm run build
 
 Additional browser checks are available through the Playwright scripts in `package.json`.
 
+Current acceptance and release criteria: [docs/RELEASE_GATE.md](docs/RELEASE_GATE.md). Run full QA on the Local Agent. Keep routine changes on main with no automatic deployment; authorize publication separately.
+
 ## GitHub Pages
 
 Production builds use the `/growclip-site` base path. `.github/workflows/pages.yml` builds the static SvelteKit output and deploys the `build/` directory to GitHub Pages.
@@ -55,4 +57,4 @@ Public media lives in `static/media/`, including the hero artwork, product conce
 
 ## LiteGraph demo
 
-The demo under `src/lib/features/litegraph/` is marketing-only. It does not connect to an ESP32, save device flows, call private APIs or expose the full private Nodeflow runtime.
+The demo under `src/lib/features/litegraph/` is marketing-only. Four deterministic IPO examples use typed simulated inputs, interactive numeric thresholds and comparison operators. See [node parity audit](docs/NODEFLOW_DEMO_PARITY_AUDIT.md) for intentional differences and outstanding visual review. It does not connect to an ESP32, save device flows, call private APIs or expose the full private Nodeflow runtime.

@@ -10,7 +10,7 @@ Scope: public growclip-site only. Product UI is visual reference, not a modifica
 - [x] S5 — prerendered PL/EN metadata, canonical/social URLs and sitemap; mobile keyboard navigation and close-on-selection; build budgets (JS gzip 100 kB, CSS gzip 30 kB, gallery 200 kB, hero 100 kB, lazy vendor 1 MB).
 - [ ] S6 — visual screenshot comparison and full PL/EN light/dark responsive QA; record release evidence. Deploy separately only on explicit authorization.
 
-- [ ] S6C — compact landing requested after production screenshots: remove duplicated proof/problem/comparison/workflow and palette, single real-product gallery, concise beta and FAQ, refresh Zigbee and e-paper Charts claims. Re-run QA; prior visual evidence superseded by new candidate.
+- [x] S6C — compact landing requested after production screenshots: remove duplicated proof/problem/comparison/workflow and palette, single real-product gallery, concise beta and FAQ, refresh Zigbee and e-paper Charts claims. Re-run QA; prior visual evidence superseded by new candidate.
 
 - [x] S6C.1 — owner-approved demo-first visual refinement: unchanged hero, compact selected-node library immediately under the four browser examples, remove repeated demo labels. Product library preview is informational (not a claim that every listed node is implemented in the browser demo). Further capability grouping and technical hierarchy require owner review. Product reference 64dc7713b0b360d5d56e04b36533a33285e4b688.
 
@@ -20,4 +20,10 @@ S6C.1 automated acceptance passed (15 Vitest, 34 Playwright including all 8 rele
 
 S6C.2: automated acceptance of visual adapter and fullscreen controls, including denied-native viewport fallback with Escape; 15 Vitest and 36 Playwright. Owner visual review pending; no production deployment. Rollback source 0897aabba6e91ea53851cadf0c8c3ff692d2e7df.
 
-- [ ] S6C.3 — synchronize public demo contracts with product 64dc7713b0b360d5d56e04b36533a33285e4b688; separate simulated inputs from device operations, verify all four example graphs and fail-closed missing-data behavior. Public deployment remains separate.
+- [x] S6C.3 — synchronize public demo contracts with product 64dc7713b0b360d5d56e04b36533a33285e4b688; separate simulated inputs from device operations, verify all four example graphs and fail-closed missing-data behavior. Public deployment remains separate.
+
+S6C.3 contract QA passed at 17d2829315b7280252bbb0ae78a7a63b8fa0a9d1 (17 Vitest, 36 Playwright).
+
+- [x] S6C.4 — remove panel hover and reveal movement, align Number rendering and numeric behavior. Confirmed at a2fa0c8dbaafae42fd572210b30000975df209c8: 19 Vitest, 38 Playwright, both hover regression tests passed.
+
+Current status and remaining release work: [RELEASE_GATE.md](RELEASE_GATE.md). Historical acceptance counts above apply only to their original candidates; the latest capture manifest supersedes earlier screenshots.

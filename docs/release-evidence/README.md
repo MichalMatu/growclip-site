@@ -1,5 +1,3 @@
-# S6 visual evidence
+# Current release candidate visual evidence
 
-Eight compact contact sheets derived from the 32 actual Chromium screenshots captured by the release matrix. No external data or physical device access. Original files remain on the Local Agent; original and derivative hashes are in the manifest.
-
-Automated acceptance: 16 Vitest, 32 Playwright, 8/8 matrix configurations, no serious or critical accessibility findings; lint, typecheck and build passed. Visual review is pending. These images are documentation, not public website assets.
+Eight current demo JPEG captures, derived from 32 actual Chromium section screenshots. All 32 originals and hashes are listed in the manifest and retained in the Local Agent test-results directory. The previous contact sheets remain available in Git history. Automated checks passed: 19 Vitest, 39 Playwright, all eight PL/EN light/dark desktop/mobile matrix configurations, zero serious/critical accessibility findings, lint, typecheck and build. Visual inspection is still pending; these images are documentation, not public website assets.

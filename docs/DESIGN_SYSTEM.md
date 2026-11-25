@@ -7,5 +7,5 @@ The embedded product frontend owns the design foundation. This public site consu
 - Upstream blob: `068aa03b08a49b62dfbbd0419fbf33013e46673f`
 - Local snapshot: `src/lib/styles/growclip-tokens.css`
 - DaisyUI corporate (light), business (dark), and system selection; use shared semantic tokens instead of a second palette. Keep dependency versions aligned after explicit review.
-- Public layout, marketing typography and content are site-owned; the existing dark LiteGraph canvas is a documented exception pending the demo audit.
+- Public layout, marketing typography and content are site-owned; LiteGraph follows the selected light/dark canvas theme through the portable public adapter; device-specific renderers are independently simulated, not imported from the private application.
 - Update snapshot intentionally from a reviewed upstream revision; record blob and run visual QA. Do not edit the snapshot independently.
