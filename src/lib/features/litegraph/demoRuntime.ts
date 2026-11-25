@@ -6,7 +6,12 @@ import {
 	evaluateHysteresis,
 	type HysteresisEvaluation
 } from './demoLogic';
-import { NODEFLOW_COLORS, applyNodeflowCanvasTheme } from './nodeflowTheme';
+import {
+	NODEFLOW_COLORS,
+	applyNodeflowCanvasTheme,
+	resolveNodeflowCanvasTheme
+} from './nodeflowTheme';
+import { readGaugeValue, gaugeRatio, gaugeColor } from './numberGauge';
 
 type Vec2 = [number, number];
 
@@ -32,6 +37,11 @@ type LiteGraphGroup = {
 };
 
 type LiteGraphNodeBase = {
+	flags?: { collapsed?: boolean };
+	mouseOver?: boolean;
+	pos?: Vec2;
+	captureInput?: (capture: boolean) => void;
+	setDirtyCanvas?: (foreground: boolean, background?: boolean) => void;
 	addInput: (name: string, type: string, extra?: Record<string, unknown>) => void;
 	addOutput: (name: string, type: string, extra?: Record<string, unknown>) => void;
 	color?: string;
@@ -224,7 +234,7 @@ const BUTTON_STYLES = {
 const METRIC_CARD_DEFAULT_SIZE: Vec2 = [280, 140];
 const ACTION_CARD_DEFAULT_SIZE: Vec2 = [280, 156];
 const MQTT_PUBLISH_SIZE: Vec2 = [280, 172];
-const KNOB_SIZE: Vec2 = [140, 140];
+const KNOB_SIZE: Vec2 = [280, 140];
 const ACTION_CARD_INPUT_GUTTER = 104;
 const ACTION_CARD_BUTTON_HEIGHT = 24;
 const ACTION_CARD_BUTTON_WIDTH = 55;
@@ -284,13 +294,13 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			offThreshold: {
 				type: 'Input/Number',
-				pos: [214, 276],
+				pos: [24, 456],
 				title: 'OFF threshold',
 				properties: { max: 40, min: 10, precision: 1, value: 24.5 }
 			},
 			timeSource: {
 				type: 'Sensor/DS3231',
-				pos: [24, 452],
+				pos: [24, 636],
 				properties: { source: 'DS3231/NTP', time: '14:32:08' }
 			},
 			hysteresis: {
@@ -478,7 +488,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			timeSource: {
 				type: 'Sensor/DS3231',
-				pos: [24, 690],
+				pos: [24, 848],
 				properties: { source: 'DS3231/NTP', time: '18:18:22' }
 			},
 			co2Compare: {
@@ -522,7 +532,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			offlineZero: {
 				type: 'Input/Number',
-				pos: [214, 488],
+				pos: [24, 668],
 				title: 'offline = 0',
 				properties: { max: 1, min: 0, precision: 0, value: 0 }
 			},
@@ -1224,67 +1234,106 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 	}
 
 	class NumberInputNode extends NodeBase {
+		private previousY: number | null = null;
 		constructor() {
 			super();
 			this.title = 'Number';
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Input/Number');
-			this.properties = { max: 100, min: 0, precision: 1, value: 50 };
+			this.properties = { max: 100, min: 0, precision: 2, value: 50 };
 			this.addOutput(SLOT_LABELS.VALUE, SLOT_TYPES.NUMBER, valueSlot({ label: '' }));
 		}
-
 		onDrawForeground = (ctx: CanvasRenderingContext2D) => {
-			const props = this.properties;
-			const min = readNumber(props, 'min', 0);
-			const max = readNumber(props, 'max', 100);
-			const value = readNumber(props, 'value', 50);
-			const precision = Math.max(0, Math.round(readNumber(props, 'precision', 1)));
-			const ratio = Math.max(0, Math.min(1, (value - min) / Math.max(1, max - min)));
+			if (this.flags?.collapsed) return;
 			const size = this.size ?? KNOB_SIZE;
-			const cx = size[0] * 0.5;
-			const cy = size[1] * 0.5 + 5;
-			const radius = Math.min(size[0], size[1]) * 0.38;
-			const innerRadius = radius * 0.72;
-			const startAngle = Math.PI * 0.75;
-			const totalSweep = Math.PI * 1.5;
-			const valueAngle = startAngle + totalSweep * ratio;
-			const arcColor =
-				ratio > 0.72 ? NODEFLOW_COLORS.ERROR : ratio > 0.45 ? NODEFLOW_COLORS.WARNING : '#22d3ee';
-
+			const value = readGaugeValue(this.properties);
+			const ratio = gaugeRatio(this.properties);
+			const color = gaugeColor(ratio);
+			const theme = resolveNodeflowCanvasTheme();
+			const cx = size[0] / 2,
+				cy = size[1] / 2 + 5;
+			const radius = Math.min(...size) * 0.38,
+				inner = radius - 6;
+			const start = Math.PI * 0.75,
+				end = start + Math.PI * 1.5;
+			const ring = (angle: number, fill: string) => {
+				ctx.beginPath();
+				ctx.arc(cx, cy, radius, start, angle);
+				ctx.arc(cx, cy, inner, angle, start, true);
+				ctx.closePath();
+				ctx.fillStyle = fill;
+				ctx.fill();
+			};
 			ctx.save();
+			ring(end, theme.widgetBackgroundColor);
+			if (ratio > 0.001) {
+				ctx.shadowColor = color;
+				ctx.shadowBlur = 10;
+				ctx.shadowOffsetX = 0;
+				ctx.shadowOffsetY = 0;
+				ring(start + Math.PI * 1.5 * ratio, color);
+				ctx.shadowColor = 'transparent';
+				ctx.shadowBlur = 0;
+			}
 			ctx.beginPath();
-			ctx.arc(cx, cy, radius, startAngle, startAngle + totalSweep);
-			ctx.arc(cx, cy, innerRadius, startAngle + totalSweep, startAngle, true);
-			ctx.closePath();
-			ctx.fillStyle = 'rgba(255,255,255,0.08)';
+			ctx.arc(cx, cy, inner - 4, 0, Math.PI * 2);
+			ctx.fillStyle = theme.nodeBackgroundColor;
 			ctx.fill();
-
-			ctx.shadowColor = arcColor;
-			ctx.shadowBlur = 10;
-			ctx.beginPath();
-			ctx.arc(cx, cy, radius, startAngle, valueAngle);
-			ctx.arc(cx, cy, innerRadius, valueAngle, startAngle, true);
-			ctx.closePath();
-			ctx.fillStyle = arcColor;
-			ctx.fill();
-
-			ctx.shadowColor = 'transparent';
-			ctx.shadowBlur = 0;
-			ctx.beginPath();
-			ctx.arc(cx, cy, innerRadius - 4, 0, Math.PI * 2);
-			ctx.fillStyle = 'rgba(0,0,0,0.3)';
-			ctx.fill();
-
-			ctx.fillStyle = arcColor;
-			ctx.font = `300 ${Math.floor(radius * 0.55)}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+			ctx.fillStyle = theme.widgetTextColor;
+			ctx.font =
+				'300 ' +
+				Math.min(36, Math.floor(radius * 0.55)) +
+				'px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
-			ctx.fillText(value.toFixed(precision), cx, cy);
+			ctx.fillText(value === null ? '—' : String(value), cx, cy, Math.max(24, (inner - 8) * 2));
+			if (this.mouseOver) {
+				ctx.fillStyle = theme.widgetSecondaryTextColor;
+				ctx.font =
+					'300 ' +
+					Math.min(15, Math.floor(radius * 0.2)) +
+					'px -apple-system, BlinkMacSystemFont, sans-serif';
+				ctx.fillText('drag ↕', cx, cy + radius * 0.45);
+			}
 			ctx.restore();
 		};
-
-		onExecute = () => {
-			this.setOutputData(0, readNumber(this.properties, 'value', 50));
+		onMouseDown = (event: { button: number; canvasX: number; canvasY: number }) => {
+			if (event.button !== 0 || !this.pos || readGaugeValue(this.properties) === null) return false;
+			const size = this.size ?? KNOB_SIZE;
+			const x = event.canvasX - this.pos[0],
+				y = event.canvasY - this.pos[1];
+			if (
+				y < 20 ||
+				Math.hypot(x - size[0] / 2, y - size[1] / 2 - 5) > Math.min(...size) * 0.38 + 10
+			)
+				return false;
+			this.previousY = event.canvasY;
+			this.captureInput?.(true);
+			return true;
 		};
+		onMouseMove = (event: { buttons?: number; canvasY: number }) => {
+			if (this.previousY === null) return;
+			if (event.buttons === 0) {
+				this.onMouseUp();
+				return;
+			}
+			const p = this.properties;
+			if (!p || typeof p.min !== 'number' || typeof p.max !== 'number') return;
+			const ratio = Math.max(
+				0,
+				Math.min(1, gaugeRatio(p) - (event.canvasY - this.previousY) * 0.01)
+			);
+			const value = readGaugeValue({ ...p, value: p.min + (p.max - p.min) * ratio });
+			this.previousY = event.canvasY;
+			if (value === null) return;
+			p.value = value;
+			this.onExecute();
+			this.setDirtyCanvas?.(true, true);
+		};
+		onMouseUp = () => {
+			this.previousY = null;
+			this.captureInput?.(false);
+		};
+		onExecute = () => this.setOutputData(0, readGaugeValue(this.properties));
 	}
 
 	class TimeSourceNode extends NodeBase {
@@ -1695,7 +1744,7 @@ export class LiteGraphDemoController {
 			throw new Error(`LiteGraph node was not registered: ${spec.type}`);
 		}
 		node.pos = [spec.pos[0], spec.pos[1] + DEMO_GROUP_HEADER_SPACE];
-		if (spec.title) {
+		if (spec.title && spec.type !== 'Input/Number') {
 			node.title = spec.title;
 		}
 		node.demoType = spec.type;

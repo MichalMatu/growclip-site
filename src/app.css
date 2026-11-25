@@ -150,7 +150,7 @@ a {
 	.compact-card:hover,
 	.proof-item:hover,
 	.workflow-step:hover,
-	.asset-frame:hover,
+	.asset-frame:not(.device-panel):hover,
 	.faq-item:hover {
 		border-color: var(--accent-border);
 		box-shadow: var(--shadow-card-hover);
@@ -766,6 +766,7 @@ a {
 }
 
 .device-panel {
+	transition: none;
 	background: var(--device-surface);
 	border-color: var(--device-border);
 	color: var(--device-text);

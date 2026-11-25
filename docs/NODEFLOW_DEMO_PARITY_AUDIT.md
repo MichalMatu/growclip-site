@@ -16,3 +16,9 @@ Scope: twelve registered public demo node types, four examples, catalog preview,
 | nodes/output/shelly_plug.ts, telegram_notification.ts, mqtt_publish.ts    | Keep typed time/condition inputs; explicit AUTO/AND demo configuration; show rule match rather than claim an actual message was sent.                                                                        |
 
 Four scenarios: climate rising hysteresis; night humidity with overnight time gate; MQTT soil value with freshness rejection; CO2 and independent numeric BLE online comparison. Product catalog/library remains informational, not exhaustive; the six BLE fixture fields are a selected catalog projection, not the full device configurator. The public demo intentionally models AND-connected rules only, not optional/disconnected input modes, all output edge policies, hardware configuration, or physical execution. Visual controls are illustrative; no real actuation. Remaining visual parity review: current product-specific card rendering and browser matrix screenshots. No product source modifications.
+
+## Visual follow-up
+
+Owner reported whole panel moving on hover and outdated Number styling. The shared `.asset-frame:hover` lift is excluded from the interactive canvas. Number uses the current default 280×140 geometry, 6px ring, continuous cyan/green/red ratio, theme track/body/text, numeric precision 0–2 and drag hint. Examples stack paired Number nodes to prevent overlap. Regression tests cover panel bounds and canvas offset on pointer-only hover and the gauge contract. Other card renderers remain a separate visual review; no claim of full renderer parity.
+
+The interactive demo root also opts out of the scroll-reveal transform. The hover test waits for page motion to settle, confirms the pointer is over the canvas, and compares document-space panel coordinates plus exact graph geometry.

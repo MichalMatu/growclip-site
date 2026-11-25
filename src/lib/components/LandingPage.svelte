@@ -295,7 +295,7 @@
 					<p class="section-copy">{content.demo.copy}</p>
 				</div>
 
-				<div bind:this={demoRootElement} class="mt-4" data-reveal>
+				<div bind:this={demoRootElement} class="mt-4">
 					{#if LiteGraphDemoComponent}
 						<LiteGraphDemoComponent
 							examples={content.demo.examples}
