@@ -171,7 +171,7 @@ export const productContent: Record<Locale, ProductContent> = {
 			libraryGroups: [
 				{
 					label: 'Wejścia',
-					nodes: ['SCD41', 'BLE Thermometer', 'MQTT Input', 'Gateway Input (Zigbee)']
+					nodes: ['SCD41', 'BLE Sensor', 'MQTT Input', 'Gateway Input (Zigbee)']
 				},
 				{ label: 'Logika', nodes: ['Compare', 'Hysteresis', 'Formula', 'Time Filter'] },
 				{ label: 'Wyjścia', nodes: ['Shelly Plug', 'MQTT Publish', 'Telegram', 'GPIO Output'] }
@@ -380,7 +380,7 @@ export const productContent: Record<Locale, ProductContent> = {
 			libraryGroups: [
 				{
 					label: 'Inputs',
-					nodes: ['SCD41', 'BLE Thermometer', 'MQTT Input', 'Gateway Input (Zigbee)']
+					nodes: ['SCD41', 'BLE Sensor', 'MQTT Input', 'Gateway Input (Zigbee)']
 				},
 				{ label: 'Logic', nodes: ['Compare', 'Hysteresis', 'Formula', 'Time Filter'] },
 				{ label: 'Outputs', nodes: ['Shelly Plug', 'MQTT Publish', 'Telegram', 'GPIO Output'] }

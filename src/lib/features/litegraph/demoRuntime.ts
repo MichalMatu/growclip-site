@@ -1,4 +1,11 @@
-import { compareDemoValues, demoTimeAllowed, demoOutputActive } from './demoLogic';
+import {
+	compareDemoValues,
+	demoOutputActive,
+	demoTimeSignal,
+	demoFilterSignal,
+	evaluateHysteresis,
+	type HysteresisEvaluation
+} from './demoLogic';
 import { NODEFLOW_COLORS, applyNodeflowCanvasTheme } from './nodeflowTheme';
 
 type Vec2 = [number, number];
@@ -233,10 +240,10 @@ const NODEFLOW_STYLE = {
 		if (type === 'Input/Number') {
 			return [...KNOB_SIZE] as Vec2;
 		}
-		if (type === 'Sensor/Time Source (DS3231)') {
+		if (type === 'Sensor/DS3231') {
 			return [280, 140];
 		}
-		if (type === 'Sensor/BLE Thermometer') {
+		if (type === 'Sensor/BLE Sensor') {
 			return [340, 140];
 		}
 		if (type === 'Sensor/MQTT Input') {
@@ -282,7 +289,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 				properties: { max: 40, min: 10, precision: 1, value: 24.5 }
 			},
 			timeSource: {
-				type: 'Sensor/Time Source (DS3231)',
+				type: 'Sensor/DS3231',
 				pos: [24, 452],
 				properties: { source: 'DS3231/NTP', time: '14:32:08' }
 			},
@@ -294,7 +301,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			time: {
 				type: 'Processing/Time Filter',
 				pos: [438, 380],
-				properties: { from: '08:00', result: true, to: '22:00' }
+				properties: { fromHour: 8, fromMinute: 0, result: true, toHour: 22, toMinute: 0 }
 			},
 			fan: {
 				type: 'Devices/Shelly Plug',
@@ -333,10 +340,12 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 	nightHumidity: {
 		nodes: {
 			ble: {
-				type: 'Sensor/BLE Thermometer',
+				type: 'Sensor/BLE Sensor',
 				pos: [24, 54],
 				title: 'Canopy BLE',
 				properties: {
+					sensor_id: 'canopy_ble',
+					age_sec: 2,
 					battery: 88,
 					humidity: 54.2,
 					online: true,
@@ -351,7 +360,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 				properties: { max: 90, min: 30, precision: 0, value: 58 }
 			},
 			timeSource: {
-				type: 'Sensor/Time Source (DS3231)',
+				type: 'Sensor/DS3231',
 				pos: [24, 466],
 				properties: { source: 'DS3231/NTP', time: '23:41:12' }
 			},
@@ -363,13 +372,13 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			time: {
 				type: 'Processing/Time Filter',
 				pos: [438, 320],
-				properties: { from: '22:00', result: true, to: '06:00' }
+				properties: { fromHour: 22, fromMinute: 0, result: true, toHour: 6, toMinute: 0 }
 			},
 			socket: {
 				type: 'Devices/433MHz Socket',
 				pos: [840, 78],
 				title: 'RF433 Mister',
-				properties: { codeOff: '8129', codeOn: '8132', label: 'RF433 Mister' }
+				properties: { device_id: 'mister', label: 'RF433 Mister', mode: 'and', action_mode: 'auto' }
 			},
 			alert: {
 				type: 'Devices/Telegram Notification',
@@ -409,7 +418,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 				properties: { max: 80, min: 5, precision: 0, value: 32 }
 			},
 			timeSource: {
-				type: 'Sensor/Time Source (DS3231)',
+				type: 'Sensor/DS3231',
 				pos: [24, 492],
 				properties: { source: 'System/RTC', time: '09:05:44' }
 			},
@@ -421,7 +430,7 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			time: {
 				type: 'Processing/Time Filter',
 				pos: [438, 312],
-				properties: { from: '07:00', result: true, to: '21:00' }
+				properties: { fromHour: 7, fromMinute: 0, result: true, toHour: 21, toMinute: 0 }
 			},
 			pump: {
 				type: 'Devices/Shelly Plug',
@@ -463,13 +472,13 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			},
 			co2Limit: {
 				type: 'Input/Number',
-				pos: [24, 288],
+				pos: [24, 488],
 				title: 'CO2 limit',
 				properties: { max: 2500, min: 400, precision: 0, value: 1200 }
 			},
 			timeSource: {
-				type: 'Sensor/Time Source (DS3231)',
-				pos: [24, 512],
+				type: 'Sensor/DS3231',
+				pos: [24, 690],
 				properties: { source: 'DS3231/NTP', time: '18:18:22' }
 			},
 			co2Compare: {
@@ -478,10 +487,12 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 				properties: { operator: '>', threshold: 1200, valueLabel: 'co2 ppm' }
 			},
 			ble: {
-				type: 'Sensor/BLE Thermometer',
-				pos: [438, 292],
+				type: 'Sensor/BLE Sensor',
+				pos: [24, 272],
 				title: 'Rack BLE',
 				properties: {
+					sensor_id: 'rack_ble',
+					age_sec: 120,
 					battery: 12,
 					humidity: 62.5,
 					online: false,
@@ -492,9 +503,9 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			time: {
 				type: 'Processing/Time Filter',
 				pos: [438, 532],
-				properties: { from: '00:00', result: true, to: '23:59' }
+				properties: { fromHour: 0, fromMinute: 0, result: true, toHour: 23, toMinute: 59 }
 			},
-			offlineAlert: {
+			co2Alert: {
 				type: 'Devices/Telegram Notification',
 				pos: [920, 68],
 				title: 'CO2 Alert',
@@ -504,14 +515,25 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 					message: 'CO2 above configured limit'
 				}
 			},
-			batteryAlert: {
+			offlineCompare: {
+				type: 'Processing/Compare',
+				pos: [438, 292],
+				properties: { operator: '==', threshold: 0, valueLabel: 'online' }
+			},
+			offlineZero: {
+				type: 'Input/Number',
+				pos: [214, 488],
+				title: 'offline = 0',
+				properties: { max: 1, min: 0, precision: 0, value: 0 }
+			},
+			sensorAlert: {
 				type: 'Devices/Telegram Notification',
 				pos: [920, 340],
 				title: 'Sensor Alert',
 				properties: {
 					edge: 'both',
 					label: 'Sensor Alert',
-					message: 'BLE thermometer offline'
+					message: 'BLE sensor offline'
 				}
 			}
 		},
@@ -519,10 +541,12 @@ const DEMO_EXAMPLES: Record<DemoExampleId, DemoExample> = {
 			{ from: 'scd41', fromSlot: 2, to: 'co2Compare', toSlot: 0 },
 			{ from: 'co2Limit', fromSlot: 0, to: 'co2Compare', toSlot: 1 },
 			{ from: 'timeSource', fromSlot: 0, to: 'time', toSlot: 0 },
-			{ from: 'time', fromSlot: 0, to: 'offlineAlert', toSlot: 0 },
-			{ from: 'time', fromSlot: 0, to: 'batteryAlert', toSlot: 0 },
-			{ from: 'co2Compare', fromSlot: 0, to: 'offlineAlert', toSlot: 1 },
-			{ from: 'ble', fromSlot: 5, to: 'batteryAlert', toSlot: 1 }
+			{ from: 'time', fromSlot: 0, to: 'co2Alert', toSlot: 0 },
+			{ from: 'time', fromSlot: 0, to: 'sensorAlert', toSlot: 0 },
+			{ from: 'co2Compare', fromSlot: 0, to: 'co2Alert', toSlot: 1 },
+			{ from: 'ble', fromSlot: 4, to: 'offlineCompare', toSlot: 0 },
+			{ from: 'offlineZero', fromSlot: 0, to: 'offlineCompare', toSlot: 1 },
+			{ from: 'offlineCompare', fromSlot: 0, to: 'sensorAlert', toSlot: 1 }
 		]
 	}
 };
@@ -556,47 +580,6 @@ function readBoolean(
 ): boolean {
 	const value = properties?.[key];
 	return typeof value === 'boolean' ? value : fallback;
-}
-
-type HysteresisEvaluation = {
-	direction: 'falling' | 'rising' | null;
-	state: boolean;
-	valid: boolean;
-};
-
-function evaluateHysteresis(
-	value: number,
-	onThreshold: number,
-	offThreshold: number,
-	previousState: boolean
-): HysteresisEvaluation {
-	if (
-		!Number.isFinite(value) ||
-		!Number.isFinite(onThreshold) ||
-		!Number.isFinite(offThreshold) ||
-		onThreshold === offThreshold
-	) {
-		return { direction: null, state: false, valid: false };
-	}
-
-	if (onThreshold > offThreshold) {
-		return {
-			direction: 'rising',
-			state: previousState ? value > offThreshold : value >= onThreshold,
-			valid: true
-		};
-	}
-
-	return {
-		direction: 'falling',
-		state: previousState ? value < offThreshold : value <= onThreshold,
-		valid: true
-	};
-}
-
-function readInputNumber(node: LiteGraphNodeBase, slot: number, fallback: number): number {
-	const value = node.getInputData(slot);
-	return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
 }
 
 function clipTextToWidth(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string {
@@ -940,23 +923,14 @@ function preview(value: unknown, limit = 42): string {
 	return text.length > limit ? `${text.slice(0, limit - 1)}...` : text;
 }
 
-function compactCode(value: unknown): string {
-	const text = String(value || '');
-	return text.length > 10 ? `${text.slice(0, 4)}...${text.slice(-3)}` : text;
-}
-
 function formatFreshValue(value: number): string {
 	return value >= 0.5 ? 'yes' : 'no';
 }
 
-function statusText(online: boolean): string {
-	return online ? 'Status online' : 'Status stale 2m';
-}
-
 function timeWindowFromProperties(properties: Record<string, unknown> | undefined): string {
-	const from = readString(properties, 'from', '08:00');
-	const to = readString(properties, 'to', '18:00');
-	return `${from} - ${to}`;
+	const format = (h: unknown, m: unknown) =>
+		`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+	return `${format(properties?.fromHour, properties?.fromMinute)} - ${format(properties?.toHour, properties?.toMinute)}`;
 }
 
 function installNodeflowStyle(win: LiteGraphWindow) {
@@ -1103,7 +1077,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			this.title = 'Air Quality';
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Sensor/SCD41');
 			this.properties = { co2: 720, humidity: 62, temperature: 25.4 };
-			this.addOutput('temperature', SLOT_TYPES.NUMBER, valueSlot({ label: 'temp' }));
+			this.addOutput('temperature', SLOT_TYPES.NUMBER, valueSlot({ label: 'Temperature' }));
 			this.addOutput('humidity', SLOT_TYPES.NUMBER, valueSlot());
 			this.addOutput('co2', SLOT_TYPES.NUMBER, valueSlot());
 		}
@@ -1131,30 +1105,39 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 
 		onExecute = () => {
 			const props = this.properties;
-			this.setOutputData(0, readNumber(props, 'temperature', 25.4));
-			this.setOutputData(1, readNumber(props, 'humidity', 62.0));
-			this.setOutputData(2, readNumber(props, 'co2', 720));
+			for (const [index, field] of ['temperature', 'humidity', 'co2'].entries()) {
+				const value = props?.[field];
+				this.setOutputData(
+					index,
+					props?.fresh !== false && typeof value === 'number' && Number.isFinite(value)
+						? value
+						: null
+				);
+			}
 		};
 	}
 
-	class BleThermometerNode extends NodeBase {
+	class BleSensorNode extends NodeBase {
 		constructor() {
 			super();
-			this.title = 'BLE Thermometer';
-			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Sensor/BLE Thermometer');
+			this.title = 'BLE Sensor';
+			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Sensor/BLE Sensor');
 			this.properties = {
+				sensor_id: 'demo_ble',
+				field_ids: ['temperature', 'humidity', 'battery', 'rssi', 'online', 'age_sec'],
+				age_sec: 2,
 				battery: 88,
 				humidity: 60.2,
 				online: true,
 				rssi: -64,
 				temperature: 24.8
 			};
-			this.addOutput('temperature', SLOT_TYPES.NUMBER, valueSlot({ label: 'temp' }));
-			this.addOutput('humidity', SLOT_TYPES.NUMBER, valueSlot({ label: 'hum' }));
-			this.addOutput('battery', SLOT_TYPES.NUMBER, valueSlot({ label: 'bat' }));
+			this.addOutput('temperature', SLOT_TYPES.NUMBER, valueSlot({ label: 'Temperature' }));
+			this.addOutput('humidity', SLOT_TYPES.NUMBER, valueSlot({ label: 'Humidity' }));
+			this.addOutput('battery', SLOT_TYPES.NUMBER, valueSlot({ label: 'Battery' }));
 			this.addOutput('rssi', SLOT_TYPES.NUMBER, valueSlot());
-			this.addOutput('online', SLOT_TYPES.BOOLEAN, conditionSlot());
-			this.addOutput('offline', SLOT_TYPES.BOOLEAN, conditionSlot());
+			this.addOutput('online', SLOT_TYPES.NUMBER, valueSlot({ label: 'Online' }));
+			this.addOutput('age_sec', SLOT_TYPES.NUMBER, valueSlot({ label: 'Age (s)' }));
 		}
 
 		onDrawForeground = (ctx: CanvasRenderingContext2D) => {
@@ -1164,9 +1147,9 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				ctx,
 				this,
 				[
-					`Temp ${formatMetric(readNumber(props, 'temperature', 24.8), 'C')}  Hum ${formatMetric(readNumber(props, 'humidity', 60.2), '%')}`,
-					`Bat ${formatMetric(readNumber(props, 'battery', 88), '%', 0)}  RSSI ${formatMetric(readNumber(props, 'rssi', -64), 'dBm', 0)}`,
-					statusText(online)
+					`Temp ${formatMetric(online ? readNumber(props, 'temperature', 24.8) : null, '°C')}  Hum ${formatMetric(online ? readNumber(props, 'humidity', 60.2) : null, '%')}`,
+					`Bat ${formatMetric(online ? readNumber(props, 'battery', 88) : null, '%', 0)}  RSSI ${formatMetric(readNumber(props, 'rssi', -64), 'dBm', 0)}`,
+					`Status: ${online ? 'Online' : 'Offline'} | Age: ${formatMetric(readNumber(props, 'age_sec', 2), 's', 0)}`
 				],
 				{
 					leftPadding: 18,
@@ -1183,10 +1166,10 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			const online = readBoolean(p, 'online', true);
 			this.setOutputData(0, online ? readNumber(p, 'temperature', 24.8) : NaN);
 			this.setOutputData(1, online ? readNumber(p, 'humidity', 60.2) : NaN);
-			this.setOutputData(2, readNumber(p, 'battery', 88));
+			this.setOutputData(2, online ? readNumber(p, 'battery', 88) : null);
 			this.setOutputData(3, readNumber(p, 'rssi', -64));
-			this.setOutputData(4, online);
-			this.setOutputData(5, !online);
+			this.setOutputData(4, online ? 1 : 0);
+			this.setOutputData(5, readNumber(p, 'age_sec', 2));
 		};
 	}
 
@@ -1204,21 +1187,21 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				value: 42
 			};
 			this.addOutput('value', SLOT_TYPES.NUMBER, valueSlot());
-			this.addOutput('fresh', SLOT_TYPES.NUMBER, valueSlot());
-			this.addOutput('age_sec', SLOT_TYPES.NUMBER, valueSlot());
+			this.addOutput('fresh', SLOT_TYPES.NUMBER, valueSlot({ label: 'Fresh' }));
+			this.addOutput('age_sec', SLOT_TYPES.NUMBER, valueSlot({ label: 'Age (s)' }));
 		}
 
 		onDrawForeground = (ctx: CanvasRenderingContext2D) => {
 			const props = this.properties;
-			this.title = readString(props, 'label', 'MQTT Input');
+			this.title = readString(props, 'mqtt_id', 'MQTT Input');
 			drawNodeBodyText(
 				ctx,
 				this,
 				[
 					`Input: ${preview(readString(props, 'mqtt_id', 'demo_input'), 32)}`,
-					`Value: ${formatMetric(readNumber(props, 'value', 42), '%')}`,
+					`Value: ${formatMetric(readNumber(props, 'fresh', 1) >= 0.5 ? readNumber(props, 'value', 42) : null, '%')}`,
 					`Fresh: ${formatFreshValue(readNumber(props, 'fresh', 1))} | age: ${formatMetric(readNumber(props, 'age_sec', 3), 's')}`,
-					`Status: ${readString(props, 'status', 'ok')}`
+					`Status: ${readNumber(props, 'fresh', 1) >= 0.5 ? 'fresh' : 'stale'}`
 				],
 				{
 					bottomPadding: 16,
@@ -1246,7 +1229,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			this.title = 'Number';
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Input/Number');
 			this.properties = { max: 100, min: 0, precision: 1, value: 50 };
-			this.addOutput(SLOT_LABELS.VALUE, SLOT_TYPES.NUMBER, valueSlot());
+			this.addOutput(SLOT_LABELS.VALUE, SLOT_TYPES.NUMBER, valueSlot({ label: '' }));
 		}
 
 		onDrawForeground = (ctx: CanvasRenderingContext2D) => {
@@ -1307,8 +1290,8 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 	class TimeSourceNode extends NodeBase {
 		constructor() {
 			super();
-			this.title = 'Time Source (DS3231)';
-			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Sensor/Time Source (DS3231)');
+			this.title = 'Time';
+			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Sensor/DS3231');
 			this.properties = { source: 'DS3231/NTP', time: '12:00:00' };
 			this.addOutput('time', SLOT_TYPES.TIME, timeSlot());
 		}
@@ -1333,7 +1316,10 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 		};
 
 		onExecute = () => {
-			this.setOutputData(0, readString(this.properties, 'time', '12:00:00'));
+			this.setOutputData(
+				0,
+				demoTimeSignal(this.properties?.time, this.properties?.available !== false)
+			);
 		};
 	}
 
@@ -1342,7 +1328,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			super();
 			this.title = 'Time Filter';
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Processing/Time Filter');
-			this.properties = { from: '08:00', result: true, to: '22:00' };
+			this.properties = { fromHour: 8, fromMinute: 0, result: true, toHour: 22, toMinute: 0 };
 			this.addInput(SLOT_LABELS.TIME_IN, SLOT_TYPES.TIME, timeSlot());
 			this.addOutput(SLOT_LABELS.TIME_OK, SLOT_TYPES.TIME, timeSlot());
 		}
@@ -1364,8 +1350,9 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 
 		onExecute = () => {
 			const p = this.properties ?? (this.properties = {});
-			p.result = demoTimeAllowed(this.getInputData(0), p.from, p.to);
-			this.setOutputData(0, p.result);
+			const result = demoFilterSignal(this.getInputData(0), p);
+			p.result = result.bool;
+			this.setOutputData(0, result);
 		};
 	}
 
@@ -1374,7 +1361,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			super();
 			this.title = 'Compare';
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Processing/Compare');
-			this.properties = { operator: '>', threshold: 50, valueLabel: 'value' };
+			this.properties = { operator: '>=', threshold: 50, valueLabel: 'value' };
 			this.addInput(SLOT_LABELS.VALUE, SLOT_TYPES.NUMBER, valueSlot());
 			this.addInput(SLOT_LABELS.COMPARE_TO, SLOT_TYPES.NUMBER, valueSlot());
 			this.addOutput(SLOT_LABELS.CONDITION, SLOT_TYPES.BOOLEAN, conditionSlot());
@@ -1383,8 +1370,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 		onDrawForeground = (ctx: CanvasRenderingContext2D) => {
 			const props = this.properties;
 			const operator = readString(props, 'operator', '>');
-			const threshold = readNumber(props, 'threshold', 50);
-			this.title = `A ${operator} ${threshold}`;
+			this.title = `${typeof props?.value === 'number' && Number.isFinite(props.value) ? formatFixed(props.value, 2) : '?'} ${operator} ${typeof props?.threshold === 'number' && Number.isFinite(props.threshold) ? formatFixed(props.threshold, 2) : '?'}`;
 			drawCenteredTextBlock(ctx, this, [props?.result === true ? 'TRUE' : 'FALSE']);
 		};
 
@@ -1394,7 +1380,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				b = this.getInputData(1);
 			p.value = a;
 			p.threshold = b;
-			p.result = compareDemoValues(a, b, readString(p, 'operator', '>'));
+			p.result = compareDemoValues(a, b, readString(p, 'operator', '>='));
 			this.setOutputData(0, p.result);
 		};
 	}
@@ -1406,16 +1392,16 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Processing/Hysteresis');
 			this.properties = { off: 24.5, on: 27.2, state: false, value: 25.6 };
 			this.addInput(SLOT_LABELS.VALUE, SLOT_TYPES.NUMBER, valueSlot());
-			this.addInput('ON', SLOT_TYPES.NUMBER, valueSlot());
-			this.addInput('OFF', SLOT_TYPES.NUMBER, valueSlot());
+			this.addInput('ON threshold', SLOT_TYPES.NUMBER, valueSlot());
+			this.addInput('OFF threshold', SLOT_TYPES.NUMBER, valueSlot());
 			this.addOutput(SLOT_LABELS.CONDITION, SLOT_TYPES.BOOLEAN, conditionSlot());
 		}
 
 		onDrawForeground = (ctx: CanvasRenderingContext2D) => {
 			const props = this.properties;
-			const value = readNumber(props, 'value', 25.6);
-			const onThreshold = readNumber(props, 'on', 27.2);
-			const offThreshold = readNumber(props, 'off', 24.5);
+			const value = typeof props?.value === 'number' ? props.value : NaN;
+			const onThreshold = typeof props?.on === 'number' ? props.on : NaN;
+			const offThreshold = typeof props?.off === 'number' ? props.off : NaN;
 			const evaluation = evaluateHysteresis(
 				value,
 				onThreshold,
@@ -1427,9 +1413,13 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 
 		onExecute = () => {
 			const props = this.properties ?? (this.properties = {});
-			const value = readInputNumber(this, 0, readNumber(props, 'value', 25.6));
-			const onThreshold = readInputNumber(this, 1, readNumber(props, 'on', 27.2));
-			const offThreshold = readInputNumber(this, 2, readNumber(props, 'off', 24.5));
+			const numberInput = (slot: number) => {
+				const value = this.getInputData(slot);
+				return typeof value === 'number' ? value : NaN;
+			};
+			const value = numberInput(0);
+			const onThreshold = numberInput(1);
+			const offThreshold = numberInput(2);
 			const evaluation = evaluateHysteresis(
 				value,
 				onThreshold,
@@ -1451,6 +1441,9 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Devices/Shelly Plug');
 			this.properties = {
 				client_id: 'shelly-fan',
+				mode: 'and',
+				action_mode: 'auto',
+				out: 'shelly',
 				label: 'shelly',
 				power: 18.4,
 				status: 'ON',
@@ -1489,7 +1482,12 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			super();
 			this.title = '433MHz Socket';
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Devices/433MHz Socket');
-			this.properties = { codeOff: '8129', codeOn: '8132', label: 'socket', trigger: 'AUTO' };
+			this.properties = {
+				device_id: 'demo_socket',
+				label: 'socket',
+				mode: 'and',
+				action_mode: 'auto'
+			};
 			this.addInput(SLOT_LABELS.TIME_OK, SLOT_TYPES.TIME, timeSlot());
 			this.addInput(SLOT_LABELS.CONDITION, SLOT_TYPES.BOOLEAN, conditionSlot());
 		}
@@ -1502,8 +1500,8 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				this,
 				[
 					`Label: ${readString(props, 'label', 'socket')}`,
-					`Codes: ${compactCode(readString(props, 'codeOn', '8132'))}/${compactCode(readString(props, 'codeOff', '8129'))}`,
-					props?.active === true ? 'Condition: TRUE' : 'Condition: FALSE'
+					`Device: ${readString(props, 'device_id', 'not selected')}`,
+					props?.active === true ? 'Rule match: TRUE' : 'Rule match: FALSE'
 				],
 				{ bottomPadding: 46, lineHeight: 16, maxLines: 4 }
 			);
@@ -1522,7 +1520,14 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			super();
 			this.title = 'Telegram Notification';
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Devices/Telegram Notification');
-			this.properties = { edge: 'both', label: 'telegram', message: 'GrowClip alert' };
+			this.properties = {
+				edge: 'both',
+				label: 'telegram',
+				message: 'GrowClip alert',
+				mode: 'and',
+				action_mode: 'auto',
+				out: 'telegram'
+			};
 			this.addInput(SLOT_LABELS.TIME_OK, SLOT_TYPES.TIME, timeSlot());
 			this.addInput(SLOT_LABELS.CONDITION, SLOT_TYPES.BOOLEAN, conditionSlot());
 		}
@@ -1537,7 +1542,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				[
 					`Label: ${readString(props, 'label', 'telegram')}`,
 					`Message: ${message.length > 30 ? `${message.slice(0, 27)}...` : message}`,
-					props?.active === true ? 'Condition: TRUE' : 'Condition: FALSE'
+					props?.active === true ? 'Rule match: TRUE' : 'Rule match: FALSE'
 				],
 				{ lineHeight: 16, maxLines: 5 }
 			);
@@ -1555,7 +1560,14 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 			super();
 			this.title = 'MQTT Publish';
 			this.size = NODEFLOW_STYLE.getDefaultSizeForType('Devices/MQTT Publish');
-			this.properties = { mqtt_id: 'demo_output', label: 'publish' };
+			this.properties = {
+				mqtt_id: 'demo_output',
+				label: 'publish',
+				mode: 'and',
+				action_mode: 'auto',
+				out: 'mqtt',
+				activation: 'high'
+			};
 			this.addInput(SLOT_LABELS.TIME_OK, SLOT_TYPES.TIME, timeSlot());
 			this.addInput(SLOT_LABELS.CONDITION, SLOT_TYPES.BOOLEAN, conditionSlot());
 		}
@@ -1568,7 +1580,7 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 				[
 					`Output: ${preview(readString(props, 'mqtt_id', 'demo_output'), 32)}`,
 					'Payload: owned by MQTT catalog',
-					props?.active === true ? 'Condition: TRUE' : 'Condition: FALSE'
+					props?.active === true ? 'Rule match: TRUE' : 'Rule match: FALSE'
 				],
 				{ bottomPadding: 46, lineHeight: 16, maxLines: 4, topPadding: 36 }
 			);
@@ -1583,9 +1595,9 @@ function registerMarketingNodes(liteGraph: LiteGraphNamespace, win: LiteGraphWin
 	}
 
 	liteGraph.registerNodeType('Sensor/SCD41', SCD41InputNode);
-	liteGraph.registerNodeType('Sensor/BLE Thermometer', BleThermometerNode);
+	liteGraph.registerNodeType('Sensor/BLE Sensor', BleSensorNode);
 	liteGraph.registerNodeType('Sensor/MQTT Input', MqttInputNode);
-	liteGraph.registerNodeType('Sensor/Time Source (DS3231)', TimeSourceNode);
+	liteGraph.registerNodeType('Sensor/DS3231', TimeSourceNode);
 	liteGraph.registerNodeType('Input/Number', NumberInputNode);
 	liteGraph.registerNodeType('Processing/Time Filter', TimeFilterNode);
 	liteGraph.registerNodeType('Processing/Compare', CompareNode);
@@ -1662,9 +1674,7 @@ export class LiteGraphDemoController {
 		example.connections.forEach((connection) => {
 			const source = createdNodes.get(connection.from);
 			const target = createdNodes.get(connection.to);
-			if (!source || !target) {
-				return;
-			}
+			if (!source || !target) throw new Error('Invalid demo connection endpoint');
 			source.connect(connection.fromSlot, target, connection.toSlot);
 		});
 

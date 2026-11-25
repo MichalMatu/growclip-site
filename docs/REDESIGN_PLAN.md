@@ -19,3 +19,5 @@ S6C.1 automated acceptance passed (15 Vitest, 34 Playwright including all 8 rele
 - [x] S6C.2 — owner-approved demo-only style parity: canonical GrowClip canvas theme and card proportions, flat title bars, semantic port colors, less intrusive IPO groups and native fullscreen toggle. Product visual source: 64dc7713b0b360d5d56e04b36533a33285e4b688. No device runtime copied. No other sections changed. Visual owner review and publication separate.
 
 S6C.2: automated acceptance of visual adapter and fullscreen controls, including denied-native viewport fallback with Escape; 15 Vitest and 36 Playwright. Owner visual review pending; no production deployment. Rollback source 0897aabba6e91ea53851cadf0c8c3ff692d2e7df.
+
+- [ ] S6C.3 — synchronize public demo contracts with product 64dc7713b0b360d5d56e04b36533a33285e4b688; separate simulated inputs from device operations, verify all four example graphs and fail-closed missing-data behavior. Public deployment remains separate.

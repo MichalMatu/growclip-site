@@ -1,6 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
 
-type DemoNode = { title: string; properties: Record<string, unknown> };
+type DemoNode = {
+	title: string;
+	type: string;
+	properties: Record<string, unknown>;
+	inputs?: { name: string; type: string }[];
+	outputs?: { name: string; type: string }[];
+};
 type DemoGraph = { _nodes: DemoNode[]; status: number };
 type DemoCanvas = { graph: DemoGraph | null; is_rendering: boolean; _events_binded: boolean };
 type CanvasElement = HTMLCanvasElement & { data: DemoCanvas };
@@ -42,6 +48,16 @@ test('four IPO scenarios, causal output, reset, resize and retired graph cleanup
 	await expect
 		.poll(() => activeStates(page))
 		.toEqual({ 'Shelly Fan': true, 'Telegram Alert': true });
+	await canvas.evaluate((element) => {
+		const node = (element as CanvasElement).data.graph?._nodes.find(
+			(n) => n.type === 'Sensor/SCD41'
+		);
+		if (!node) throw Error('missing SCD41');
+		node.properties.fresh = false;
+	});
+	await expect
+		.poll(() => activeStates(page))
+		.toEqual({ 'Shelly Fan': false, 'Telegram Alert': false });
 	await canvas.evaluate((element) => {
 		const w = window as TestWindow;
 		w.previousDemo = (element as CanvasElement).data;
@@ -85,6 +101,25 @@ test('four IPO scenarios, causal output, reset, resize and retired graph cleanup
 		.toEqual({ 'Shelly Pump': false, 'local state': false });
 	await tabs.nth(3).click();
 	await expect.poll(() => activeStates(page)).toEqual({ 'CO2 Alert': true, 'Sensor Alert': true });
+	const ports = await canvas.evaluate((element) => {
+		const nodes = (element as CanvasElement).data.graph?._nodes ?? [];
+		const ble = nodes.find((n) => n.type === 'Sensor/BLE Sensor');
+		return ble?.outputs?.map(({ name, type }) => [name, type]);
+	});
+	expect(ports).toEqual(
+		['temperature', 'humidity', 'battery', 'rssi', 'online', 'age_sec'].map((name) => [
+			name,
+			'number'
+		])
+	);
+	await canvas.evaluate((element) => {
+		const node = (element as CanvasElement).data.graph?._nodes.find(
+			(n) => n.type === 'Sensor/BLE Sensor'
+		);
+		if (!node) throw Error('missing BLE');
+		node.properties.online = true;
+	});
+	await expect.poll(() => activeStates(page)).toEqual({ 'CO2 Alert': true, 'Sensor Alert': false });
 	await page.setViewportSize({ width: 390, height: 844 });
 	await expect
 		.poll(() =>
